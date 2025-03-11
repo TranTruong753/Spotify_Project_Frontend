@@ -1,11 +1,23 @@
 import './App.css'
+import { Route, Routes } from "react-router";
+import { Button } from './components/ui/button'
+import MainLayout from './layout/MainLayout';
+import HomePage from './pages/home/HomePage';
+import LoginPage from './pages/login/LoginPage';
 
 function App() {
 
   return (
-    <h1 className="text-3xl font-bold underline">
-      Hello world!
-    </h1>
+    <>
+      <Routes>
+        <Route element={<MainLayout />}>
+          <Route path='/'  element={<HomePage />} />
+        </Route>
+
+        <Route  path='/login' element={<LoginPage />}>
+        </Route>
+      </Routes>
+    </>
   )
 }
 
