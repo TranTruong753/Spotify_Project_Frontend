@@ -10,8 +10,10 @@ const FriendsActivity = () => {
     return (
         <>
 
-            <div className='h-full border-1 rounded-lg flex flex-col'>
-                <div className='p-4 flex justify-between items-center border-b'>
+            <div className="h-full border rounded-lg flex flex-col border-[hsl(220,13%,91%)]">
+
+
+                <div className='p-4 flex justify-between items-center border-b border-[hsl(220,13%,91%)]'>
                     <div className='flex items-center gap-2'>
                         <Users className='size-5 shrink-0' />
                         <h2 className='font-semibold'>Họ đang nghe gì ?</h2>
@@ -28,12 +30,12 @@ const FriendsActivity = () => {
                             >
                                 <div className='flex items-start gap-3'>
                                     <div className='relative'>
-                                        <Avatar className='size-10 border '>
+                                        <Avatar className='size-10 border border-[hsl(220,13%,91%)] '>
                                             <AvatarImage src="../../../public/avatars/avatar1.jpg" alt="" />
                                             <AvatarFallback>{ }</AvatarFallback>
                                         </Avatar>
                                         <div
-                                            className={`absolute bottom-0 right-0 h-3 w-3 rounded-full border-1 
+                                            className={`absolute bottom-0 right-0 h-3 w-3 rounded-full border border-[hsl(220,13%,91%)] 
                                                ${true ? "bg-green-500" : "bg-zinc-500"}
                                                `}
                                             aria-hidden='true'
@@ -70,10 +72,10 @@ const FriendsActivity = () => {
                             </div>)}
 
                     </div>
-                  
+
                 </ScrollArea>
                 {/* <SheetDemo></SheetDemo> */}
-                   
+
 
             </div>
 
@@ -84,51 +86,51 @@ const FriendsActivity = () => {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
+    Sheet,
+    SheetClose,
+    SheetContent,
+    SheetDescription,
+    SheetFooter,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
 } from "@/components/ui/sheet"
- 
+
 export function SheetDemo() {
-  return (
-    <Sheet>
-      <SheetTrigger asChild>
-        <Button variant="outline">Open</Button>
-      </SheetTrigger>
-      <SheetContent>
-        <SheetHeader>
-          <SheetTitle>Edit profile</SheetTitle>
-          <SheetDescription>
-            Make changes to your profile here. Click save when you're done.
-          </SheetDescription>
-        </SheetHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input id="name" value="Pedro Duarte" className="col-span-3" />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
-            </Label>
-            <Input id="username" value="@peduarte" className="col-span-3" />
-          </div>
-        </div>
-        <SheetFooter>
-          <SheetClose asChild>
-            <Button type="submit">Save changes</Button>
-          </SheetClose>
-        </SheetFooter>
-      </SheetContent>
-    </Sheet>
-  )
+    return (
+        <Sheet>
+            <SheetTrigger asChild>
+                <Button variant="outline">Open</Button>
+            </SheetTrigger>
+            <SheetContent>
+                <SheetHeader>
+                    <SheetTitle>Edit profile</SheetTitle>
+                    <SheetDescription>
+                        Make changes to your profile here. Click save when you're done.
+                    </SheetDescription>
+                </SheetHeader>
+                <div className="grid gap-4 py-4">
+                    <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="name" className="text-right">
+                            Name
+                        </Label>
+                        <Input id="name" value="Pedro Duarte" className="col-span-3" />
+                    </div>
+                    <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="username" className="text-right">
+                            Username
+                        </Label>
+                        <Input id="username" value="@peduarte" className="col-span-3" />
+                    </div>
+                </div>
+                <SheetFooter>
+                    <SheetClose asChild>
+                        <Button type="submit">Save changes</Button>
+                    </SheetClose>
+                </SheetFooter>
+            </SheetContent>
+        </Sheet>
+    )
 }
 
 export default FriendsActivity

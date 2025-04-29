@@ -4,6 +4,7 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/componen
 import { Outlet } from "react-router";
 import LeftSidebar from './components/LeftSidebar';
 import FriendsActivity from './components/FriendsActivity';
+import PlaybackControls from './components/PlaybackControls';
 import Header from './components/Header';
 const MainLayout = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -50,7 +51,7 @@ const MainLayout = () => {
           )}
         </ResizablePanelGroup>
 
-        {/* <PlaybackControls /> */}
+        <PlaybackControls />
       </div>
     </>
   )

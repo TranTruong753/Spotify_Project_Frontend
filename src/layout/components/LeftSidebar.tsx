@@ -37,7 +37,7 @@ const LeftSidebar = () => {
     </div> */}
 
             {/* Library section */}
-            <div className='flex-1 rounded-lg bg-white border-1 p-4 '>
+            <div className='flex-1 rounded-lg bg-white border p-4 border-[hsl(220,13%,91%)]'>
                 <div className='flex items-center justify-between mb-4'>
                     <div className='flex items-center text-black px-2'>
                         <Library className='size-5 mr-2' />
@@ -52,13 +52,14 @@ const LeftSidebar = () => {
 
                 <div className='my-2'>
                     {/* Search */}
-                    <div className='flex items-center border rounded px-2'>
+                    <div className='flex items-center border rounded px-2 border-[hsl(220,13%,91%)]'>
                         {/* icon */}
                         <span>
                             <IoSearch className='text-2xl text-(--border)' />
                         </span>
 
-                        <Input placeholder='Tìm kiếm trong thư viện' className='border-0 shadow-none font-medium placeholder:text-(--border)'></Input>
+                        <Input placeholder="Tìm kiếm trong thư viện" className="border-0 shadow-none font-medium placeholder:text-(--border)" />
+
                     </div>
                 </div>
 
