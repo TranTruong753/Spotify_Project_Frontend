@@ -22,6 +22,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { Link } from "react-router";
 
 const data = {
   user: {
@@ -72,14 +73,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <SidebarMenuButton
               asChild
-              className="data-[slot=sidebar-menu-button]:!p-1.5 hover:bg-transparent"
+              className="focus-visible:outline-none !important hover:bg-transparent p-1.5"
             >
              
-             <a href="/">
+             <Link to={"/"} className="focus-visible:outline-none focus-visible:ring-transparent">
                
                   <FaSpotify className="!size-8" />
                   <span className="text-base font-semibold">Spotify</span>
-              </a>
+              </Link>
           
             </SidebarMenuButton>
           </SidebarMenuItem>

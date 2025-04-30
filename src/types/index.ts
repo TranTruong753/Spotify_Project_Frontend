@@ -9,3 +9,16 @@ export interface Song {
 	createdAt: string;
 	updatedAt: string;
 }
+
+export interface Album {
+	id: number;
+	name: string;
+	description: string;
+	img_url: string;
+}
+
+// Kiểu dữ liệu trả về từ API
+export interface AlbumApiResponse {
+	results: Album[];  // Mảng album
+	count: number;     // Tổng số album
+}
