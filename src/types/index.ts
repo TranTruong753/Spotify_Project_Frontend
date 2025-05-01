@@ -1,5 +1,6 @@
 export interface Song {
 	id: string;
+	name: string;
 	title: string;
 	artist: string;
 	albumId: string | null;
@@ -15,6 +16,8 @@ export interface Album {
 	name: string;
 	description: string;
 	img_url: string;
+	album_songs?: Song[];
+
 }
 
 // Kiểu dữ liệu trả về từ API

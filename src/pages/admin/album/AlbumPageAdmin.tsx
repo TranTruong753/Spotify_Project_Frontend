@@ -1,8 +1,8 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { Link } from "react-router";
 
-import { Space, Table, Breadcrumb, Empty } from 'antd';
+import { Space, Table, Breadcrumb, Empty, Button } from 'antd';
 
 import type { TableProps } from 'antd';
 
@@ -10,6 +10,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchAlbums } from '@/features/albums/albumsSlice'
 import { RootState, AppDispatch } from '@/app/store'
 import { Album } from '@/types';
+import DetailAlbum from "./components/DetailAlbum";
+import Avatar from "./components/AvatarAlbum";
+import ModalCreateAlbum from "./components/ModalCreateAlbum";
 
 type DataType = Album & {
   key: string;
@@ -28,6 +31,14 @@ const items = [
 
 
 const AlbumPageAdmin: React.FC = () => {
+
+  // mở drawer
+  const [open, setOpen] = useState<boolean>(false);
+
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+
+  const [data, setData] = useState<Album | null>(null);
 
   const dispatch = useDispatch<AppDispatch>()
   const { list, count, loading, error } = useSelector((state: RootState) => state.albums)
@@ -50,6 +61,15 @@ const AlbumPageAdmin: React.FC = () => {
     img_url: album.img_url || '/default-image.jpg',
   })), [list]);
 
+  const handleDetailAlbum = (data: Album) => {
+    setData(data)
+    console.log("data", data)
+    setOpen(true);
+  }
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true)
+  }
 
   const columns: TableProps<DataType>['columns'] = [
     {
@@ -61,7 +81,7 @@ const AlbumPageAdmin: React.FC = () => {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
-      render: (text) => <a>{text}</a>,
+      render: (text, record) => <a onClick={() => handleDetailAlbum(record)}>{text}</a>,
     },
     {
       title: 'Description',
@@ -86,24 +106,39 @@ const AlbumPageAdmin: React.FC = () => {
         Quản lý album
       </h2>
 
-      <div className="px-5 pt-2">
+      <div className="px-5 pt-2 flex justify-between">
         <Breadcrumb items={items}></Breadcrumb>
+        <Button onClick={handleOpenModal}>Thêm</Button>
       </div>
 
       <div className="p-7">
-        <Table<DataType> 
-        columns={columns} 
-        dataSource={transformedData} 
-        loading={loading} 
-        pagination={{
-          pageSize: 5, 
-          total:count
-        }}
-        locale={{ emptyText: <Empty description="Không có dữ liệu" /> }}
+        <Table<DataType>
+          columns={columns}
+          dataSource={transformedData}
+          loading={loading}
+          pagination={{
+            pageSize: 5,
+            total: count
+          }}
+          locale={{ emptyText: <Empty description="Không có dữ liệu" /> }}
         // bordered
 
         />
+        
+
+        {/* <Avatar></Avatar> */}
       </div>
+
+      <DetailAlbum
+        open={open}
+        setOpen={setOpen}
+        data={data}
+      ></DetailAlbum>
+
+      <ModalCreateAlbum
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+      ></ModalCreateAlbum>
     </div>
   );
 };

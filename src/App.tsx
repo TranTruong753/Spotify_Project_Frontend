@@ -6,6 +6,7 @@ import HomePage from './pages/home/HomePage';
 import HomePageAdmin from './pages/admin/dashboard/HomePageAdmin';
 import UserPageAdmin from './pages/admin/user/UserPageAdmin';
 import AlbumPageAdmin from './pages/admin/album/AlbumPageAdmin';
+import AlbumDetailPageAdmin from './pages/admin/album/AlbumDetailPageAdmin';
 import SongPageAdmin from './pages/admin/songs/SongPageAdmin';
 import SingerPageAdmin from './pages/admin/singer/SingerPageAdmin';
 
@@ -34,6 +35,7 @@ function App() {
           <Route path='/admin/music'  element={<SongPageAdmin/>} />
           <Route path='/admin/singer'  element={<SingerPageAdmin/>} />
           <Route path='/admin/album'  element={<AlbumPageAdmin/>} />
+          <Route path='/admin/album/:id'  element={<AlbumDetailPageAdmin/>} />
         </Route>
       </Routes>
     </>
