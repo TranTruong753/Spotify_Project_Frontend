@@ -11,16 +11,18 @@ import Avatar from "./AvatarAlbum";
 interface DetailAlbumProps {
     open: boolean;
     setOpen: (open: boolean) => void;
-    data: Album | null
+    data: Album | null;
+    setData: (data: Album | null) => void;
 }
 
 type DataType = Song & {
     key: string;
 };
 
-const DetailAlbum: React.FC<DetailAlbumProps> = ({ open, setOpen, data }) => {
+const DetailAlbum: React.FC<DetailAlbumProps> = ({ open, setOpen, data, setData }) => {
     const onClose = () => {
         setOpen(false);
+        setData(null);
     };
 
 

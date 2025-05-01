@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
-import { getAllAlbums, postAlbums } from '@/services/AlbumServices'
+import { getAllAlbums, patchAlbums, postAlbums, deleteAlbums } from '@/services/AlbumServices'
 import { Album, AlbumApiResponse } from '@/types'
 
 
@@ -23,20 +23,27 @@ export const createAlbum = createAsyncThunk<Album, FormData>('albums/createAlbum
 });
 
 // DELETE an album by id
+export const deleteAlbum = createAsyncThunk<number, { id: number }>(
+  'albums/deleteAlbum',
+  async ({ id }) => {
+    await deleteAlbums(id);
+    return id;
+  }
+);
 // export const deleteAlbum = createAsyncThunk<number, number>('albums/deleteAlbum', async (id) => {
 //   await fetch(`/api/albums/${id}`, { method: 'DELETE' })
 //   return id // trả về id để xóa trong state
 // })
 
 // UPDATE an album
-// export const updateAlbum = createAsyncThunk<Album, Album>('albums/updateAlbum', async (updatedAlbum) => {
-//   const res = await fetch(`/api/albums/${updatedAlbum.id}`, {
-//     method: 'PUT',
-//     headers: { 'Content-Type': 'application/json' },
-//     body: JSON.stringify(updatedAlbum)
-//   })
-//   return await res.json()
-// })
+export const updateAlbum = createAsyncThunk<Album, { id: number; formData: FormData }>(
+  'albums/updateAlbum',
+  async ({ id, formData }) => {
+    const res = await patchAlbums(id, formData);
+    return res;
+  }
+);
+
 
 interface AlbumsState {
   list: Album[]
@@ -75,11 +82,21 @@ const albumsSlice = createSlice({
 
       .addCase(createAlbum.fulfilled, (state, action) => {
         state.list.push(action.payload)
+        state.count += 1;  
       })
 
-    //   .addCase(deleteAlbum.fulfilled, (state, action) => {
-    //     state.list = state.list.filter(album => album.id !== action.payload)
-    //   })
+      .addCase(updateAlbum.fulfilled, (state, action) => {
+        const index = state.list.findIndex(album => album.id === action.payload.id);
+        if (index !== -1) {
+          state.list[index] = action.payload;
+        }
+      })
+
+      .addCase(deleteAlbum.fulfilled, (state, action) => {
+        state.list = state.list.filter(album => album.id !== action.payload);
+        state.count -= 1;
+      })
+      
 
     //   .addCase(updateAlbum.fulfilled, (state, action) => {
     //     const index = state.list.findIndex(a => a.id === action.payload.id)

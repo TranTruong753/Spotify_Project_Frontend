@@ -2,12 +2,17 @@ import { useEffect, useMemo, useState } from "react";
 
 import { Link } from "react-router";
 
-import { Space, Table, Breadcrumb, Empty, Button } from 'antd';
+import { Space, Table, Breadcrumb, Empty, Button, Popconfirm } from 'antd';
 
-import type { TableProps } from 'antd';
+import type { TableProps, PopconfirmProps } from 'antd';
+
+import { FaEye } from "react-icons/fa";
+
+import {Pen, Trash2} from "lucide-react"
+
 
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchAlbums } from '@/features/albums/albumsSlice'
+import { fetchAlbums, deleteAlbum } from '@/features/albums/albumsSlice'
 import { RootState, AppDispatch } from '@/app/store'
 import { Album } from '@/types';
 import DetailAlbum from "./components/DetailAlbum";
@@ -27,6 +32,17 @@ const items = [
     title: 'Albums',
   },
 ]
+
+const confirm: PopconfirmProps['onConfirm'] = (e) => {
+  console.log(e);
+
+};
+
+const cancel: PopconfirmProps['onCancel'] = (e) => {
+  console.log(e);
+
+};
+
 
 
 const AlbumPageAdmin: React.FC = () => {
@@ -61,13 +77,28 @@ const AlbumPageAdmin: React.FC = () => {
   })), [list]);
 
   const handleDetailAlbum = (data: Album) => {
-    setData(data)
+    if(data){
+      setData(data)
+    }
     console.log("data", data)
     setOpen(true);
   }
 
   const handleOpenModal = () => {
     setIsModalOpen(true)
+  }
+
+  const handleOpenModalEdit = (data:Album) => {
+    if(data){
+      setData(data)
+    }
+    setIsModalOpen(true)
+  }
+
+  const handleDeleteAlbum = async(data:Album) => {
+      if(data){
+        await dispatch(deleteAlbum({id: data.id})).unwrap();
+      }
   }
 
   const columns: TableProps<DataType>['columns'] = [
@@ -91,9 +122,43 @@ const AlbumPageAdmin: React.FC = () => {
       title: 'Action',
       key: 'action',
       render: (_, record) => (
-        <Space size="middle">
-          <a>Invite {record.name}</a>
-          <a>Delete</a>
+        <Space size="small">
+          <Button
+            shape="circle"
+            color="blue"
+            variant="solid"
+            onClick={()=>handleDetailAlbum(record)}
+          >
+            <FaEye className="text-lg" />
+          </Button>
+
+          <Button
+            shape="circle"
+            color="gold"
+            variant="solid"
+            onClick={()=>handleOpenModalEdit(record)}
+          >
+            <Pen size={18}></Pen>
+          </Button>
+
+          <Popconfirm
+            title="Delete the album"
+            description="Are you sure to delete this album?"
+            onConfirm={()=>handleDeleteAlbum(record)}
+            onCancel={cancel}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button
+              shape="circle"
+              color="red"
+              variant="solid"
+
+            >
+              <Trash2 size={18} />
+            </Button>
+          </Popconfirm>
+        
         </Space>
       ),
     },
@@ -123,7 +188,7 @@ const AlbumPageAdmin: React.FC = () => {
         // bordered
 
         />
-        
+
 
         {/* <Avatar></Avatar> */}
       </div>
@@ -132,11 +197,14 @@ const AlbumPageAdmin: React.FC = () => {
         open={open}
         setOpen={setOpen}
         data={data}
+        setData={setData}
       ></DetailAlbum>
 
       <ModalCreateAlbum
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
+        data={data}
+        setData={setData}
       ></ModalCreateAlbum>
     </div>
   );
