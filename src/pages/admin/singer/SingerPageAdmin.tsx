@@ -1,8 +1,8 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { Link } from "react-router";
 
-import { Space, Table, Breadcrumb, Empty } from "antd";
+import { Space, Table, Breadcrumb, Empty, Button } from "antd";
 
 import type { TableProps } from "antd";
 
@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchArtists } from "@/features/albums/artistsSlice";
 import { RootState, AppDispatch } from "@/app/store";
 import { Artist } from "@/types";
+import ModalCreateArtist from "./components/ModalCreateArtist";
 
 type DataType = Artist & {
   key: string;
@@ -31,7 +32,7 @@ const SingerPageAdmin: React.FC = () => {
   const { list, count, loading, error } = useSelector(
     (state: RootState) => state.artists
   );
-
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   useEffect(() => {
     if (!list.length) {
       dispatch(fetchArtists());
@@ -95,14 +96,17 @@ const SingerPageAdmin: React.FC = () => {
     },
   ];
 
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
   return (
     <div className="px-4">
       <h2 className="px-2 scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0">
         Quản lý ca sĩ
       </h2>
-
-      <div className="px-5 pt-2">
+      <div className="px-5 pt-2 flex justify-between">
         <Breadcrumb items={items}></Breadcrumb>
+        <Button onClick={handleOpenModal}>Thêm</Button>
       </div>
 
       <div className="p-7">
@@ -118,6 +122,10 @@ const SingerPageAdmin: React.FC = () => {
           // bordered
         />
       </div>
+      <ModalCreateArtist
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+      ></ModalCreateArtist>
     </div>
   );
 };
