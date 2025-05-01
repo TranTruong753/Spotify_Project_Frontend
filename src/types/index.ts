@@ -19,9 +19,18 @@ export interface Album {
 	album_songs?: Song[];
 
 }
+export interface Artist {
+  id: number;
+  name: string;
+  img_url: string;
+}
 
 // Kiểu dữ liệu trả về từ API
 export interface AlbumApiResponse {
-	results: Album[];  // Mảng album
-	count: number;     // Tổng số album
+  results: Album[]; // Mảng album
+  count: number; // Tổng số album
+}
+export interface ArtistApiResponse {
+  results: Artist[]; // Mảng album
+  count: number; // Tổng số album
 }

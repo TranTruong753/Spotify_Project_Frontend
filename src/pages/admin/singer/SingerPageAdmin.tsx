@@ -1,66 +1,91 @@
+import { useEffect, useMemo } from "react";
 
-import {
-    Breadcrumb,
-    BreadcrumbItem,
-    BreadcrumbLink,
-    BreadcrumbList,
-    BreadcrumbPage,
-    BreadcrumbSeparator,
-  } from "@/components/ui/breadcrumb";
-  import { Link } from "react-router";
-  
-  import { Space, Table, Tag } from 'antd';
-  import type { TableProps } from 'antd';
-  
-  interface DataType {
-    key: string;
-    name: string;
-    age: number;
-    address: string;
-    tags: string[];
-  }
-  
-  
-  const columns: TableProps<DataType>['columns'] = [
+import { Link } from "react-router";
+
+import { Space, Table, Breadcrumb, Empty } from "antd";
+
+import type { TableProps } from "antd";
+
+import { useDispatch, useSelector } from "react-redux";
+import { fetchArtists } from "@/features/albums/artistsSlice";
+import { RootState, AppDispatch } from "@/app/store";
+import { Artist } from "@/types";
+
+type DataType = Artist & {
+  key: string;
+  description: string;
+  img_url: string;
+};
+
+const items = [
+  {
+    title: <Link to={"/admin/"}>Dashboard</Link>,
+  },
+  {
+    title: "Artists",
+  },
+];
+
+const SingerPageAdmin: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { list, count, loading, error } = useSelector(
+    (state: RootState) => state.artists
+  );
+
+  useEffect(() => {
+    if (!list.length) {
+      dispatch(fetchArtists());
+    }
+  }, [dispatch, list.length]);
+
+  // if (loading) return <p>Loading...</p>
+  if (error) return <p>Error: {error}</p>;
+
+  console.log("list", list);
+
+  const transformedData = useMemo(
+    () =>
+      list.map((artist) => ({
+        ...artist,
+        key: artist.id.toString(),
+        img_url: artist.img_url || "/default-image.jpg",
+      })),
+    [list]
+  );
+  const columns: TableProps<DataType>["columns"] = [
     {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-      render: (text) => <a>{text}</a>,
+      title: "Id",
+      dataIndex: "key",
+      key: "key",
     },
     {
-      title: 'Age',
-      dataIndex: 'age',
-      key: 'age',
-    },
-    {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
-    },
-    {
-      title: 'Tags',
-      key: 'tags',
-      dataIndex: 'tags',
-      render: (_, { tags }) => (
-        <>
-          {tags.map((tag) => {
-            let color = tag.length > 5 ? 'geekblue' : 'green';
-            if (tag === 'loser') {
-              color = 'volcano';
-            }
-            return (
-              <Tag color={color} key={tag}>
-                {tag.toUpperCase()}
-              </Tag>
-            );
-          })}
-        </>
+      title: "Img",
+      dataIndex: "img_url",
+      key: "img_url",
+      render: (_, record) => (
+        <Space size="middle">
+          <img
+            src={record.img_url}
+            alt="artist"
+            style={{
+              width: 60,
+              height: 60,
+              objectFit: "cover",
+              borderRadius: 4,
+            }}
+          />
+        </Space>
       ),
     },
     {
-      title: 'Action',
-      key: 'action',
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: "Action",
+      key: "action",
       render: (_, record) => (
         <Space size="middle">
           <a>Invite {record.name}</a>
@@ -69,58 +94,32 @@ import {
       ),
     },
   ];
-  
-  const data: DataType[] = [
-    {
-      key: '1',
-      name: 'John Brown',
-      age: 32,
-      address: 'New York No. 1 Lake Park',
-      tags: ['nice', 'developer'],
-    },
-    {
-      key: '2',
-      name: 'Jim Green',
-      age: 42,
-      address: 'London No. 1 Lake Park',
-      tags: ['loser'],
-    },
-    {
-      key: '3',
-      name: 'Joe Black',
-      age: 32,
-      address: 'Sydney No. 1 Lake Park',
-      tags: ['cool', 'teacher'],
-    },
-  ];
-  
-  const SingerPageAdmin: React.FC = () => {
-    return (
-      <div className="px-4">
-        <h2 className="px-2 scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0">
-          Quản lý ca sĩ
-        </h2>
-  
-        <div className="px-5 pt-2">
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink><Link to={"/admin/"}>Dashboard</Link></BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>User</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-        </div>
-  
-        <div className="p-7">
-        <Table<DataType> columns={columns} dataSource={data} />
-        </div>
+
+  return (
+    <div className="px-4">
+      <h2 className="px-2 scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0">
+        Quản lý ca sĩ
+      </h2>
+
+      <div className="px-5 pt-2">
+        <Breadcrumb items={items}></Breadcrumb>
       </div>
-    );
-  };
-  
-  export default SingerPageAdmin;
-  
+
+      <div className="p-7">
+        <Table<DataType>
+          columns={columns}
+          dataSource={transformedData}
+          loading={loading}
+          pagination={{
+            pageSize: 5,
+            total: count,
+          }}
+          locale={{ emptyText: <Empty description="Không có dữ liệu" /> }}
+          // bordered
+        />
+      </div>
+    </div>
+  );
+};
+
+export default SingerPageAdmin;
