@@ -1,24 +1,33 @@
 export interface Song {
-	id: string;
-	title: string;
-	artist: string;
-	albumId: string | null;
-	imageUrl: string;
-	audioUrl: string;
-	duration: number;
-	createdAt: string;
-	updatedAt: string;
+  id: string;
+  title: string;
+  artist: string;
+  albumId: string | null;
+  imageUrl: string;
+  audioUrl: string;
+  duration: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Album {
-	id: number;
-	name: string;
-	description: string;
-	img_url: string;
+  id: number;
+  name: string;
+  description: string;
+  img_url: string;
+}
+export interface Artist {
+  id: number;
+  name: string;
+  img_url: string;
 }
 
 // Kiểu dữ liệu trả về từ API
 export interface AlbumApiResponse {
-	results: Album[];  // Mảng album
-	count: number;     // Tổng số album
+  results: Album[]; // Mảng album
+  count: number; // Tổng số album
+}
+export interface ArtistApiResponse {
+  results: Artist[]; // Mảng album
+  count: number; // Tổng số album
 }
