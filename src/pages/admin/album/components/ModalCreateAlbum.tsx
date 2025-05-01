@@ -1,6 +1,6 @@
 import { Album } from '@/types';
 import React, { useState } from 'react'
-import { Button, Modal, Form, UploadFile } from 'antd';
+import { Modal, Form, UploadFile } from 'antd';
 import FormAlbum from './FormAlbum';
 import { useDispatch } from 'react-redux'
 import { createAlbum } from '@/features/albums/albumsSlice'
@@ -21,11 +21,6 @@ const ModalCreateAlbum: React.FC<ModalAlbumProps> = ({ isModalOpen, setIsModalOp
 
 
     const [fileList, setFileList] = useState<UploadFile[]>([]);
-
-
-    const showModal = () => {
-        setIsModalOpen(true);
-    };
 
 
       

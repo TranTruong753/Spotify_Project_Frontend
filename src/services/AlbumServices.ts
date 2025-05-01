@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 
 import { Album, AlbumApiResponse } from '@/types'
 // Interface cho một album (bạn nên sửa theo cấu trúc thực tế)

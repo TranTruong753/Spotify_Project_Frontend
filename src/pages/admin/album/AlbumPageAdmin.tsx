@@ -11,7 +11,6 @@ import { fetchAlbums } from '@/features/albums/albumsSlice'
 import { RootState, AppDispatch } from '@/app/store'
 import { Album } from '@/types';
 import DetailAlbum from "./components/DetailAlbum";
-import Avatar from "./components/AvatarAlbum";
 import ModalCreateAlbum from "./components/ModalCreateAlbum";
 
 type DataType = Album & {
