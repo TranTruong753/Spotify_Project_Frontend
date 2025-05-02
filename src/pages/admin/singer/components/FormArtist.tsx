@@ -49,15 +49,28 @@ const FormArtist: React.FC<MyComponentProps> = ({
       <Input />
     </Form.Item>
 
-    <Form.Item<Artist>
+    <Form.Item
       label="Img"
       name="img_url"
-      // rules={[{ required: true, message: 'Please input Album img!' }]}
+      rules={[{ required: true, message: "Please upload an artist image!" }]}
+      // Thêm valuePropName nếu AvatarAlbum nhận giá trị qua prop khác
+      // valuePropName="fileList"
+      // Thêm getValueFromEvent để Form biết cách lấy giá trị từ component
+      getValueFromEvent={(e) => {
+        if (Array.isArray(e)) {
+          return e;
+        }
+        return e && e.fileList;
+      }}
     >
       <AvatarArtist
         fileList={fileList}
-        setFileList={setFileList}
-      ></AvatarArtist>
+        setFileList={(newFileList) => {
+          setFileList(newFileList);
+          // Cập nhật giá trị vào form
+          form.setFieldsValue({ img_url: newFileList });
+        }}
+      />
     </Form.Item>
   </Form>
 );

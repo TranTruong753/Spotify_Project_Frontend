@@ -28,3 +28,43 @@ export const postArtists = async (artist: FormData): Promise<Artist> => {
 
   return await response.json();
 };
+
+export const patchArtists = async (
+  id: number,
+  artist: FormData
+): Promise<Artist> => {
+  try {
+    const response = await axios.patch<Artist>(
+      `${API_URL}/artists/${id}/`, // chú ý dấu `/` cuối nếu backend yêu cầu
+      artist,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    console.log("patchArtists", response.data);
+    return response.data;
+  } catch (error: any) {
+    console.error("patchArtists error:", error);
+    throw new Error(error.response?.data?.detail || "Failed to update artist");
+  }
+};
+
+export const deleteArtists = async (id: number): Promise<Artist> => {
+  try {
+    const response = await axios.delete<Artist>(
+      `${API_URL}/artists/${id}/`, // chú ý dấu `/` cuối nếu backend yêu cầu
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    console.log("deleteArtists", response.data);
+    return response.data;
+  } catch (error: any) {
+    console.error("deleteArtists error:", error);
+    throw new Error(error.response?.data?.detail || "Failed to update artist");
+  }
+};

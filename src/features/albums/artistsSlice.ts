@@ -1,5 +1,10 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import { getAllArists, postArtists } from "@/services/ArtistServices";
+import {
+  deleteArtists,
+  getAllArists,
+  patchArtists,
+  postArtists,
+} from "@/services/ArtistServices";
 import { Artist, ArtistApiResponse } from "@/types";
 
 // GET all albums
@@ -21,6 +26,21 @@ export const createArtist = createAsyncThunk<Artist, FormData>(
     return res;
   }
 );
+export const deleteArtist = createAsyncThunk<number, { id: number }>(
+  "artists/deleteArtist",
+  async ({ id }) => {
+    await deleteArtists(id);
+    return id;
+  }
+);
+
+export const updateArtist = createAsyncThunk<
+  Artist,
+  { id: number; formData: FormData }
+>("artists/updateArtist", async ({ id, formData }) => {
+  const res = await patchArtists(id, formData);
+  return res;
+});
 // POST a new album
 // export const createAlbum = createAsyncThunk<Album, Album>('albums/createAlbum', async (newAlbum) => {
 //   const res = await fetch('/api/albums', {
@@ -84,6 +104,21 @@ const artistsSlice = createSlice({
       .addCase(createArtist.fulfilled, (state, action) => {
         state.list.push(action.payload);
         state.count += 1;
+      })
+      .addCase(updateArtist.fulfilled, (state, action) => {
+        const index = state.list.findIndex(
+          (artist) => artist.id === action.payload.id
+        );
+        if (index !== -1) {
+          state.list[index] = action.payload;
+        }
+      })
+
+      .addCase(deleteArtist.fulfilled, (state, action) => {
+        state.list = state.list.filter(
+          (artist) => artist.id !== action.payload
+        );
+        state.count -= 1;
       });
 
     //   .addCase(deleteAlbum.fulfilled, (state, action) => {

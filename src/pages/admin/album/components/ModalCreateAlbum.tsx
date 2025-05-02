@@ -1,10 +1,10 @@
-import { Album } from '@/types';
-import React, { useEffect, useState } from 'react'
-import { Modal, Form, UploadFile } from 'antd';
-import FormAlbum from './FormAlbum';
-import { useDispatch } from 'react-redux'
-import { createAlbum, updateAlbum } from '@/features/albums/albumsSlice'
-import { AppDispatch } from '@/app/store'
+import { Album } from "@/types";
+import React, { useEffect, useState } from "react";
+import { Modal, Form, UploadFile } from "antd";
+import FormAlbum from "./FormAlbum";
+import { useDispatch } from "react-redux";
+import { createAlbum, updateAlbum } from "@/features/albums/albumsSlice";
+import { AppDispatch } from "@/app/store";
 
 interface ModalAlbumProps {
   isModalOpen: boolean;
@@ -13,18 +13,21 @@ interface ModalAlbumProps {
   setData: (data: Album | null) => void;
 }
 
-
-const ModalCreateAlbum: React.FC<ModalAlbumProps> = ({ isModalOpen, setIsModalOpen, data, setData }) => {
-
+const ModalCreateAlbum: React.FC<ModalAlbumProps> = ({
+  isModalOpen,
+  setIsModalOpen,
+  data,
+  setData,
+}) => {
   const [form] = Form.useForm();
 
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useDispatch<AppDispatch>();
 
   const [fileList, setFileList] = useState<UploadFile[]>([]);
 
   useEffect(() => {
     if (data !== null) {
-      console.log("data", data)
+      console.log("data", data);
       // Gán giá trị vào form
       form.setFieldsValue({
         name: data?.name,
@@ -34,17 +37,19 @@ const ModalCreateAlbum: React.FC<ModalAlbumProps> = ({ isModalOpen, setIsModalOp
 
       // Nếu muốn hiển thị ảnh (nếu data có hình):
       if (data?.img_url) {
-        setFileList([
+        const fileData: UploadFile[] = [
           {
-            uid: '-1',
-            name: 'image.png',
-            status: 'done',
-            url: data.img_url, // hoặc là đường dẫn hình ảnh
+            uid: "-1",
+            name: "image.png",
+            status: "done", // hoặc: "done" as UploadFileStatus
+            url: data.img_url,
           },
-        ]);
+        ];
+        setFileList(fileData);
+        form.setFieldsValue({ img_url: fileData });
       }
     }
-  }, [data])
+  }, [data]);
 
   const handleOk = async () => {
     try {
@@ -53,51 +58,50 @@ const ModalCreateAlbum: React.FC<ModalAlbumProps> = ({ isModalOpen, setIsModalOp
       const file = fileList.length > 0 ? fileList[0].originFileObj : null;
 
       const formData = new FormData();
-      formData.append('name', values.name);
-      formData.append('description', values.description || '');
-      formData.append('is_deleted', 'false'); // hoặc từ values
+      formData.append("name", values.name);
+      formData.append("description", values.description || "");
+      formData.append("is_deleted", "false"); // hoặc từ values
       if (file) {
-        formData.append('img_url', file);
+        formData.append("img_url", file);
       }
 
       if (data === null) {
-
         await dispatch(createAlbum(formData)).unwrap(); // unwrap để bắt lỗi dễ
-      }
-
-      else if (data) {
+      } else if (data) {
         await dispatch(updateAlbum({ id: data.id, formData })).unwrap();
       }
-      
 
       setIsModalOpen(false);
       form.resetFields();
       setFileList([]);
+      setData(null);
     } catch (error) {
-      console.error('Lỗi tạo album:', error);
+      console.error("Lỗi tạo album:", error);
     }
   };
 
-
   const handleCancel = () => {
-    setFileList([])
+    setFileList([]);
     form.resetFields();
-    setData(null)
+    setData(null);
     setIsModalOpen(false);
   };
   return (
     <div>
-
-      <Modal title={data !== null ? "Update Album" : "Create Album"} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-        <FormAlbum form={form}
+      <Modal
+        title={data !== null ? "Update Album" : "Create Album"}
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <FormAlbum
+          form={form}
           fileList={fileList}
           setFileList={setFileList}
-
         ></FormAlbum>
       </Modal>
-
     </div>
-  )
-}
+  );
+};
 
-export default ModalCreateAlbum
+export default ModalCreateAlbum;

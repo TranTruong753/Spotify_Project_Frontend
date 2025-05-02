@@ -2,15 +2,16 @@ import { useEffect, useMemo, useState } from "react";
 
 import { Link } from "react-router";
 
-import { Space, Table, Breadcrumb, Empty, Button } from "antd";
+import { Space, Table, Breadcrumb, Empty, Button, Popconfirm } from "antd";
 
-import type { TableProps } from "antd";
+import type { PopconfirmProps, TableProps } from "antd";
 
 import { useDispatch, useSelector } from "react-redux";
-import { fetchArtists } from "@/features/albums/artistsSlice";
+import { deleteArtist, fetchArtists } from "@/features/albums/artistsSlice";
 import { RootState, AppDispatch } from "@/app/store";
 import { Artist } from "@/types";
 import ModalCreateArtist from "./components/ModalCreateArtist";
+import { Pen, Trash2 } from "lucide-react";
 
 type DataType = Artist & {
   key: string;
@@ -26,13 +27,20 @@ const items = [
     title: "Artists",
   },
 ];
+const confirm: PopconfirmProps["onConfirm"] = (e) => {
+  console.log(e);
+};
 
+const cancel: PopconfirmProps["onCancel"] = (e) => {
+  console.log(e);
+};
 const SingerPageAdmin: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { list, count, loading, error } = useSelector(
     (state: RootState) => state.artists
   );
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [data, setData] = useState<Artist | null>(null);
   useEffect(() => {
     if (!list.length) {
       dispatch(fetchArtists());
@@ -88,9 +96,28 @@ const SingerPageAdmin: React.FC = () => {
       title: "Action",
       key: "action",
       render: (_, record) => (
-        <Space size="middle">
-          <a>Invite {record.name}</a>
-          <a>Delete</a>
+        <Space size="small">
+          <Button
+            shape="circle"
+            color="gold"
+            variant="solid"
+            onClick={() => handleOpenModalEdit(record)}
+          >
+            <Pen size={18}></Pen>
+          </Button>
+
+          <Popconfirm
+            title="Delete the artist"
+            description="Are you sure to delete this artist?"
+            onConfirm={() => handleDeleteAlbum(record)}
+            onCancel={cancel}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button shape="circle" color="red" variant="solid">
+              <Trash2 size={18} />
+            </Button>
+          </Popconfirm>
         </Space>
       ),
     },
@@ -98,6 +125,17 @@ const SingerPageAdmin: React.FC = () => {
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
+  };
+  const handleOpenModalEdit = (data: Artist) => {
+    if (data) {
+      setData(data);
+    }
+    setIsModalOpen(true);
+  };
+  const handleDeleteAlbum = async (data: Artist) => {
+    if (data) {
+      await dispatch(deleteArtist({ id: data.id })).unwrap();
+    }
   };
   return (
     <div className="px-4">
@@ -125,6 +163,8 @@ const SingerPageAdmin: React.FC = () => {
       <ModalCreateArtist
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
+        data={data}
+        setData={setData}
       ></ModalCreateArtist>
     </div>
   );
