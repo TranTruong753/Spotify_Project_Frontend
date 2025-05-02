@@ -1,14 +1,15 @@
 export interface Song {
 	id: string;
 	name: string;
-	title: string;
-	artist: string;
-	albumId: string | null;
-	imageUrl: string;
-	audioUrl: string;
+	song_singers: Artist[] | [];
+	video: string | null;
+	// albumId: string | null;
+	album: Album | null;
+	audio_url: string;
 	duration: number;
-	createdAt: string;
-	updatedAt: string;
+	lyrics: string;
+	genre: string;
+	created_at: string;
 }
 
 export interface Album {
@@ -34,3 +35,8 @@ export interface ArtistApiResponse {
   results: Artist[]; // Mảng album
   count: number; // Tổng số album
 }
+
+export interface SongApiResponse {
+	results: Song[]; // Mảng album
+	count: number; // Tổng số album
+  }

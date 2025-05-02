@@ -6,7 +6,7 @@ import { Album, Song } from '@/types';
 import { formatDate } from '@/utils'
 
 import type { TableProps } from 'antd';
-import Avatar from "./AvatarAlbum";
+
 
 interface DetailAlbumProps {
     open: boolean;

@@ -15,7 +15,6 @@ import { Pen, Trash2 } from "lucide-react";
 
 type DataType = Artist & {
   key: string;
-  description: string;
   img_url: string;
 };
 

@@ -57,7 +57,7 @@ const UploadImg: React.FC<AvatarAlbumProps> = ({ fileList, setFileList }) => {
   return (
     <>
       <Upload
-        listType="picture-circle"
+        listType="picture-card"
         fileList={fileList}
         beforeUpload={beforeUpload}
         onPreview={handlePreview}
