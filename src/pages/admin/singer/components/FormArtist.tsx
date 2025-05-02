@@ -3,7 +3,7 @@ import type { FormProps } from "antd";
 import { Form, Input, UploadFile } from "antd";
 import { Artist } from "@/types";
 import type { FormInstance } from "antd/es/form";
-import AvatarArtist from "./AvatarArtist";
+import UploadImg from "@/components/uploadImg";
 
 interface MyComponentProps {
   form: FormInstance;
@@ -63,7 +63,7 @@ const FormArtist: React.FC<MyComponentProps> = ({
         return e && e.fileList;
       }}
     >
-      <AvatarArtist
+      <UploadImg
         fileList={fileList}
         setFileList={(newFileList) => {
           setFileList(newFileList);

@@ -2,9 +2,8 @@ import React from 'react';
 import type { FormProps } from 'antd';
 import { Button, Checkbox, Form, Input, UploadFile } from 'antd';
 import { Album } from '@/types';
-import AvatarAlbum from './AvatarAlbum';
 import type { FormInstance } from 'antd/es/form';
-
+import UploadImg from "@/components/uploadImg"
 interface MyComponentProps {
   form: FormInstance;
   fileList: UploadFile[];
@@ -90,7 +89,7 @@ const FormAlbum: React.FC<MyComponentProps> = ({ form, fileList, setFileList }) 
     return e && e.fileList;
   }}
 >
-  <AvatarAlbum 
+  <UploadImg 
     fileList={fileList} 
     setFileList={(newFileList) => {
       setFileList(newFileList);

@@ -7,7 +7,7 @@ import { Space, Table, Breadcrumb, Empty, Button, Popconfirm } from "antd";
 import type { PopconfirmProps, TableProps } from "antd";
 
 import { useDispatch, useSelector } from "react-redux";
-import { deleteArtist, fetchArtists } from "@/features/albums/artistsSlice";
+import { deleteArtist, fetchArtists } from "@/features/artists/artistsSlice";
 import { RootState, AppDispatch } from "@/app/store";
 import { Artist } from "@/types";
 import ModalCreateArtist from "./components/ModalCreateArtist";
@@ -157,7 +157,7 @@ const SingerPageAdmin: React.FC = () => {
             total: count,
           }}
           locale={{ emptyText: <Empty description="Không có dữ liệu" /> }}
-          // bordered
+        // bordered
         />
       </div>
       <ModalCreateArtist

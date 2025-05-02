@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Modal, Form, UploadFile } from "antd";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/app/store";
-import { createArtist, updateArtist } from "@/features/albums/artistsSlice";
+import { createArtist, updateArtist } from "@/features/artists/artistsSlice";
 import FormArtist from "./FormArtist";
 
 interface ModalArtistProps {

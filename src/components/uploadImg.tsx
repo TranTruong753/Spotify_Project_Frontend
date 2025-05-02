@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { PlusOutlined } from "@ant-design/icons";
-import { Image, Upload } from "antd";
-import type { GetProp, UploadFile, UploadProps } from "antd";
+import React, { useState } from 'react';
+import { PlusOutlined } from '@ant-design/icons';
+import { Image, Upload } from 'antd';
+import type { GetProp, UploadFile, UploadProps } from 'antd';
 
-type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
+type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
 const getBase64 = (file: FileType): Promise<string> =>
   new Promise((resolve, reject) => {
@@ -13,17 +13,14 @@ const getBase64 = (file: FileType): Promise<string> =>
     reader.onerror = (error) => reject(error);
   });
 
-interface AvatarArtistProps {
+interface AvatarAlbumProps {
   fileList: UploadFile[];
   setFileList: React.Dispatch<React.SetStateAction<UploadFile[]>>;
 }
 
-const AvatarArtist: React.FC<AvatarArtistProps> = ({
-  fileList,
-  setFileList,
-}) => {
+const UploadImg: React.FC<AvatarAlbumProps> = ({ fileList, setFileList }) => {
   const [previewOpen, setPreviewOpen] = useState(false);
-  const [previewImage, setPreviewImage] = useState("");
+  const [previewImage, setPreviewImage] = useState('');
 
   const handlePreview = async (file: UploadFile) => {
     if (!file.url && !file.preview && file.originFileObj) {
@@ -34,7 +31,7 @@ const AvatarArtist: React.FC<AvatarArtistProps> = ({
     setPreviewOpen(true);
   };
 
-  const handleChange: UploadProps["onChange"] = ({ fileList: newFileList }) => {
+  const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) => {
     setFileList(newFileList);
   };
 
@@ -43,7 +40,7 @@ const AvatarArtist: React.FC<AvatarArtistProps> = ({
     const newFile: UploadFile = {
       uid: file.uid,
       name: file.name,
-      status: "done",
+      status: 'done',
       url: base64,
     };
     setFileList([newFile]);
@@ -51,7 +48,7 @@ const AvatarArtist: React.FC<AvatarArtistProps> = ({
   };
 
   const uploadButton = (
-    <button style={{ border: 0, background: "none" }} type="button">
+    <button style={{ border: 0, background: 'none' }} type="button">
       <PlusOutlined />
       <div style={{ marginTop: 8 }}>Upload</div>
     </button>
@@ -71,11 +68,11 @@ const AvatarArtist: React.FC<AvatarArtistProps> = ({
       </Upload>
       {previewImage && (
         <Image
-          wrapperStyle={{ display: "none" }}
+          wrapperStyle={{ display: 'none' }}
           preview={{
             visible: previewOpen,
             onVisibleChange: (visible) => setPreviewOpen(visible),
-            afterOpenChange: (visible) => !visible && setPreviewImage(""),
+            afterOpenChange: (visible) => !visible && setPreviewImage(''),
           }}
           src={previewImage}
         />
@@ -84,4 +81,4 @@ const AvatarArtist: React.FC<AvatarArtistProps> = ({
   );
 };
 
-export default AvatarArtist;
+export default UploadImg;
