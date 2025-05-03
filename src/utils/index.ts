@@ -17,3 +17,13 @@ export  function formatTime(seconds: number): string {
     return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
   }
   
+export function parseGenre(value: string | string[]): string[] {
+  if (typeof value === 'string' && value.includes('-')) {
+    return value.split('-');
+  }
+  if (Array.isArray(value)) {
+    return value;
+  }
+  return value ? [value] : [];
+
+}

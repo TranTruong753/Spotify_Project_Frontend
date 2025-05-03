@@ -1,16 +1,24 @@
 import { Link } from "react-router";
-import { Space, Table, Breadcrumb, Empty, Button, Popconfirm, Modal, Tag } from 'antd';
+import { Space, Table, Breadcrumb, Empty, Button, Popconfirm, Modal, Tag, Avatar, Tooltip } from 'antd';
 import type { TableProps, PopconfirmProps } from 'antd';
 import { useDispatch, useSelector } from "react-redux";
-import { fetchSongs } from "@/features/songs/songSlice";
+import { deleteSongs, fetchSongs } from "@/features/songs/songSlice";
 import { RootState, AppDispatch } from "@/app/store";
 import { useEffect, useMemo, useState } from "react"; // Thêm useState
-import { Song } from "@/types";
-import { formatDate } from "@/utils";
+import { Artist, Song, Video} from "@/types";
+import { formatDate, parseGenre } from "@/utils";
 import { FaEye } from "react-icons/fa";
-import { Pen, Trash2 } from "lucide-react";
+import { FileVideo, Pen, Plus, Trash2 } from "lucide-react";
 import AudioPlayer from "./components/AudioPlayer"
 import ModalSong from "./components/ModalSong";
+
+import {
+  EditOutlined
+} from '@ant-design/icons';
+import ModalUploadVideo from "./components/ModalUploadVideo";
+import ModalSinger from "./components/ModalSinger";
+import { record } from "zod";
+import { deleteSong } from "@/services/SongServices";
 
 
 type DataType = Song & {
@@ -18,14 +26,6 @@ type DataType = Song & {
   albumName: string;
 };
 
-
-type VideoType = {
-  id: number
-  duration: number
-  title: string
-  video_url: string
-  created_at: string
-}
 
 const items = [
   {
@@ -50,9 +50,17 @@ const SongPageAdmin: React.FC = () => {
 
   const [isModalFormOpen, setIsModalFormOpen] = useState<boolean>(false);
 
+  const [isModalVideoOpen, setIsModalVideoOpen] = useState<boolean>(false);
+
+  const [isModalSingerOpen, setIsModalSingerOpen] = useState<boolean>(false);
+
   const [data, setData] = useState<Song | null>(null);
 
-  const [video, setVideo] = useState<VideoType | null>(null);
+  const [singer, setSinger] = useState<Song | null>(null);
+
+  const [video, setVideo] = useState<Video | null>(null);
+
+  const [videoEdit, setVideoEdit] = useState<Video | null>(null);
 
   const dispatch = useDispatch<AppDispatch>();
   // Thêm state để theo dõi ID bài hát đang phát
@@ -72,6 +80,8 @@ const SongPageAdmin: React.FC = () => {
     albumName: songs.album?.name || "Null",
   })), [list]);
 
+  console.log("list", list)
+
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -81,15 +91,45 @@ const SongPageAdmin: React.FC = () => {
   };
 
   const handleCancel = () => {
+    console.log("dong tab")
     setVideo(null)
     setIsModalOpen(false);
   };
 
-  const showVideo = (data: VideoType) => {
+  const showVideo = (data: Video) => {
     if (data) {
       setVideo(data)
     }
     showModal()
+  }
+
+  const handleAddSinger = (data:Song,singer:any) => {
+    if(data){
+      setData(data)
+    }
+    if(singer){
+      setSinger(singer)
+    }
+    console.log("handleAddSinger")
+    setIsModalSingerOpen(true)
+  }
+
+  const handleUploadVideo = (data: Song, video: Video) => {
+    console.log("video",video)
+    if (data) {
+      setData(data)
+    }
+    if(video){
+      setVideoEdit(video)
+    }
+    setIsModalVideoOpen(true)
+  }
+
+  const handleDeleteSong =  async (data:Song) => {
+    if(data){
+
+      await dispatch(deleteSongs({id:data.id}))
+    }
   }
 
   const columns: TableProps<DataType>['columns'] = [
@@ -101,7 +141,8 @@ const SongPageAdmin: React.FC = () => {
         <>
           <AudioPlayer
             nameSong={record.name}
-            audio_url={value}
+            audio_url={record.audio_url}
+            img_url={record.img_url}
             isGlobalPlaying={currentlyPlayingSongId === record.id.toString()}
             onPlay={() => setCurrentlyPlayingSongId(record.id.toString())}
           />
@@ -111,47 +152,112 @@ const SongPageAdmin: React.FC = () => {
       title: 'Video',
       dataIndex: 'video',
       key: 'video',
-      render: (video) => (
+      render: (video,record) => (
+       
         video?.title ?
-          
-          (<Tag color="blue"><a onClick={() => showVideo(video)}>{video.title}</a></Tag>)
+
+          (<div className="flex">
+            <Tag color="blue">
+              <a className="text-blue-500! text-sm" onClick={() => showVideo(video)}>{video.title}</a>
+      
+            </Tag>
+            <Tag color="orange-inverse"  icon={<a onClick={()=>handleUploadVideo(record,video)} className="text-inherit! text-sm"><EditOutlined /></a>}>
+            
+            </Tag>
+          </div>)
           :
-          <Tag color="volcano">Không có video</Tag>
+          <Tooltip
+            placement="topRight"
+            title={"Thêm video"}
+          >
+            <Button
+            onClick={()=>handleUploadVideo(record,video)}
+              shape="circle"
+              color="green"
+              variant="solid"
+            >
+              <FileVideo size={17} />
+            </Button>
+          </Tooltip>
+      )
+    },
+    {
+      title: 'song_singers',
+      dataIndex: 'song_singers',
+      key: 'song_singers',
+      render: (singers,record) => (
+        <>
+          <Avatar.Group className="cursor-pointer">
+            {singers?.map((singerObj: any, index: number) => (
+              <div key={index}>
+                <Popconfirm
+                  title="Delete the singer"
+                  description={`Are you sure to delete ${singerObj.artist.name}?`}
+
+                  // onConfirm={}
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  <Tooltip
+                    placement="topRight"
+                    title={singerObj.artist.name}
+                  >
+
+                    <Avatar src={singerObj.artist.img_url}></Avatar>
+                  </Tooltip>
+                </Popconfirm>
+              </div>
+
+            ))}
+
+            <Tooltip
+              placement="topRight"
+              title={"Thêm nhạc sĩ"}
+            >
+              <Avatar onClick={()=>handleAddSinger(record,singers)} icon={<Plus></Plus>} ></Avatar>
+            </Tooltip>
+          </Avatar.Group>
+
+
+        </>
+
       )
     },
     {
       title: 'Genre',
       dataIndex: 'genre',
       key: 'genre',
+      width: '12%',
+      render: (text: string) => (
+        <Space size="small" wrap >
+          {parseGenre(text).map((item) => (
+            <Tag key={item} color="blue" >{item}</Tag>
+          ))}
+        </Space>
+      )
     },
     {
       title: 'Album Name',
       dataIndex: 'albumName',
       key: 'albumName',
     },
-    {
-      title: 'Created at',
-      dataIndex: 'created_at',
-      key: 'created_at',
-      render: (text) => <p>{formatDate(text)}</p>
-    },
+    // {
+    //   title: 'Created at',
+    //   dataIndex: 'created_at',
+    //   key: 'created_at',
+    //   render: (text) => <p>{formatDate(text)}</p>
+    // },
     {
       title: 'Action',
       key: 'action',
       render: (_, record) => (
         <Space size="small">
-          <Button
-            shape="circle"
-            color="blue"
-            variant="solid"
-          >
-            <FaEye className="text-lg" />
-          </Button>
 
           <Button
             shape="circle"
             color="gold"
             variant="solid"
+            onClick={()=>handleOpenModalEdit(record)}
           >
             <Pen size={18}></Pen>
           </Button>
@@ -160,6 +266,7 @@ const SongPageAdmin: React.FC = () => {
             title="Delete the album"
             description="Are you sure to delete this song?"
             onCancel={cancel}
+            onConfirm={()=>handleDeleteSong(record)}
             okText="Yes"
             cancelText="No"
           >
@@ -176,7 +283,12 @@ const SongPageAdmin: React.FC = () => {
     },
   ];
 
-  const handleOpenModal = () =>{
+  const handleOpenModal = () => {
+    setIsModalFormOpen(true)
+  }
+
+  const handleOpenModalEdit = (data:Song) => {
+    if(data) setData(data)
     setIsModalFormOpen(true)
   }
 
@@ -188,27 +300,30 @@ const SongPageAdmin: React.FC = () => {
 
       <div className="px-5 pt-2 flex justify-between">
         <Breadcrumb items={items}></Breadcrumb>
-        <Button onClick={()=>handleOpenModal()}>Thêm nhạc</Button>
+        <Button onClick={() => handleOpenModal()}>Thêm nhạc</Button>
       </div>
 
       <div className="p-7">
         <Table<DataType> columns={columns} dataSource={transformedData}
           loading={loading}
           pagination={{
-            pageSize: 5,
+            pageSize: 4,
             total: count
           }}
           locale={{ emptyText: <Empty description="Không có dữ liệu" /> }}
         />
       </div>
 
-      <Modal 
-      title={`Title: ${video ? video?.title : ""}`} 
-      open={isModalOpen} 
-      onOk={handleOk} 
-      onCancel={handleCancel}
-      footer={null}
-      destroyOnClose={true}
+
+      <Modal
+        title={`Title: ${video ? video?.title : ""}`}
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        footer={null}
+        destroyOnClose={true}
+        onClose={handleCancel}
+        maskClosable={false}
       >
         <video controls style={{ width: '100%' }}>
           <source src={video?.video_url} type="video/mp4" />
@@ -222,6 +337,25 @@ const SongPageAdmin: React.FC = () => {
         data={data}
         setData={setData}
       ></ModalSong>
+
+      <ModalUploadVideo
+        isModalOpen={isModalVideoOpen}
+        setIsModalOpen={setIsModalVideoOpen}
+        data={data}
+        setData={setData}
+        dataVideo={videoEdit}
+        setDataVideo={setVideoEdit}
+      ></ModalUploadVideo>
+
+      <ModalSinger
+          isModalOpen={isModalSingerOpen}
+          setIsModalOpen={setIsModalSingerOpen}
+          data={data}
+          setData={setData}
+          dataSinger={singer}
+          setDataSinger={setSinger}
+      ></ModalSinger>
+
     </div>
   );
 };

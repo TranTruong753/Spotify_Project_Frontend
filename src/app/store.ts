@@ -3,12 +3,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import albumsReducer from "@/features/albums/albumsSlice";
 import artistsReducer from "@/features/artists/artistsSlice";
 import songReducer from "@/features/songs/songSlice"
+import audioPlayerReducer from "@/features/audioplayer/audioPlayerSlice";
 
 export const store = configureStore({
   reducer: {
     albums: albumsReducer,
     artists: artistsReducer,
-    songs: songReducer
+    songs: songReducer,
+    audioPlayer: audioPlayerReducer
   },
 });
 

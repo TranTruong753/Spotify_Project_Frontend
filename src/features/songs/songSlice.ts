@@ -1,12 +1,13 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
-import { getAllSongs, postSong } from '@/services/SongServices'
+import { createSlice, createAsyncThunk, PayloadAction, ThunkDispatch } from '@reduxjs/toolkit'
+import { deleteSong, getAllSongs, postSong } from '@/services/SongServices'
 import { SongApiResponse, Song } from '@/types'
+import { patchSong } from '@/services/SongServices';
 
 
 
 // GET all songs
 export const fetchSongs = createAsyncThunk<SongApiResponse, void>(
-  'albums/fetchSongs',
+  'songs/fetchSongs',
   async () => {
     const res = await getAllSongs();
     return {
@@ -17,10 +18,36 @@ export const fetchSongs = createAsyncThunk<SongApiResponse, void>(
 );
 
 // POST a new album
-export const createSong = createAsyncThunk<Song, FormData>('albums/createSong', async (formData) => {
-  const res = await postSong(formData);
-  return res;
-});
+export const createSong = createAsyncThunk<Song, FormData>(
+  'songs/createSong',
+  async (formData, { dispatch }) => {
+    const res = await postSong(formData);
+
+    // Gọi lại danh sách bài hát sau khi tạo thành công
+    dispatch(fetchSongs());
+
+    return res;
+  }
+);
+
+// UPDATE an album
+export const updateSong = createAsyncThunk<Song, { id: number; formData: FormData }>(
+  'songs/updateVideo',
+  async ({ id, formData }, { dispatch }) => {
+    const res = await patchSong(id, formData);
+    dispatch(fetchSongs()); // gọi lại danh sách bài hát
+    return res;
+  }
+);
+
+// DELETE an song by id
+export const deleteSongs = createAsyncThunk<number, { id: number }>(
+  'songs/deleteSong',
+  async ({ id }) => {
+    await deleteSong(id);
+    return id;
+  }
+);
 
 
 interface SongsState {
@@ -59,11 +86,14 @@ const songSlice = createSlice({
         state.error = action.error.message || 'Failed to fetch albums'
       })
 
-      .addCase(createSong.fulfilled, (state, action) => {
-        state.list.push(action.payload)
-        state.count += 1;
+      // .addCase(createSong.fulfilled, (state, action) => {
+      //   state.list.push(action.payload)
+      //   state.count += 1;
+      // })
+      .addCase(deleteSongs.fulfilled, (state, action) => {
+        state.list = state.list.filter(song => song.id !== action.payload);
+        state.count -= 1;
       })
-
   }
 })
 

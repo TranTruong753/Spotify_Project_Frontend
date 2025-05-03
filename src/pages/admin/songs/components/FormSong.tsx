@@ -1,6 +1,6 @@
 import React from 'react';
 import type { FormProps } from 'antd';
-import { Button, Checkbox, Form, Input, UploadFile } from 'antd';
+import { Button, Checkbox, Form, Input, Select, UploadFile } from 'antd';
 import { Album, Song } from '@/types';
 import type { FormInstance } from 'antd/es/form';
 import UploadImg from "@/components/uploadImg"
@@ -9,6 +9,9 @@ interface MyComponentProps {
   form: FormInstance;
   fileList: UploadFile[];
   setFileList: React.Dispatch<React.SetStateAction<UploadFile[]>>;
+  fileListImg: UploadFile[];
+  setFileListImg: React.Dispatch<React.SetStateAction<UploadFile[]>>;
+  list: Album[];
 }
 
 type FieldType = {
@@ -17,14 +20,6 @@ type FieldType = {
   remember?: string;
 };
 
-const formItemLayout = {
-  labelCol: {
-    span: 8,
-  },
-  wrapperCol: {
-    span: 16,
-  },
-};
 
 const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
   console.log('Success:', values);
@@ -34,7 +29,7 @@ const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
   console.log('Failed:', errorInfo);
 };
 
-const FormSong: React.FC<MyComponentProps> = ({ form, fileList, setFileList }) => (
+const FormSong: React.FC<MyComponentProps> = ({ form, fileList, setFileList, fileListImg, setFileListImg, list }) => (
 
   <Form
     name="basic"
@@ -60,7 +55,24 @@ const FormSong: React.FC<MyComponentProps> = ({ form, fileList, setFileList }) =
       name="genre"
       rules={[{ required: true, message: 'Please input Song Genre!' }]}
     >
-      <Input />
+      <Select
+        showSearch
+        mode='multiple'
+        placeholder="Please select genre"
+        optionFilterProp="label"
+
+        options={[
+          { value: 'nhac_tre', label: 'Nhạc Trẻ' },
+          { value: 'nhac_trinh', label: 'Nhạc Trịnh' },
+          { value: 'cai_luong', label: 'Cải Lương' },
+          { value: 'nhac_vang', label: 'Nhạc Vàng' },
+          { value: 'dan_ca', label: 'Dân Ca' },
+          { value: 'bolero', label: 'Bolero' },
+          { value: 'rap_viet', label: 'Rap Việt' },
+          { value: 'nhac_thieu_nhi', label: 'Nhạc Thiếu Nhi' },
+          { value: 'nhac_cach_mang', label: 'Nhạc Cách Mạng' },
+        ]}
+      />
     </Form.Item>
 
     <Form.Item<Song>
@@ -70,23 +82,43 @@ const FormSong: React.FC<MyComponentProps> = ({ form, fileList, setFileList }) =
       <Input.TextArea />
     </Form.Item>
 
-    {/* <Form.Item<Album>
+    <Form.Item
+      label="Albums"
+      name="album"
+    >
+      <Select
+        showSearch
+        placeholder="Please select album"
+        optionFilterProp="label"
+
+        options={list.map((item) => ({
+          value: item.id,
+          label: `${item.name}`,
+        }))}
+      />
+
+
+    </Form.Item>
+
+    <Form.Item
       label="Img"
       name="img_url"
       rules={[
-        { required: true, message: 'Please upload an album image!' },  // Thêm dòng này
-        {
-          validator: async (_, value) => {
-            if (fileList.length === 0) {
-              return Promise.reject(new Error('Please upload an album image!'));
-            }
-            return Promise.resolve();
-          },
-        },
+        { required: true, message: 'Please upload an img!' },
       ]}
+      getValueFromEvent={(e) => {
+        if (Array.isArray(e)) {
+          return e;
+        }
+        return e && e.fileListImg;
+      }}
     >
-      <AvatarAlbum fileList={fileList} setFileList={setFileList} />
-    </Form.Item> */}
+      <UploadImg fileList={fileListImg} setFileList={(newFileList) => {
+          setFileListImg(newFileList);
+          // Cập nhật giá trị vào form
+          form.setFieldsValue({ img_url: newFileList });
+        }} />
+    </Form.Item>
 
     <Form.Item
       label="Audio"

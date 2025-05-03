@@ -82,7 +82,7 @@ const albumsSlice = createSlice({
 
       .addCase(createAlbum.fulfilled, (state, action) => {
         state.list.push(action.payload)
-        state.count += 1;  
+        state.count += 1;
       })
 
       .addCase(updateAlbum.fulfilled, (state, action) => {
@@ -96,7 +96,7 @@ const albumsSlice = createSlice({
         state.list = state.list.filter(album => album.id !== action.payload);
         state.count -= 1;
       })
-      
+
 
     //   .addCase(updateAlbum.fulfilled, (state, action) => {
     //     const index = state.list.findIndex(a => a.id === action.payload.id)

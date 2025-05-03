@@ -1,14 +1,23 @@
 export interface Song {
-	id: string;
+	id: number;
 	name: string;
 	song_singers: Artist[] | [];
-	video: string | null;
+	video: Video | null;
 	// albumId: string | null;
 	album: Album | null;
 	audio_url: string;
+	img_url: string;
 	duration: number;
 	lyrics: string;
 	genre: string;
+	created_at: string;
+}
+
+export interface Video {
+	id: number;
+	video_url: string;
+	title: string;
+	duration: number;
 	created_at: string;
 }
 
