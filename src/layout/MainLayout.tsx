@@ -23,16 +23,16 @@ const MainLayout = () => {
 
   return (
     <>
-      <div className='h-screen bg-white text-black flex flex-col'>
+      <div className='h-screen bg-black text-white flex flex-col'>
         <Header></Header>
-        <ResizablePanelGroup direction='horizontal' className='flex-1 flex h-full overflow-hidden p-2 '>
+        <ResizablePanelGroup direction='horizontal' className='flex-1 flex h-full overflow-hidden px-2 pt-2 '>
           {/* <AudioPlayer /> */}
           {/* left sidebar */}
           <ResizablePanel id="leftSidebar" order={1} defaultSize={20} minSize={isMobile ? 0 : 10} maxSize={30}>
             <LeftSidebar />
           </ResizablePanel>
 
-          <ResizableHandle className='w-2 bg-white rounded-lg transition-colors' />
+          <ResizableHandle className='w-2 bg-black rounded-lg transition-colors' />
 
           {/* Main content */}
           <ResizablePanel id="mainContent" order={2}  defaultSize={isMobile ? 80 : 60}>
@@ -41,7 +41,7 @@ const MainLayout = () => {
 
           {!isMobile && (
             <>
-              <ResizableHandle className='w-2 bg-white rounded-lg transition-colors' />
+              <ResizableHandle className='w-2 bg-black rounded-lg transition-colors' />
 
               {/* right sidebar */}
               <ResizablePanel id="rightSidebar" order={3} defaultSize={20} minSize={0} maxSize={25} collapsedSize={0}>

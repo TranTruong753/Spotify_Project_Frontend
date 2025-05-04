@@ -14,7 +14,7 @@ const LeftSidebar = () => {
     const [isLoading, setIsLoading] = useState(false)
 
     return (
-        <div className='h-full flex flex-col gap-2'>
+        <div className='h-full flex flex-col gap-2 '>
             {/* Navigation menu */}
 
             {/* <div className='rounded-lg bg-white border-1  p-4'>
@@ -37,13 +37,13 @@ const LeftSidebar = () => {
     </div> */}
 
             {/* Library section */}
-            <div className='flex-1 rounded-lg bg-white border p-4 border-[hsl(220,13%,91%)]'>
+            <div className='flex-1 rounded-lg bg-zinc-900 border p-4 border-zinc-900'>
                 <div className='flex items-center justify-between mb-4'>
-                    <div className='flex items-center text-black px-2'>
+                    <div className='flex items-center text-zinc-300 px-2'>
                         <Library className='size-5 mr-2' />
                         <span className='hidden md:inline font-medium'>Thư viện</span>
                     </div>
-                    <Button className='transition-all duration-300 ease-out rounded-3xl bg-black text-white hover:scale-110 hover:bg-black hover:cursor-pointer '>
+                    <Button className='transition-all duration-300 ease-out rounded-3xl bg-zinc-950 text-white hover:scale-110 hover:bg-zinc-950 hover:cursor-pointer '>
 
                         <FaPlus />Tạo
 
@@ -52,7 +52,7 @@ const LeftSidebar = () => {
 
                 <div className='my-2'>
                     {/* Search */}
-                    <div className='flex items-center border rounded px-2 border-[hsl(220,13%,91%)]'>
+                    <div className='flex items-center border rounded px-2 border-zinc-400'>
                         {/* icon */}
                         <span>
                             <IoSearch className='text-2xl text-(--border)' />
@@ -90,7 +90,7 @@ const CardFavourite = ({Album}:CardFavouriteProps) => {
         <Link
         to={"/"}
        
-        className='transition-all duration-300 ease-in-out p-2 hover:bg-zinc-300 dark:hover:bg-zinc-800 rounded-md flex items-center gap-3 group cursor-pointer'
+        className='transition-all duration-300 ease-in-out p-2 hover:bg-zinc-950 rounded-md flex items-center gap-3 group cursor-pointer'
     >
         <img
             src='../../../public/avatars/avatar1.jpg'
@@ -99,7 +99,7 @@ const CardFavourite = ({Album}:CardFavouriteProps) => {
         />
 
         <div className='flex-1 min-w-0 hidden md:block'>
-            <p className='text-md font-medium truncate'> em của ngày hôm qua</p>
+            <p className='text-md font-medium truncate text-zinc-300'> em của ngày hôm qua</p>
             <p className='text-sm text-zinc-400 truncate'>Album • Sơn Tùng</p>
         </div>
     </Link>

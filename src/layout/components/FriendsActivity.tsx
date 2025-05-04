@@ -10,10 +10,10 @@ const FriendsActivity = () => {
     return (
         <>
 
-            <div className="h-full border rounded-lg flex flex-col border-[hsl(220,13%,91%)]">
+            <div className="bg-zinc-900 h-full border rounded-lg flex flex-col border-zinc-900 text-zinc-300">
 
 
-                <div className='p-4 flex justify-between items-center border-b border-[hsl(220,13%,91%)]'>
+                <div className='p-4 flex justify-between items-center border-b border-zinc-300'>
                     <div className='flex items-center gap-2'>
                         <Users className='size-5 shrink-0' />
                         <h2 className='font-semibold'>Họ đang nghe gì ?</h2>
@@ -23,19 +23,19 @@ const FriendsActivity = () => {
                 {!user && <LoginPrompt />}
 
                 <ScrollArea className='flex-1'>
-                    <div className='p-4 space-y-4'>
+                    <div className='p-4 space-y-4 '>
                         {true && (
                             <div
-                                className='cursor-pointer hover:bg-accent p-3 rounded-md transition-colors group'
+                                className='cursor-pointer hover:bg-accent p-3 rounded-md transition-colors group bg-zinc-950'
                             >
                                 <div className='flex items-start gap-3'>
                                     <div className='relative'>
-                                        <Avatar className='size-10 border border-[hsl(220,13%,91%)] '>
+                                        <Avatar className='size-10 border border-zinc-900 '>
                                             <AvatarImage src="../../../public/avatars/avatar1.jpg" alt="" />
                                             <AvatarFallback>{ }</AvatarFallback>
                                         </Avatar>
                                         <div
-                                            className={`absolute bottom-0 right-0 h-3 w-3 rounded-full border border-[hsl(220,13%,91%)] 
+                                            className={`absolute bottom-0 right-0 h-3 w-3 rounded-full border border-zinc-900  
                                                ${true ? "bg-green-500" : "bg-zinc-500"}
                                                `}
                                             aria-hidden='true'
@@ -45,17 +45,17 @@ const FriendsActivity = () => {
                                     <div className='flex-1 min-w-0'>
                                         <div className='flex justify-between'>
                                             <div className='flex items-center gap-2'>
-                                                <span className='font-medium text-sm text-black'>SKY</span>
+                                                <span className='font-medium text-sm text-zinc-300'>SKY</span>
                                                 {true && <Music className='size-3.5 text-emerald-400 shrink-0' />}
                                             </div>
-                                            <Button size={"icon"} className=' bg-black text-white rounded-full cursor-pointer hover:bg-black hover:scale-105'>
+                                            <Button size={"icon"} className=' bg-zinc-900 text-white rounded-full cursor-pointer hover:bg-black hover:scale-105'>
                                                 <MessageCircleMore />
                                             </Button>
                                         </div>
 
-                                        {true ? (
+                                        {/* {true ? (
                                             <div className='mt-1'>
-                                                <div className='mt-1 text-sm text-black font-medium truncate'>
+                                                <div className='mt-1 text-sm text-zinc-300 font-medium truncate'>
                                                     em của ngày hôm qua
 
                                                 </div>
@@ -66,7 +66,7 @@ const FriendsActivity = () => {
                                             </div>
                                         ) : (
                                             <div className='mt-1 text-xs text-zinc-400'>Idle</div>
-                                        )}
+                                        )} */}
                                     </div>
                                 </div>
                             </div>)}
