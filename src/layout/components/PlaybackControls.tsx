@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
-import { Laptop2, ListMusic, Mic2, Pause, Play, Repeat, Shuffle, SkipBack, SkipForward, Volume1 } from "lucide-react";
+import { Laptop2, ListMusic, Mic2, Pause, Play, Repeat, Shuffle, SkipBack, SkipForward, TvMinimalPlay, Volume1 } from "lucide-react";
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/app/store';
 import { togglePlay, playNext, playPrevious } from "@/features/audioplayer/playerSlice";
 import { formatTime } from '@/utils';
+import { Modal } from 'antd';
+import { Video } from '@/types';
 
 const PlaybackControls = () => {
 	const dispatch = useDispatch<AppDispatch>()
@@ -17,6 +19,15 @@ const PlaybackControls = () => {
 	const [duration, setDuration] = useState(0);
 	const audioRef = useRef<HTMLAudioElement | null>(null);
 
+	// 
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	
+	const handleCancel = () => {
+		console.log("dong tab")
+		setIsModalOpen(false);
+	  };
+	// 
+
 	useEffect(() => {
 		audioRef.current = document.querySelector("audio");
 
@@ -25,10 +36,10 @@ const PlaybackControls = () => {
 
 		const updateTime = () => {
 			if (!isSeeking) {
-			  setCurrentTime(audio.currentTime);
+				setCurrentTime(audio.currentTime);
 			}
-		  };
-		  
+		};
+
 		const updateDuration = () => setDuration(audio.duration);
 
 		audio.addEventListener("timeupdate", updateTime);
@@ -58,6 +69,15 @@ const PlaybackControls = () => {
 	const handlePlayPrevious = () => {
 		dispatch(playPrevious());
 	};
+
+	const handleShowVide = () => {
+		if(currentSong?.video?.video_url){
+			dispatch(togglePlay());
+			setIsModalOpen(true)
+			console.log("currentSong",currentSong)
+		}
+	
+	}
 
 	return (
 		<footer className='h-20 sm:h-24 bg-black border-t border-zinc-800 px-4'>
@@ -150,7 +170,7 @@ const PlaybackControls = () => {
 								setIsSeeking(true);
 								setCurrentTime(value[0]); // cập nhật giao diện tức thời 
 							}}
-							onValueCommit={(value) => {             
+							onValueCommit={(value) => {
 								if (audioRef.current) {
 									audioRef.current.currentTime = value[0]; // cập nhật thời gian thực tế
 								}
@@ -167,14 +187,19 @@ const PlaybackControls = () => {
 
 				{/* volume controls */}
 				<div className='hidden sm:flex items-center gap-4 min-w-[180px] w-[30%] justify-end'>
-					<Button size='icon' variant='ghost' className='hover:text-white text-zinc-400'>
+					{/* <Button size='icon' variant='ghost' className='hover:text-white text-zinc-400'>
 						<Mic2 className='h-4 w-4' />
 					</Button>
 					<Button size='icon' variant='ghost' className='hover:text-white text-zinc-400'>
 						<ListMusic className='h-4 w-4' />
 					</Button>
-					<Button size='icon' variant='ghost' className='hover:text-white text-zinc-400'>
-						<Laptop2 className='h-4 w-4' />
+					*/}
+
+					<Button size='icon' variant='ghost' className='hover:text-white text-zinc-400 cursor-pointer'
+					
+					onClick={()=> handleShowVide()}
+					>
+						<TvMinimalPlay className='h-4 w-4' />
 					</Button>
 
 					<div className='flex items-center gap-2'>
@@ -192,6 +217,23 @@ const PlaybackControls = () => {
 					</div>
 				</div>
 			</div>
+
+			<Modal
+				title={`Video`}
+				open={isModalOpen}
+				// onOk={handleOk}
+				onCancel={handleCancel}
+				footer={null}
+				destroyOnClose={true}
+				onClose={handleCancel}
+				maskClosable={false}
+			>
+				<video controls style={{ width: '100%' }}>
+					<source src={currentSong?.video?.video_url} type="video/mp4" />
+					Your browser does not support the video tag.
+				</video>
+			</Modal>
+
 		</footer>
 	);
 }

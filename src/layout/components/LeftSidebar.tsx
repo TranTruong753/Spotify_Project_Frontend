@@ -40,7 +40,7 @@ const LeftSidebar = () => {
                         <Library className='size-5 mr-2' />
                         <span className='hidden md:inline font-medium'>Thư viện</span>
                     </div>
-                    {<Button className='transition-all duration-300 ease-out rounded-3xl bg-zinc-950 text-white hover:scale-110 hover:bg-zinc-950 hover:cursor-pointer '
+                    {isAuthenticated && <Button className='transition-all duration-300 ease-out rounded-3xl bg-zinc-950 text-white hover:scale-110 hover:bg-zinc-950 hover:cursor-pointer '
                         onClick={()=>handleCreatAlbumUser(1)}
                     >
 

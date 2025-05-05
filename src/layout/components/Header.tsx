@@ -23,19 +23,17 @@ const Header = () => {
             key: '0',
             disabled: true,
         },
-        // {
-        //     label: (
-        //         <a href="https://www.aliyun.com" target="_blank" rel="noopener noreferrer">
-        //             2nd menu item
-        //         </a>
-        //     ),
-        //     key: '1',
-        // },
+        {
+            label: (
+                user?.role.name === "Admin" && <Link to={"/admin"}>to Admin</Link>
+            ),
+            key: '1',
+        },
         {
             type: 'divider',
         },
         {
-            label: <Link to="/register">Logout</Link>,
+            label: <Link to="/login">Logout</Link>,
             key: '3',
         },
     ];
