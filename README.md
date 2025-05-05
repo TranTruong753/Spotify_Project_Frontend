@@ -1,54 +1,105 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# 🎧 Spotify Clone - Frontend
 
-Currently, two official plugins are available:
+Đây là phần giao diện người dùng chính dành cho người nghe nhạc của dự án **Spotify Clone**, được phát triển bằng **React + Vite**. Ứng dụng cho phép người dùng phát nhạc, tạo album yêu thích, xem và tải video âm nhạc.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+### 🚀 Công nghệ sử dụng
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- React 18  
+- Vite  
+- Axios (kết nối API)  
+- React Router DOM  
+- TailwindCSS / SCSS (nếu có)  
+- Antd
+- Shadcn
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+---
+
+### 📁 Cấu trúc thư mục
+
+```bash
+frontend/
+├── src/
+│   ├── assets/         # Hình ảnh, biểu tượng, nhạc, v.v.
+│   ├── components/     # Các thành phần UI tái sử dụng
+│   ├── features/       # Các tính năng chính: MusicPlayer, Album, Auth...
+│   ├── hooks/          # Custom React Hooks
+│   ├── layout/         # Giao diện tổng thể: Header, Footer, Sidebar...
+│   ├── lib/            # Cấu hình và thư viện bên thứ ba (ví dụ: axios instance)
+│   ├── pages/          # Các trang chính của ứng dụng
+│   ├── router/         # Cấu hình route
+│   ├── services/       # Gọi API (Axios)
+│   ├── types/          # Định nghĩa TypeScript types hoặc interfaces
+│   ├── utils/          # Hàm tiện ích dùng chung
+│   ├── App.jsx
+│   └── main.jsx
+├── public/
+└── index.html
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### ⚙️ Thiết lập môi trường
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+1. Truy cập thư mục `frontend`:
+
+```bash
+cd frontend
 ```
+
+2. Cài đặt các thư viện cần thiết:
+
+```bash
+npm install
+# hoặc
+yarn
+```
+
+3. Tạo file `.env` để cấu hình đường dẫn API:
+
+```bash
+VITE_API_BASE_URL=http://localhost:8000/api
+```
+
+---
+
+### ▶️ Chạy ứng dụng
+
+```bash
+npm run dev
+# hoặc
+yarn dev
+```
+
+> Ứng dụng sẽ khởi chạy tại: [http://localhost:5173](http://localhost:5173)
+
+---
+
+### ⚙️ Build Production
+
+```bash
+npm run build
+```
+
+---
+
+### 📌 Tính năng chính
+
+- Phát nhạc và video
+- Tạo album, bài hát yêu thích
+- Tải video âm nhạc
+- Giao diện người dùng thân thiện
+- Xử lý tương tác người dùng mượt mà
+- Kết nối backend Django qua API
+- Bảo mật: xác thực người dùng, phân quyền
+
+---
+
+### 🧑‍💻 Thành viên thực hiện phần Frontend
+
+- **Trần Quang Trường**  
+  - Phát triển giao diện trình phát nhạc, album  
+  - Xử lý các tương tác người dùng  
+  - Kết nối API từ backend  
