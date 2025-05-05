@@ -44,6 +44,29 @@ const ChatPage = () => {
 							{/* Messages */}
 							<ScrollArea className='h-[calc(100vh-340px)]'>
 								<div className='p-4 space-y-4'>
+                                <div
+											
+											className={`flex items-start gap-3`}
+										>
+											<Avatar className='size-8'>
+												<AvatarImage
+													src={
+														"../../../public/avatars/avatar1.jpg"
+													}
+												/>
+											</Avatar>
+
+											<div
+												className={`rounded-lg p-3 max-w-[70%]
+                                                    bg-zinc-950
+												`}
+											>
+												<p className='text-sm'>Hi Cửu phan</p>
+												<span className='text-xs text-zinc-300 mt-1 block'>
+													11:38
+												</span>
+											</div>
+										</div>
 									{/* {messages.map((message) => (
 										<div
 											key={message._id}

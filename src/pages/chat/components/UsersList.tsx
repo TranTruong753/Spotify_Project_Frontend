@@ -26,7 +26,7 @@ const UsersList = () => {
 							</div>
 
 							<div className='flex-1 min-w-0 lg:block hidden'>
-								<span className='font-medium truncate'>Phan duy cửu</span>
+								<span className='font-medium truncate'>Quang La</span>
 							</div>
 						</div>
 					</div>
