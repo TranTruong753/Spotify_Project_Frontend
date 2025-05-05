@@ -1,7 +1,7 @@
 export interface Song {
 	id: number;
 	name: string;
-	song_singers: Artist[] | [];
+	song_singers: ArtistCustom[] | [];
 	video: Video | null;
 	// albumId: string | null;
 	album: Album | null;
@@ -12,6 +12,12 @@ export interface Song {
 	genre: string;
 	created_at: string;
 }
+
+
+interface ArtistCustom {
+  artist: Artist;
+}
+
 
 export interface Video {
 	id: number;

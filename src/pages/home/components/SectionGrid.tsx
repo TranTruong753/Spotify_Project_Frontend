@@ -11,6 +11,10 @@ import PlayButton from "./PlayButton";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store";
 import { playAlbum } from "@/features/audioplayer/playerSlice";
+import { CirclePlus, EllipsisVertical, Heart } from "lucide-react";
+import { Dropdown, MenuProps } from "antd";
+import { Link } from "react-router";
+import { addAlbumUserSong, fetchAlbumUserById } from "@/features/accounts/authSlice";
 
 type SectionGridProps = {
   title?: string;
@@ -33,7 +37,7 @@ const SectionGrid = ({ songs, title, isLoading }: SectionGridProps) => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {songs &&
-          songs.map((song) => <CardSongs key={song.id} songItem={song} songs={songs}/>)}
+          songs.map((song) => <CardSongs key={song.id} songItem={song} songs={songs} />)}
       </div>
     </div>
   );
@@ -42,13 +46,62 @@ const SectionGrid = ({ songs, title, isLoading }: SectionGridProps) => {
 // ✅ Sửa: destructuring prop songItem
 const CardSongs = ({ songItem, songs }: { songItem: Song, songs: Song[] }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { currentIndex  } = useSelector((state: RootState) => state.player);
+  const { currentIndex } = useSelector((state: RootState) => state.player);
+
+  const { accountAlbums,user } = useSelector((state: RootState) => state.auth);
+
+
+
   const handleClickPlaySong = () => {
     if (songs) {
       dispatch(playAlbum({ songs: songs, startIndex: currentIndex }));
     }
   };
-  
+
+  // Tạo danh sách item cho dropdown con từ accountAlbums
+  const items2: MenuProps['items'] = accountAlbums.map((album) => ({
+    label: album.name, // hoặc album.title tuỳ theo cấu trúc
+    key: album.id.toString(), // key phải là string
+  }));
+
+  // 2. Hàm xử lý khi chọn album
+  const handleSelectAlbum = async ({ key }: { key: string }) => {
+    const selectedAlbum = accountAlbums.find((album) => album.id.toString() === key);
+    if (selectedAlbum) {
+      console.log("Selected album:", selectedAlbum.id);
+      console.log("Selected songItem:", songItem.id);
+      // Thực hiện thêm logic như thêm bài hát vào album, gọi API, v.v.
+      const formData = new FormData();
+      formData.append("album_user", selectedAlbum.id.toString());
+      formData.append("song", songItem.id.toString());
+      formData.append("is_deleted", "false"); // hoặc từ values
+
+      await dispatch(addAlbumUserSong(formData)).unwrap 
+
+      if(user) await dispatch(fetchAlbumUserById(user.id)).unwrap 
+    }
+  };
+
+  const items: MenuProps['items'] = [
+    {
+      label: (
+        <Heart size={18} />
+      ),
+      key: '0',
+    },
+    {
+      label: (
+        <Dropdown menu={{ items: items2, onClick: handleSelectAlbum }}>
+          <span style={{ display: 'flex', alignItems: 'center' }}>
+            <CirclePlus size={18} />
+          </span>
+        </Dropdown>
+      ),
+      key: '1',
+    },
+
+  ];
+
   return (
     <Card className="bg-zinc-950 group relative transition-all duration-300 ease-in-out p-4 border-0 hover:shadow-xl hover:scale-105 cursor-pointer gap-2 ">
       <CardContent className="p-0 rounded-sm overflow-hidden ">
@@ -58,7 +111,12 @@ const CardSongs = ({ songItem, songs }: { songItem: Song, songs: Song[] }) => {
           alt=""
         />
         <div className="mt-3">
-          <h3 className="font-medium mb-2 truncate">{songItem?.name}</h3>
+          <div className="flex justify-between mb-2">
+            <h3 className="font-medium mb-2 truncate">{songItem?.name}</h3>
+            <Dropdown menu={{ items }} trigger={['click']}>
+              <EllipsisVertical />
+            </Dropdown>
+          </div>
           <div className="flex gap-3">
             {songItem?.song_singers.map((singer: any) => (
               <p key={singer.artist.id} className="text-sm text-zinc-400 truncate">
@@ -74,3 +132,6 @@ const CardSongs = ({ songItem, songs }: { songItem: Song, songs: Song[] }) => {
 };
 
 export default SectionGrid;
+
+
+// const Modal

@@ -5,6 +5,7 @@ import FormAlbumUser from "./FormAlbumUser";
 import { useDispatch, useSelector } from "react-redux";
 import { createAlbum, updateAlbum } from "@/features/albums/albumsSlice";
 import { AppDispatch, RootState } from "@/app/store";
+import { createAlbumUser } from "@/features/accounts/authSlice";
 
 interface ModalAlbumProps {
   isModalOpen: boolean;
@@ -49,7 +50,7 @@ const ModalCreateAlbumUser: React.FC<ModalAlbumProps> = ({
       if(user) formData.append("account", user.id.toString())
 
     
-        // await dispatch(createAlbum(formData)).unwrap(); // unwrap để bắt lỗi dễ
+       await dispatch(createAlbumUser(formData)).unwrap(); // unwrap để bắt lỗi dễ
       
 
       setIsModalOpen(false);

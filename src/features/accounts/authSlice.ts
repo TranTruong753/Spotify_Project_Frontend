@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { getAlbumFavorite, getAlbumUser, getAllAlbumByIdUser, loginAccount } from '@/services/AuthenticateServices'
-import { Album, Song, User } from '@/types';
+import { getAlbumFavorite, getAlbumUser, getAllAlbumByIdUser, loginAccount, postAlbumUser, postAlbumUserSong } from '@/services/AuthenticateServices'
+import { Album, Artist, Song, User, Video } from '@/types';
+
 
 export const login = createAsyncThunk(
   'auth/login',
@@ -56,6 +57,22 @@ export const fetchAlbumUserById = createAsyncThunk(
 );
 
 
+// POST a new album user
+export const createAlbumUser = createAsyncThunk<Album, FormData>('auth/createAlbumUser', async (formData) => {
+  const res = await postAlbumUser(formData);
+  return res;
+});
+
+
+export const addAlbumUserSong = createAsyncThunk<Album, FormData>('auth/addAlbumUserSong', async (formData) => {
+  const res = await postAlbumUserSong(formData);
+  return res;
+});
+
+
+
+
+
 
 interface AuthState {
   user: User | null
@@ -66,13 +83,47 @@ interface AuthState {
   albums: AlbumCustom[],
   accountAlbums: Album[],
   accountSongs: Song[],
-  currentAlbumUser: Album | null
+  currentAlbumUser: AlbumAccount | null
   loading: boolean
 }
 
 interface AlbumCustom {
   id: number,
   album: Album
+}
+
+interface AlbumAccount {
+  id: number,
+  album_user_song: UserSong[],
+  name: string,
+  description: string,
+  img_url: string,
+  account: number
+}
+
+interface UserSong {
+  id: number,
+  song: SongCustom,
+	created_at: string;
+
+}
+
+interface SongCustom {
+  id: number,
+  name: string,
+  album: Album,
+  video: Video,
+  song_singers: ArtistCustom[]
+  audio_url: string;
+	img_url: string;
+	duration: number;
+	lyrics: string;
+	genre: string;
+  created_at: string;
+}
+
+interface ArtistCustom {
+  artist: Artist;
 }
 
 const initialState: AuthState = {
@@ -141,8 +192,12 @@ const authSlice = createSlice({
       .addCase(fetchAlbumUserById.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Failed to fetch album";
-      });
-  }
+      })
+
+        .addCase(createAlbumUser.fulfilled, (state, action) => {
+        state.accountAlbums.push(action.payload)
+      })
+}
 })
 
 export const { logout } = authSlice.actions

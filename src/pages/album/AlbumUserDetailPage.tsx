@@ -6,18 +6,20 @@ import { CircleCheckBig, CirclePlus, Clock, Pause, Play } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAlbumById } from "@/features/albums/albumsSlice";
 import { AppDispatch, RootState } from "@/app/store";
-import { Album } from "@/types";
-import { useParams } from "react-router";  // Import useParams
+import { Album, Song } from "@/types";
+import { useNavigate, useParams } from "react-router";  // Import useParams
 import { formatDate, formatTime } from "@/utils";
 import { playAlbum, togglePlay } from "@/features/audioplayer/playerSlice";
-import { addAlbum, deleteAlbumFavorite, getAlbumFavorite } from "@/services/AuthenticateServices";
-import { fetchAlbumUserById, getAlbumsFavorite } from "@/features/accounts/authSlice";
+import { addAlbum, deleteAlbumFavorite, deleteAlbumUser, getAlbumFavorite } from "@/services/AuthenticateServices";
+import { fetchAlbumUserById, getAlbumsFavorite, getAlbumsUser } from "@/features/accounts/authSlice";
+
 
 const AlbumUserDetailPage = () => {
 	const { id } = useParams<{ id: string }>();  // Get albumId from URL
 	const dispatch = useDispatch<AppDispatch>()
 
-	const { albums, user, isAuthenticated, currentAlbumUser } = useSelector(
+	const navigate = useNavigate()
+	const { user, isAuthenticated, currentAlbumUser, accountAlbums } = useSelector(
 		(state: RootState) => state.auth
 	);
 
@@ -42,36 +44,49 @@ const AlbumUserDetailPage = () => {
 	//   }
 
 	const handlePlayAlbum = () => {
-		console.log("1");
 		if (!currentAlbumUser) return;
+	  
+		if (currentAlbumUser.album_user_song) {
+		  // Chuyển đổi song thành kiểu Song chuẩn
+		  const songs: Song[] = currentAlbumUser.album_user_song.map((item) => ({
+			...item.song,
+		
+		  }));
+	  
+		  const isCurrentAlbumPlaying = songs.some(
+			(song) => song.id === currentSong?.id
+		  );
 
-		console.log("2");
-
-		if (currentAlbumUser?.album_songs) {
-			const isCurrentAlbumPlaying = currentAlbumUser?.album_songs.some(
-				(song) => song.id === currentSong?.id
-			);
-			console.log("3", isCurrentAlbumPlaying);
-
-			// Kiểm tra nếu album đang phát, toggle để dừng phát
-			if (isCurrentAlbumPlaying) {
-				dispatch(togglePlay());
-			}
-
-			// Bắt đầu phát album từ bài hát đầu tiên nếu chưa phát
-			dispatch(playAlbum({ songs: currentAlbumUser?.album_songs, startIndex: 0 }));
+		 
+		  if (isCurrentAlbumPlaying) {
+			dispatch(togglePlay());
+		  } else {
+			dispatch(playAlbum({ songs, startIndex: 0 }));
+		  }
 		}
-	};
+	  };
+	  
+	  
 
 
-	const handlePlaySong = (index: number) => {
+	  const handlePlaySong = (index: number) => {
 		if (!currentAlbumUser) return;
-
-		if (currentAlbumUser?.album_songs) {
-			// start playing the album from the beginning
-			dispatch(playAlbum({ songs: currentAlbumUser?.album_songs, startIndex: index }));
+	  
+		if (currentAlbumUser.album_user_song) {
+		  const songs: Song[] = currentAlbumUser.album_user_song.map((item) => {
+			const song = item.song;
+	  
+			return {
+			  ...song,
+			//   song_singers: song.song_singers.map((s) => s.artist), // Chuyển đúng sang Artist[]
+			};
+		  });
+	  
+		  dispatch(playAlbum({ songs, startIndex: index }));
 		}
-	};
+	  };
+	  
+	  
 
 	// const handleAddAlbumFavourite = async () => {
 	// 	const formData = new FormData();
@@ -87,12 +102,12 @@ const AlbumUserDetailPage = () => {
 	// }
 
 	const handleDeleteAlbumFavourite = async () => {
-		// const favoriteAlbumId = albums?.find(album => album.album.id === currentAlbumUser?.id)?.id || null;
-		// console.log("run",favoriteAlbumId)
-		// if(favoriteAlbumId){
-		// 	await deleteAlbumFavorite(favoriteAlbumId)
-		// }
-		// if (user) await dispatch(getAlbumsFavorite(user.id))
+		
+		if(currentAlbumUser) await deleteAlbumUser(currentAlbumUser.id)
+	
+		if (user) await dispatch(getAlbumsUser(user.id))
+
+		navigate("/")
 	}
 
 
@@ -121,7 +136,7 @@ const AlbumUserDetailPage = () => {
 								<h1 className="text-7xl font-bold my-4">{currentAlbumUser?.name}</h1>
 								<div className="flex items-center gap-2 text-sm text-zinc-100">
 									{/* <span className="font-medium text-white">{currentAlbum?.artist}</span> */}
-									<span>{currentAlbumUser?.album_songs?.length} songs</span>
+									<span>{currentAlbumUser?.album_user_song?.length} songs</span>
 								</div>
 							</div>
 						</div>
@@ -134,9 +149,9 @@ const AlbumUserDetailPage = () => {
 								className='w-14 h-14 rounded-full bg-green-500 hover:bg-green-400 
                 hover:scale-105 transition-all'
 							>
-								{isPlaying && (currentAlbumUser?.album_songs && currentAlbumUser?.album_songs.some((song) => song.id === currentSong?.id)) ? (
-									<Pause className='h-7 w-7 text-black' />
-								) : (
+								{isPlaying && (currentAlbumUser?.album_user_song && currentAlbumUser?.album_user_song.some((item) => item.song.id === currentSong?.id)) ? (
+									<Pause className='h-7 w-7 text-green' /> 
+								) : ( 
 									<Play className='h-7 w-7 text-black' />
 								)}
 							</Button>
@@ -170,11 +185,11 @@ const AlbumUserDetailPage = () => {
 
 							<div className='px-6'>
 								<div className='space-y-2 py-4'>
-									{currentAlbumUser?.album_songs && currentAlbumUser?.album_songs.map((song, index) => {
-										const isCurrentSong = currentSong?.id === song.id;
+									{currentAlbumUser?.album_user_song && currentAlbumUser?.album_user_song.map((item, index) => {
+										const isCurrentSong = currentSong?.id === item.song.id;
 										return (
 											<div
-												key={song.id}
+												key={item.song.id}
 												onClick={() => handlePlaySong(index)}
 												className={`grid grid-cols-[16px_4fr_2fr_1fr] gap-4 px-4 py-2 text-sm 
                       text-zinc-400 hover:bg-white/5 rounded-md group cursor-pointer
@@ -184,7 +199,7 @@ const AlbumUserDetailPage = () => {
 													{isCurrentSong && isPlaying ? (
 														<div className='size-4 text-green-500'>♫</div>
 													) : (
-														<span className='group-hover:hidden'>{index + 1}</span>
+														<span className='group-hover:hidden '>{index + 1}</span>
 													)}
 													{!isCurrentSong && (
 														<Play className='h-4 w-4 hidden group-hover:block' />
@@ -192,15 +207,15 @@ const AlbumUserDetailPage = () => {
 												</div>
 
 												<div className='flex items-center gap-3'>
-													<img src={song.img_url} alt={song.name} className='size-10' />
+													<img src={item.song.img_url} alt={item.song.name} className='size-10' />
 
 													<div>
-														<div className={`font-medium text-white`}>{song.name}</div>
+														<div className={`font-medium text-white`}>{item.song.name}</div>
 														{/* <div>{song.artist}</div> */}
 													</div>
 												</div>
-												<div className='flex items-center'>{formatDate(song.created_at)}</div>
-												<div className='flex items-center'>{formatTime(song.duration)}</div>
+												<div className='flex items-center'>{formatDate(item.song.created_at)}</div>
+												<div className='flex items-center'>{formatTime(item.song.duration)}</div>
 											</div>
 										);
 									})}

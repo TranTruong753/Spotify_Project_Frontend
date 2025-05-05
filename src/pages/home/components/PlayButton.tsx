@@ -12,21 +12,22 @@ const PlayButton = ({ song, handleClickPlaySong }:
   { song: Song, handleClickPlaySong?: () => void;}) => 
     {
   const dispatch = useDispatch<AppDispatch>()
-  const { currentSong, isPlaying } = useSelector((state: RootState) => state.player);
+  const { currentSong, isPlaying, currentIndex } = useSelector((state: RootState) => state.player);
 
   const isCurrentSong = currentSong?.id === song.id;
 
   const handleClick = () => {
    if(handleClickPlaySong){
-      // handleClickPlaySong();
+      handleClickPlaySong();
       console.log("0 isPlaying",isPlaying)
       console.log("0 isCurrentSong",isCurrentSong)
-      if (isCurrentSong) {
+      if (isCurrentSong && isPlaying) {
         console.log("1",isPlaying)
         dispatch(togglePlay());
         console.log("2",isPlaying)
       } else {
         dispatch(setCurrentSong(song));
+        // dispatch(setCurrentSong(song[currentIndex]));
       }
       console.log("3 isPlaying",isPlaying)
       console.log("3 isCurrentSong",isCurrentSong)

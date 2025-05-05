@@ -98,6 +98,18 @@ export const getAlbumFavorite = async (id:number) => {
     }
   };
 
+  export const deleteAlbumUser= async (id: number) => {
+    try {
+        const response = await axios.delete(`${API_URL}/album-users/${id}`);
+        console.log("deleteAlbumUser", response.data);  // Kiểm tra dữ liệu trả về
+        return response;  // Trả về dữ liệu có cấu trúc đúng
+    } catch (error) {
+        console.log("deleteAlbumUser", error);
+        throw error;
+    }
+}
+
+
 
   export const getAlbumUser = async (id:number) => {
     try {
@@ -110,9 +122,9 @@ export const getAlbumFavorite = async (id:number) => {
     }
 }
 
-export const getAllAlbumByIdUser = async (id:number): Promise<Album> => {
+export const getAllAlbumByIdUser = async (id:number) => {
   try {
-      const response = await axios.get<Album>(`${API_URL}/album-users/${id}/`);
+      const response = await axios.get(`${API_URL}/album-users/${id}/`);
       console.log("getAllAlbumByIdUser", response.data);  // Kiểm tra dữ liệu trả về
       return response.data;  // Trả về dữ liệu có cấu trúc đúng
   } catch (error) {
@@ -120,3 +132,25 @@ export const getAllAlbumByIdUser = async (id:number): Promise<Album> => {
       throw error;
   }
 };
+
+// thêm nhạc vào album user
+ export const postAlbumUserSong = async (song: FormData) => {
+    try {
+      const response = await axios.post<Album>(
+        `${API_URL}/album-songs/`,
+        song,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+      console.log("postAlbumUserSong", response.data); // Log kết quả nếu cần
+      return response.data;
+    } catch (error: any) {
+      console.error("postAlbumUserSong error:", error);
+      throw new Error(error.response?.data?.detail || 'Failed to add song in user album');
+    }
+  };
+
+

@@ -52,7 +52,7 @@ const CardAlbums = ({ albumItem }: { albumItem: Album }) => {
 
   const handleClickPlayAlbum = () => {
     if (albumItem?.album_songs?.length) {
-      dispatch(playAlbum({ songs: albumItem.album_songs, startIndex: currentIndex === -1 ? 0 : currentIndex }));
+      dispatch(playAlbum({ songs: albumItem.album_songs, startIndex: currentIndex ? 0 : currentIndex }));
       // dispatch(setCurrentSong(albumItem.album_songs[0]));
     }
   };
