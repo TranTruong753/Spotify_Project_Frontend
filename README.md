@@ -1,8 +1,7 @@
 
 # 🎧 Spotify Clone - Frontend
 
-Đây là phần giao diện người dùng chính dành cho người nghe nhạc của dự án **Spotify Clone**, được phát triển bằng **React + Vite**. Ứng dụng cho phép người dùng phát nhạc, tạo album yêu thích, xem và tải video âm nhạc.
-
+Hướng dẫn cài đặt
 ---
 
 ### 🚀 Công nghệ sử dụng
