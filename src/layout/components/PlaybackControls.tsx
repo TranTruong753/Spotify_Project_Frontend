@@ -29,6 +29,13 @@ const PlaybackControls = () => {
 	// 
 
 	useEffect(() => {
+		if (audioRef.current) {
+			audioRef.current.volume = volume / 100; // vì volume trong audio là từ 0 đến 1
+		}
+	}, [volume]);
+	
+
+	useEffect(() => {
 		audioRef.current = document.querySelector("audio");
 
 		const audio = audioRef.current;
@@ -72,7 +79,8 @@ const PlaybackControls = () => {
 
 	const handleShowVide = () => {
 		if(currentSong?.video?.video_url){
-			dispatch(togglePlay());
+			if(isPlaying) dispatch(togglePlay());
+			
 			setIsModalOpen(true)
 			console.log("currentSong",currentSong)
 		}
@@ -187,14 +195,7 @@ const PlaybackControls = () => {
 
 				{/* volume controls */}
 				<div className='hidden sm:flex items-center gap-4 min-w-[180px] w-[30%] justify-end'>
-					{/* <Button size='icon' variant='ghost' className='hover:text-white text-zinc-400'>
-						<Mic2 className='h-4 w-4' />
-					</Button>
-					<Button size='icon' variant='ghost' className='hover:text-white text-zinc-400'>
-						<ListMusic className='h-4 w-4' />
-					</Button>
-					*/}
-
+				
 					<Button size='icon' variant='ghost' className='hover:text-white text-zinc-400 cursor-pointer'
 					
 					onClick={()=> handleShowVide()}
