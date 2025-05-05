@@ -18,6 +18,18 @@ export const getAllAlbums = async (): Promise<AlbumApiResponse> => {
     }
 };
 
+
+export const getAllAlbumById = async (id:number): Promise<Album> => {
+  try {
+      const response = await axios.get<Album>(`${API_URL}/albums/${id}/`);
+      console.log("getAllAlbums", response.data);  // Kiểm tra dữ liệu trả về
+      return response.data;  // Trả về dữ liệu có cấu trúc đúng
+  } catch (error) {
+      console.log("getAllAlbums", error);
+      throw error;
+  }
+};
+
 // export const postAlbums = async (album: FormData): Promise<Album> => {
 //     const response = await fetch('http://127.0.0.1:8000/api/albums/', {
 //       method: 'POST',

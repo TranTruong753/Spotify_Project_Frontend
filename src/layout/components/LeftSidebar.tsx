@@ -9,33 +9,30 @@ import { Link } from "react-router";
 import { IoSearch } from "react-icons/io5";
 import { Input } from '@/components/ui/input';
 import { FaPlus } from "react-icons/fa";
+import ModalCreateAlbumUser from './ModalCreateAlbumUser';
+import { Album } from '@/types';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/app/store';
 
 const LeftSidebar = () => {
     const [isLoading, setIsLoading] = useState(false)
 
+    const [data, setData] = useState<number | null>(0)
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const { albums, isAuthenticated, accountAlbums } = useSelector(
+		(state: RootState) => state.auth
+	);
+
+    
+
+    const handleCreatAlbumUser = (id:number) => {
+        setIsModalOpen(true);
+    }
     return (
         <div className='h-full flex flex-col gap-2 '>
-            {/* Navigation menu */}
-
-            {/* <div className='rounded-lg bg-white border-1  p-4'>
-        <div className='space-y-2'>
-            <Link
-                to={"/"}
-                className={cn(
-                    buttonVariants({
-                        variant: "ghost",
-                        className: "w-full justify-start text-black dark:hover:bg-zinc-800",
-                    })
-                )}
-            >
-                <HomeIcon className='mr-2 size-5' />
-                <span className='hidden md:inline'>Home</span>
-            </Link>
-
-          
-        </div>
-    </div> */}
-
+         
             {/* Library section */}
             <div className='flex-1 rounded-lg bg-zinc-900 border p-4 border-zinc-900'>
                 <div className='flex items-center justify-between mb-4'>
@@ -43,14 +40,16 @@ const LeftSidebar = () => {
                         <Library className='size-5 mr-2' />
                         <span className='hidden md:inline font-medium'>Thư viện</span>
                     </div>
-                    <Button className='transition-all duration-300 ease-out rounded-3xl bg-zinc-950 text-white hover:scale-110 hover:bg-zinc-950 hover:cursor-pointer '>
+                    {<Button className='transition-all duration-300 ease-out rounded-3xl bg-zinc-950 text-white hover:scale-110 hover:bg-zinc-950 hover:cursor-pointer '
+                        onClick={()=>handleCreatAlbumUser(1)}
+                    >
 
                         <FaPlus />Tạo
 
-                    </Button>
+                    </Button>}
                 </div>
 
-                <div className='my-2'>
+                <div className='my-2'> 
                     {/* Search */}
                     <div className='flex items-center border rounded px-2 border-zinc-400'>
                         {/* icon */}
@@ -68,42 +67,69 @@ const LeftSidebar = () => {
                         {isLoading ? (
                             <p>Loading</p>
                         ) : (
-                           <CardFavourite />
+                            albums.map((album)=>(
+                                <CardFavourite  key={album.id} album={album.album}/>
+                            ))
+                           
                         )}
+
+                        {accountAlbums && accountAlbums.map((accountAlbum)=>(
+                                <CardUser  key={accountAlbum.id} album={accountAlbum}/>
+                        ))}
                     </div>
                 </ScrollArea>
             </div>
+
+            <ModalCreateAlbumUser
+                isModalOpen={isModalOpen}
+                setIsModalOpen={setIsModalOpen}
+            ></ModalCreateAlbumUser>
         </div>
     )
 }
 type CardFavouriteProps = {
-    Album?: {
-        name?: string; 
-        image?: string; 
-        path?: string; 
-
-    }; 
+    album: Album
 };
 
-const CardFavourite = ({Album}:CardFavouriteProps) => {
+const CardFavourite = ({album}:CardFavouriteProps) => {
     return (
         <Link
-        to={"/"}
-       
+        to={`/album/${album.id}`}
+      
         className='transition-all duration-300 ease-in-out p-2 hover:bg-zinc-950 rounded-md flex items-center gap-3 group cursor-pointer'
     >
         <img
-            src='../../../public/avatars/avatar1.jpg'
+            src={album.img_url}
             alt='Playlist img'
             className='size-12 rounded-md flex-shrink-0 object-cover'
         />
 
         <div className='flex-1 min-w-0 hidden md:block'>
-            <p className='text-md font-medium truncate text-zinc-300'> em của ngày hôm qua</p>
-            <p className='text-sm text-zinc-400 truncate'>Album • Sơn Tùng</p>
+            <p className='text-md font-medium truncate text-zinc-300'>{album.name}</p>
         </div>
     </Link>
     )
 }
+
+const CardUser = ({album}:CardFavouriteProps) => {
+    return (
+        <Link
+        to={`/album-user/${album.id}`}
+      
+        className='transition-all duration-300 ease-in-out p-2 hover:bg-zinc-950 rounded-md flex items-center gap-3 group cursor-pointer'
+    >
+        <img
+            src={album.img_url}
+            alt='Playlist img'
+            className='size-12 rounded-md flex-shrink-0 object-cover'
+        />
+
+        <div className='flex-1 min-w-0 hidden md:block'>
+            <p className='text-md font-medium truncate text-zinc-300'>{album.name}</p>
+        </div>
+    </Link>
+    )
+}
+
 
 export default LeftSidebar

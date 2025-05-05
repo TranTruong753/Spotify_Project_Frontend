@@ -52,7 +52,7 @@ function Slider({
           data-slot="slider-thumb"
           key={index}
           // className="border-primary bg-background ring-ring/50 block size-4 shrink-0 rounded-full border shadow-sm transition-[color,box-shadow] hover:ring-4 focus-visible:ring-4 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50"
-          className="block h-4 w-4 rounded-full bg-white border border-blue-500 shadow-md hover:bg-blue-200 focus:outline-none"
+          className="block h-4 w-4 rounded-full bg-zinc-950 border border-zinc-300 shadow-md hover:bg-zinc-900 focus:outline-none"
         />
       ))}
     </SliderPrimitive.Root>

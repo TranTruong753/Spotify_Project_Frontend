@@ -1,10 +1,40 @@
 import { ScrollArea } from '@/components/ui/scroll-area'
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import SectionGrid from './components/SectionGrid'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, RootState } from '@/app/store'
+import { fetchAlbums } from '@/features/albums/albumsSlice'
+import { fetchSongs } from '@/features/songs/songSlice'
+import { playAlbum } from '@/features/audioplayer/playerSlice'
+import SectionGridAlbums from './components/SectionGridAlbums'
 
 
 const HomePage = () => {
+  
+  const dispatch = useDispatch<AppDispatch>()
+
+  const { list:listAlbum, loading: loadingAlbum } = useSelector((state: RootState) => state.albums)
+
+  const { list: listSong, loading: loadingSong } = useSelector((state: RootState) => state.songs)
+  
+  // useEffect(() => {
+  //   // Gọi chỉ 1 lần khi component mount
+  //   dispatch(playAlbum({ songs: listSong }));
+  
+  // }, [dispatch,listSong]); // hoặc thêm `yourSongList` nếu nó là biến
+
+
+  useEffect(() => {
+      if (!listAlbum.length) {
+        dispatch(fetchAlbums());
+      }
+      if(!listSong.length){
+        dispatch(fetchSongs())
+      }
+    }, [dispatch, listAlbum.length,listSong.length]);
+
+
   return (
     <main className='rounded-md overflow-hidden h-full bg-zinc-900 dark:bg-gradient-to-b from-zinc-800 to-zinc-900'>
       <ScrollArea className='h-[calc(100vh-180px)]'>
@@ -12,9 +42,10 @@ const HomePage = () => {
           {/* <h1 className='text-2xl sm:text-3xl font-bold mb-6'>Good afternoon</h1> */}
 
           <div className='space-y-8'>
-            <SectionGrid title='Dành cho bạn'  isLoading={false} />
-            <SectionGrid title='Xu hướng'  isLoading={false} />
-            {/*	<SectionGrid title='Trending' songs={trendingSongs} isLoading={isLoading} /> */}
+            <SectionGrid title='Dành cho bạn' isLoading={loadingSong} songs={listSong} />
+
+            <SectionGridAlbums title='Albums' isLoading={loadingAlbum} albums={listAlbum}/>
+           
           </div>
         </div>
       </ScrollArea>

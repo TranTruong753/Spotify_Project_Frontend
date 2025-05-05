@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
-import { getAllAlbums, patchAlbums, postAlbums, deleteAlbums } from '@/services/AlbumServices'
+import { getAllAlbums, patchAlbums, postAlbums, deleteAlbums, getAllAlbumById } from '@/services/AlbumServices'
 import { Album, AlbumApiResponse } from '@/types'
 
 
@@ -16,11 +16,22 @@ export const fetchAlbums = createAsyncThunk<AlbumApiResponse, void>(
   }
 );
 
+export const fetchAlbumById = createAsyncThunk(
+  'albums/fetchAlbumById',
+  async (albumId: number) => {
+    const response = await getAllAlbumById(albumId);
+    return response;
+  }
+);
+
 // POST a new album
 export const createAlbum = createAsyncThunk<Album, FormData>('albums/createAlbum', async (formData) => {
   const res = await postAlbums(formData);
   return res;
 });
+
+
+
 
 // DELETE an album by id
 export const deleteAlbum = createAsyncThunk<number, { id: number }>(
@@ -50,6 +61,7 @@ interface AlbumsState {
   loading: boolean
   error: string | null
   count: number
+  currentAlbum: Album | null
 }
 
 const initialState: AlbumsState = {
@@ -57,6 +69,7 @@ const initialState: AlbumsState = {
   loading: false,
   error: null,
   count: 0,
+  currentAlbum: null,
 }
 
 const albumsSlice = createSlice({
@@ -96,6 +109,19 @@ const albumsSlice = createSlice({
         state.list = state.list.filter(album => album.id !== action.payload);
         state.count -= 1;
       })
+
+      .addCase(fetchAlbumById.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchAlbumById.fulfilled, (state, action) => {
+        state.loading = false;
+        state.currentAlbum = action.payload;
+      })
+      .addCase(fetchAlbumById.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Failed to fetch album";
+      });
 
 
     //   .addCase(updateAlbum.fulfilled, (state, action) => {

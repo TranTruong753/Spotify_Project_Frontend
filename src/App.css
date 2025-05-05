@@ -104,6 +104,8 @@
     --color-sidebar-ring: var(--sidebar-ring);
 }
 
+
+
 /* @layer base {
   * {
     @apply outline-ring/50;

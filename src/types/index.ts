@@ -30,22 +30,44 @@ export interface Album {
 
 }
 export interface Artist {
-  id: number;
-  name: string;
-  img_url: string;
+	id: number;
+	name: string;
+	img_url: string;
+}
+
+export interface Account {
+	refresh: string;
+	access: string;
+	user: User;
+
+}
+
+export interface User {
+	id: number;
+	email: string;
+	full_name: string;
+	sex: string | null;
+	birthday: string | null;
+	role: Role;
+
+}
+
+export interface Role {
+	id: number ;
+	name: string;
 }
 
 // Kiểu dữ liệu trả về từ API
 export interface AlbumApiResponse {
-  results: Album[]; // Mảng album
-  count: number; // Tổng số album
+	results: Album[]; // Mảng album
+	count: number; // Tổng số album
 }
 export interface ArtistApiResponse {
-  results: Artist[]; // Mảng album
-  count: number; // Tổng số album
+	results: Artist[]; // Mảng album
+	count: number; // Tổng số album
 }
 
 export interface SongApiResponse {
 	results: Song[]; // Mảng album
 	count: number; // Tổng số album
-  }
+}

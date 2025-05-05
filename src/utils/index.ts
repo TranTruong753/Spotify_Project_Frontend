@@ -27,3 +27,15 @@ export function parseGenre(value: string | string[]): string[] {
   return value ? [value] : [];
 
 }
+
+  
+export const getInitials = (fullName:string) => {
+    if (!fullName) return "";
+  
+    return fullName
+      .trim()
+      .split(/\s+/) // tách theo khoảng trắng
+      .map(word => word[0].toUpperCase())
+      .join("");
+  }
+  
