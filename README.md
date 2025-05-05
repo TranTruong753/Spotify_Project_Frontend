@@ -26,7 +26,7 @@ frontend/
 │   ├── features/       # Các tính năng chính: MusicPlayer, Album, Auth...
 │   ├── hooks/          # Custom React Hooks
 │   ├── layout/         # Giao diện tổng thể: Header, Footer, Sidebar...
-│   ├── lib/            # Cấu hình và thư viện bên thứ ba (ví dụ: axios instance)
+│   ├── lib/            # Cấu hình và thư viện 
 │   ├── pages/          # Các trang chính của ứng dụng
 │   ├── router/         # Cấu hình route
 │   ├── services/       # Gọi API (Axios)
