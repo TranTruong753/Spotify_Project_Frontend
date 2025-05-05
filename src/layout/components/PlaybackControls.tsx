@@ -229,7 +229,7 @@ const PlaybackControls = () => {
 				onClose={handleCancel}
 				maskClosable={false}
 			>
-				<video controls style={{ width: '100%' }}>
+				<video controls>
 					<source src={currentSong?.video?.video_url} type="video/mp4" />
 					Your browser does not support the video tag.
 				</video>
