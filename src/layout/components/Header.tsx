@@ -21,6 +21,29 @@ const Header = () => {
 
     const [value,setValue] = useState("")
 
+    // const items: MenuProps['items'] = [
+    //     {
+    //         label: (
+    //             user?.full_name
+    //         ),
+    //         key: '0',
+    //         disabled: true,
+    //     },
+    //     {
+    //         label: (
+    //             user?.role?.name === "Admin" && <Link to={"/admin"}>to Admin</Link>
+    //         ),
+    //         key: '1',
+    //     },
+    //     {
+    //         type: 'divider',
+    //     },
+    //     {
+    //         label: <Link to="/login">Đăng xuất</Link>,
+    //         key: '3',
+    //     },
+    // ];
+
     const items: MenuProps['items'] = [
         {
             label: (
@@ -29,20 +52,24 @@ const Header = () => {
             key: '0',
             disabled: true,
         },
-        {
-            label: (
-                user?.role?.name === "Admin" && <Link to={"/admin"}>to Admin</Link>
-            ),
-            key: '1',
-        },
-        {
+        ...(user?.role?.name === "Admin"
+          ? [
+              {
+                label: (
+                    <Link to={"/admin"}>to Admin</Link>
+                ),
+                key: '1',
+              },
+            ]
+          : []),
+          {
             type: 'divider',
         },
         {
             label: <Link to="/login">Đăng xuất</Link>,
             key: '3',
         },
-    ];
+      ];
 
     const handleSearch =  async (e:any) => {
         const inputValue = e.target.value;

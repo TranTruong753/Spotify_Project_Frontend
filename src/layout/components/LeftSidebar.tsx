@@ -1,4 +1,4 @@
-import { Dot, Music } from 'lucide-react'
+import { Dot, Heart, Music } from 'lucide-react'
 import React, { useState } from 'react'
 import { HomeIcon, Library, MessageCircle } from "lucide-react";
 import { useEffect } from "react";
@@ -20,17 +20,17 @@ const LeftSidebar = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const { albums, isAuthenticated, accountAlbums, user } = useSelector(
-		(state: RootState) => state.auth
-	);
+        (state: RootState) => state.auth
+    );
 
-    
 
-    const handleCreatAlbumUser = (id:number) => {
+
+    const handleCreatAlbumUser = (id: number) => {
         setIsModalOpen(true);
     }
     return (
         <div className='h-full flex flex-col gap-2 '>
-         
+
             {/* Library section */}
             <div className='flex-1 rounded-lg bg-zinc-900 border p-4 border-zinc-900'>
                 <div className='flex items-center justify-between mb-4'>
@@ -39,7 +39,7 @@ const LeftSidebar = () => {
                         <span className='hidden md:inline font-medium'>Thư viện</span>
                     </div>
                     {isAuthenticated && <Button className='transition-all duration-300 ease-out rounded-3xl bg-zinc-950 text-white hover:scale-110 hover:bg-zinc-950 hover:cursor-pointer '
-                        onClick={()=>handleCreatAlbumUser(1)}
+                        onClick={() => handleCreatAlbumUser(1)}
                     >
 
                         <FaPlus />Tạo
@@ -62,17 +62,19 @@ const LeftSidebar = () => {
 
                 <ScrollArea className='h-[calc(100vh-300px)]'>
                     <div className='space-y-2'>
+                        <CardFavouriteSong></CardFavouriteSong>
+
                         {isLoading ? (
                             <p>Loading</p>
                         ) : (
-                            albums.map((album)=>(
-                                <CardFavourite  key={album.id} album={album.album}/>
+                            albums.map((album) => (
+                                <CardFavourite key={album.id} album={album.album} />
                             ))
-                           
+
                         )}
 
-                        {accountAlbums && accountAlbums.map((accountAlbum)=>(
-                                <CardUser  key={accountAlbum.id} album={accountAlbum} user={user}/>
+                        {accountAlbums && accountAlbums.map((accountAlbum) => (
+                            <CardUser key={accountAlbum.id} album={accountAlbum} user={user} />
                         ))}
                     </div>
                 </ScrollArea>
@@ -90,46 +92,71 @@ type CardFavouriteProps = {
     user?: User | null,
 };
 
-const CardFavourite = ({album}:CardFavouriteProps) => {
+const CardFavourite = ({ album }: CardFavouriteProps) => {
     return (
         <Link
-        to={`/album/${album.id}`}
-      
-        className='transition-all duration-300 ease-in-out p-2 hover:bg-zinc-950 rounded-md flex items-center gap-3 group cursor-pointer'
-    >
-        <img
-            src={album.img_url}
-            alt='Playlist img'
-            className='size-12 rounded-md flex-shrink-0 object-cover'
-        />
+            to={`/album/${album.id}`}
 
-        <div className='flex-1 min-w-0 hidden md:block'>
-            <p className='text-md font-medium truncate text-zinc-300'>{album.name}</p>
-        </div>
-    </Link>
+            className='transition-all duration-300 ease-in-out p-2 hover:bg-zinc-950 rounded-md flex items-center gap-3 group cursor-pointer'
+        >
+            <img
+                src={album.img_url}
+                alt='Playlist img'
+                className='size-12 rounded-md flex-shrink-0 object-cover'
+            />
+
+            <div className='flex-1 min-w-0 hidden md:block'>
+                <p className='text-md font-medium truncate text-zinc-300'>{album.name}</p>
+            </div>
+        </Link>
     )
 }
 
-const CardUser = ({album, user}:CardFavouriteProps) => {
+const CardUser = ({ album, user }: CardFavouriteProps) => {
     return (
         <Link
-        to={`/album-user/${album.id}`}
-      
-        className='bg-zinc-900 transition-all duration-300 ease-in-out p-2 hover:bg-zinc-950 rounded-md flex items-center gap-3 group cursor-pointer'
-    >
-        <img
-            src={album.img_url}
-            alt='Playlist img'
-            className='size-12 rounded-md flex-shrink-0 object-cover'
-        />
+            to={`/album-user/${album.id}`}
 
-        <div className='flex-1 min-w-0 hidden md:block'>
-            <p className='text-md font-medium truncate text-zinc-300'>{album.name}</p>
-            <p className='flex text-sm font-light truncate text-zinc-300'>danh sách phát  <Dot /> {user && user.full_name} </p>
-        </div>
-    </Link>
+            className='bg-zinc-900 transition-all duration-300 ease-in-out p-2 hover:bg-zinc-950 rounded-md flex items-center gap-3 group cursor-pointer'
+        >
+            <img
+                src={album.img_url}
+                alt='Playlist img'
+                className='size-12 rounded-md flex-shrink-0 object-cover'
+            />
+
+            <div className='flex-1 min-w-0 hidden md:block'>
+                <p className='text-md font-medium truncate text-zinc-300'>{album.name}</p>
+                <p className='flex text-sm font-light truncate text-zinc-300'>danh sách phát  <Dot /> {user && user.full_name} </p>
+            </div>
+        </Link>
     )
 }
+
+const CardFavouriteSong = () => {
+    return (
+        <Link
+            to={`/music-favorite`}
+
+            className='bg-zinc-900 transition-all duration-300 ease-in-out p-2 hover:bg-zinc-950 rounded-md flex items-center gap-3 group cursor-pointer'
+        >
+            <div
+
+
+                className='flex justify-center items-center bg-green-500 size-12 rounded-md flex-shrink-0 object-cover'
+            >
+
+                <Heart strokeWidth={3} />
+            </div>
+
+            <div className='flex-1 min-w-0 hidden md:block'>
+                <p className='text-md font-medium truncate text-zinc-300'>Bài hát đã thích</p>
+                {/* <p className='flex text-sm font-light truncate text-zinc-300'>danh sách phát  <Dot /> {user && user.full_name} </p> */}
+            </div>
+        </Link>
+    )
+}
+
 
 
 export default LeftSidebar

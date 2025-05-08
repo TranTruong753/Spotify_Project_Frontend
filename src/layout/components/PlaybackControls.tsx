@@ -14,7 +14,7 @@ const PlaybackControls = () => {
 	const { currentSong, isPlaying } = useSelector((state: RootState) => state.player);
 	const [isSeeking, setIsSeeking] = useState(false);
 
-	const [volume, setVolume] = useState(75);
+	const [volume, setVolume] = useState(100);
 	const [currentTime, setCurrentTime] = useState(0);
 	const [duration, setDuration] = useState(0);
 	const audioRef = useRef<HTMLAudioElement | null>(null);

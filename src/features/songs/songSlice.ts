@@ -1,7 +1,8 @@
 import { createSlice, createAsyncThunk, PayloadAction, ThunkDispatch } from '@reduxjs/toolkit'
 import { deleteSong, getAllSongs, postSong, searchSong } from '@/services/SongServices'
-import { SongApiResponse, Song } from '@/types'
+import { SongApiResponse, Song, User } from '@/types'
 import { patchSong } from '@/services/SongServices';
+import { searchAccount } from '@/services/AuthenticateServices';
 
 
 
@@ -62,6 +63,15 @@ export const fetchSearchSongs = createAsyncThunk<SongApiResponse, {key: string |
   }
 );
 
+// SEARCH 
+export const fetchSearchAccount = createAsyncThunk<User[], {key: string | null}>(
+  'auth/fetchSearchSongs',
+  async ({key}) => {
+    const res = await searchAccount(key);
+    return res
+  }
+);
+
 
 
 interface SongsState {
@@ -69,7 +79,8 @@ interface SongsState {
   loading: boolean
   error: string | null
   count: number
-  listSearch: Song[]
+  listSearch: Song[],
+  listAccountSearch: User[],
 }
 
 const initialState: SongsState = {
@@ -77,7 +88,8 @@ const initialState: SongsState = {
   loading: false,
   error: null,
   count: 0,
-  listSearch: []
+  listSearch: [],
+  listAccountSearch: []
 }
 
 const songSlice = createSlice({
@@ -116,6 +128,12 @@ const songSlice = createSlice({
       .addCase(fetchSearchSongs.rejected, (state, action) => {
         state.loading = false
         state.error = action.error.message || 'Failed to fetch albums'
+      })
+
+
+      .addCase(fetchSearchAccount.fulfilled, (state, action) => {
+        state.listAccountSearch = action.payload;  // Chỉ lấy results để lưu vào list
+     
       })
 
 

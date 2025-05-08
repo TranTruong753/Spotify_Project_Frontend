@@ -46,51 +46,51 @@ const AlbumUserDetailPage = () => {
 
 	const handlePlayAlbum = () => {
 		if (!currentAlbumUser) return;
-	  
+
 		if (currentAlbumUser.album_user_song) {
-		  // Chuyển đổi song thành kiểu Song chuẩn
-		  const songs: Song[] = currentAlbumUser.album_user_song.map((item) => ({
-			...item.song,
-		
-		  }));
-	  
-		  const isCurrentAlbumPlaying = songs.some(
-			(song) => song.id === currentSong?.id
-		  );
+			// Chuyển đổi song thành kiểu Song chuẩn
+			const songs: Song[] = currentAlbumUser.album_user_song.map((item) => ({
+				...item.song,
 
-		 
-		  if (isCurrentAlbumPlaying) {
-			dispatch(togglePlay());
-		  } else {
-			dispatch(playAlbum({ songs, startIndex: 0 }));
-		  }
+			}));
+
+			const isCurrentAlbumPlaying = songs.some(
+				(song) => song.id === currentSong?.id
+			);
+
+
+			if (isCurrentAlbumPlaying) {
+				dispatch(togglePlay());
+			} else {
+				dispatch(playAlbum({ songs, startIndex: 0 }));
+			}
 		}
-	  };
-	  
-	  
+	};
 
 
-	  const handlePlaySong = (index: number, isCurrentAlbumPlaying: boolean) => {
+
+
+	const handlePlaySong = (index: number, isCurrentAlbumPlaying: boolean) => {
 		if (!currentAlbumUser) return;
-	  
-		if(isCurrentAlbumPlaying && isPlaying){
+
+		if (isCurrentAlbumPlaying && isPlaying) {
 			dispatch(togglePlay());
 		}
 		else if (currentAlbumUser.album_user_song) {
-		  const songs: Song[] = currentAlbumUser.album_user_song.map((item) => {
-			const song = item.song;
-	  
-			return {
-			  ...song,
-			//   song_singers: song.song_singers.map((s) => s.artist), // Chuyển đúng sang Artist[]
-			};
-		  });
-	  
-		  dispatch(playAlbum({ songs, startIndex: index }));
-		}
-	  };
+			const songs: Song[] = currentAlbumUser.album_user_song.map((item) => {
+				const song = item.song;
 
-	
+				return {
+					...song,
+					//   song_singers: song.song_singers.map((s) => s.artist), // Chuyển đúng sang Artist[]
+				};
+			});
+
+			dispatch(playAlbum({ songs, startIndex: index }));
+		}
+	};
+
+
 
 	// const handleAddAlbumFavourite = async () => {
 	// 	const formData = new FormData();
@@ -106,9 +106,9 @@ const AlbumUserDetailPage = () => {
 	// }
 
 	const handleDeleteAlbumFavourite = async () => {
-		
-		if(currentAlbumUser) await deleteAlbumUser(currentAlbumUser.id)
-	
+
+		if (currentAlbumUser) await deleteAlbumUser(currentAlbumUser.id)
+
 		if (user) await dispatch(getAlbumsUser(user.id))
 
 		navigate("/")
@@ -117,7 +117,7 @@ const AlbumUserDetailPage = () => {
 
 	return (
 		<div className="h-full">
-			
+
 			<ScrollArea className="h-full rounded-md">
 				{/* Main Content */}
 				<div className="relative min-h-full">
@@ -154,8 +154,8 @@ const AlbumUserDetailPage = () => {
                 hover:scale-105 transition-all'
 							>
 								{isPlaying && (currentAlbumUser?.album_user_song && currentAlbumUser?.album_user_song.some((item) => item.song.id === currentSong?.id)) ? (
-									<Pause className='h-7 w-7 text-green' /> 
-								) : ( 
+									<Pause className='h-7 w-7 text-green' />
+								) : (
 									<Play className='h-7 w-7 text-black' />
 								)}
 							</Button>
@@ -173,7 +173,7 @@ const AlbumUserDetailPage = () => {
 
 						</div>
 
-					
+
 
 						{/* Table Section */}
 						<div className="bg-black/20 backdrop-blur-sm">
@@ -205,7 +205,7 @@ const AlbumUserDetailPage = () => {
 													{isCurrentSong && isPlaying ? (
 														<div className='size-4 text-green-500'>♫</div>
 													) : (
-														<span className='group-hover:hidden '>{index + 1}</span>
+														isCurrentSong ? (<><Play></Play></>) : <span className='group-hover:hidden '>{index + 1}</span>
 													)}
 													{!isCurrentSong && (
 														<Play className='h-4 w-4 hidden group-hover:block' />

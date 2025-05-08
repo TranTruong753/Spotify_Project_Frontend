@@ -18,7 +18,7 @@ const UsersList = () => {
 						>
 							<div className='relative'>
 								<Avatar className='size-8 md:size-12'>
-									<AvatarImage src={'../../../../public/avatars/avatar1.jpg'} />
+									<AvatarImage src={'/public/avatars/avatar1.jpg'} />
 									<AvatarFallback>DC</AvatarFallback>
 								</Avatar>
 								{/* online indicator */}

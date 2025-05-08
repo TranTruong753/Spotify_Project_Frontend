@@ -8,18 +8,22 @@ import { useDispatch } from 'react-redux'
 
 
 interface Songs {
-    songs: Song[]
+    songs: Song[];
     currentSong: Song | null;
     isPlaying: boolean;
-    currentAlbum: Album;
 }
 
-const TableMusicAlbum = ({ songs,currentSong,isPlaying,currentAlbum }: Songs) => {
+interface listSongFavorite {
+    id: number ;
+    song:  Song 
+  }
+  
+
+const TableMusicFavorite = ({ songs,currentSong,isPlaying }: Songs) => {
     const dispatch = useDispatch<AppDispatch>()
 
     const handlePlaySong = (index: number,isCurrentSong:boolean) => {
-        if(!currentAlbum) return
-      
+    
         if(isCurrentSong && isPlaying){
             dispatch(togglePlay());
         }
@@ -86,4 +90,4 @@ const TableMusicAlbum = ({ songs,currentSong,isPlaying,currentAlbum }: Songs) =>
   )
 }
 
-export default TableMusicAlbum
+export default TableMusicFavorite

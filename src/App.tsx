@@ -15,11 +15,14 @@ import SingerPageAdmin from "./pages/admin/singer/SingerPageAdmin";
 import SearchPage from "./pages/search/SearchPage"
 
 import LoginPage from "./pages/login/LoginPage";
+import SongFavorite from "./pages/songs/SongFavorite";
 import RegisterPage from "./pages/register/RegisterPage";
 import { useSelector } from "react-redux";
 import { RootState } from "./app/store";
 
 import RequireAuth from "./pages/authenticator/RequireAuth";
+
+
 
 function App() {
   const { user } = useSelector((state: RootState) => state.auth)
@@ -37,6 +40,7 @@ function App() {
           <Route path="/chat/:id" element={<ChatPage />} />
           <Route path="/album-user/:id" element={<AlbumUserDetailPage />} />
           <Route path="/search" element={<SearchPage />} />
+          <Route path="/music-favorite" element={<SongFavorite />} />
         </Route>
 
         <Route path="/login" element={<LoginPage />}></Route>

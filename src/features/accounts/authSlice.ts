@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { getAlbumFavorite, getAlbumUser, getAllAlbumByIdUser, loginAccount, postAlbumUser, postAlbumUserSong } from '@/services/AuthenticateServices'
+import { getAlbumFavorite, getAlbumUser, getAllAlbumByIdUser, getSongsFavoriteUser, loginAccount, postAlbumUser, postAlbumUserSong, postSongFavoriteUser } from '@/services/AuthenticateServices'
 import { Album, Artist, Song, User, Video } from '@/types';
 
 
@@ -57,6 +57,22 @@ export const fetchAlbumUserById = createAsyncThunk(
 );
 
 
+export const fetchMusicFavoriteUserById = createAsyncThunk(
+  'auth/fetchMusicFavoriteUserById',
+  async (id: number, { rejectWithValue }) => { // Chỉ truyền id thay vì đối tượng { id: number }
+    try {
+      const response = await getSongsFavoriteUser(id); // Truyền id vào hàm
+      return response.data;
+    } catch (err: any) {
+      if (err.response && err.response.data) {
+        return rejectWithValue(err.response.data);
+      }
+      return rejectWithValue({ detail: 'Something went wrong' });
+    }
+  }
+);
+
+
 // POST a new album user
 export const createAlbumUser = createAsyncThunk<Album, FormData>('auth/createAlbumUser', async (formData) => {
   const res = await postAlbumUser(formData);
@@ -69,9 +85,10 @@ export const addAlbumUserSong = createAsyncThunk<Album, FormData>('auth/addAlbum
   return res;
 });
 
-
-
-
+export const addSongInFavoriteUser = createAsyncThunk<listSongFavorite, FormData>('auth/addSongInFavoriteUser', async (formData) => {
+  const res = await postSongFavoriteUser(formData);
+  return res;
+});
 
 
 interface AuthState {
@@ -85,6 +102,13 @@ interface AuthState {
   accountSongs: Song[],
   currentAlbumUser: AlbumAccount | null
   loading: boolean
+  listAccount: User[],
+  listSongFavorite: listSongFavorite[],
+}
+
+interface listSongFavorite {
+  id: number ;
+  song:  Song 
 }
 
 interface AlbumCustom {
@@ -137,6 +161,8 @@ const initialState: AuthState = {
   accountSongs: [],
   currentAlbumUser: null,
   loading: false,
+  listAccount: [],
+  listSongFavorite: [],
 }
 
 
@@ -198,9 +224,26 @@ const authSlice = createSlice({
         state.error = action.error.message || "Failed to fetch album";
       })
 
+      .addCase(fetchMusicFavoriteUserById.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchMusicFavoriteUserById.fulfilled, (state, action) => {
+        state.loading = false;
+        state.listSongFavorite = action.payload;
+      })
+      .addCase(fetchMusicFavoriteUserById.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Failed to fetch album";
+      })
+
+
+
         .addCase(createAlbumUser.fulfilled, (state, action) => {
         state.accountAlbums.push(action.payload)
       })
+
+        
 }
 })
 

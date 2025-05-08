@@ -1,4 +1,4 @@
-import { Album } from "@/types";
+import { Album, User } from "@/types";
 import axios from "axios";
 
 
@@ -76,7 +76,49 @@ export const getAlbumFavorite = async (id:number) => {
 }
 
 //http://127.0.0.1:8000/api/favourite-songs/
+export const getSongsFavoriteUser = async (id:number) => {
+  try {
+      const response = await axios.get(`${API_URL}/account/get-favourite-songs/${id}/`);
+      console.log("getSongsFavoriteUser", response.data);  // Kiểm tra dữ liệu trả về
+      return response;  // Trả về dữ liệu có cấu trúc đúng
+  } catch (error) {
+      console.log("getSongsFavoriteUser", error);
+      throw error;
+  }
+}
 
+
+export const postSongFavoriteUser = async (song: FormData) => {
+  try {
+    const response = await axios.post(
+      `${API_URL}/favourite-songs/`,
+      song,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
+    console.log("postSongFavoriteUser", response.data); // Log kết quả nếu cần
+    return response.data;
+  } catch (error: any) {
+    console.error("postSongFavoriteUser error:", error);
+    throw new Error(error.response?.data?.detail || 'Failed to postSongFavoriteUser');
+  }
+}
+
+export const deleteSongFavoriteUser = async (id:number) => {
+  try {
+    const response = await axios.delete(
+      `${API_URL}/favourite-songs/${id}/`
+    );
+    console.log("deleteSongFavoriteUser", response.data); // Log kết quả nếu cần
+    return response.data;
+  } catch (error: any) {
+    console.error("deleteSongFavoriteUser error:", error);
+    throw new Error(error.response?.data?.detail || 'Failed to deleteSongFavoriteUser');
+  }
+}
 
 
   export const postAlbumUser = async (album: FormData): Promise<Album> => {
@@ -154,3 +196,15 @@ export const getAllAlbumByIdUser = async (id:number) => {
   };
 
 
+export const searchAccount = async (key:string | null): Promise<User[]> => {
+  try {
+    const response = await axios.get<User[]>(
+      `${API_URL}/account/?search=${key}`
+    );
+    console.log("searchAccount", response.data);
+    return response.data;
+  } catch (error: any) {
+    console.error("searchAccount error:", error);
+    throw new Error(error.response?.data?.detail || 'Failed to search Account');
+  }
+} 

@@ -14,7 +14,9 @@ import { initializeQueue, playAlbum } from "@/features/audioplayer/playerSlice";
 import { CirclePlus, EllipsisVertical, Heart } from "lucide-react";
 import { Dropdown, MenuProps } from "antd";
 import { Link } from "react-router";
-import { addAlbumUserSong, fetchAlbumUserById } from "@/features/accounts/authSlice";
+import { addAlbumUserSong, addSongInFavoriteUser, fetchAlbumUserById, fetchMusicFavoriteUserById } from "@/features/accounts/authSlice";
+import { useEffect, useState } from "react";
+import { deleteSongFavoriteUser } from "@/services/AuthenticateServices";
 
 type SectionGridProps = {
   title?: string;
@@ -48,21 +50,36 @@ const CardSongs = ({ songItem, songs }: { songItem: Song, songs: Song[] }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { currentIndex } = useSelector((state: RootState) => state.player);
 
-  const { accountAlbums,user , isAuthenticated } = useSelector((state: RootState) => state.auth);
+  const { accountAlbums, user , isAuthenticated, listSongFavorite } = useSelector((state: RootState) => state.auth);
+
+  const [isSongFavorite, setIsSongFavorite] = useState(false)
+
+  useEffect(() => {
+    if (listSongFavorite) {
+      const isFav = listSongFavorite.some((item) => item.song.id === songItem.id);
+     // console.log("isFav:", isFav);
+      setIsSongFavorite(isFav);
+    }
+  }, [listSongFavorite]);
 
 
+  
 
   const handleClickPlaySong = () => {
-    if (songs) {
-      // dispatch(initializeQueue( songs ));
-    }
+    // if (songs) {
+    //   // dispatch(initializeQueue( songs ));
+    // }
   };
 
   // Tạo danh sách item cho dropdown con từ accountAlbums
-  const items2: MenuProps['items'] = accountAlbums.map((album) => ({
+  const items2: MenuProps['items'] = accountAlbums.map((album) => (
+
+    {
     label: album.name, // hoặc album.title tuỳ theo cấu trúc
     key: album.id.toString(), // key phải là string
-  }));
+  }
+
+));
 
   // 2. Hàm xử lý khi chọn album
   const handleSelectAlbum = async ({ key }: { key: string }) => {
@@ -82,26 +99,79 @@ const CardSongs = ({ songItem, songs }: { songItem: Song, songs: Song[] }) => {
     }
   };
 
+  const handleAddSong = async () => {
+    console.log("item",songItem.id)
+    if(songItem && user){
+      const formData = new FormData();
+      formData.append("account", user.id.toString());
+      formData.append("song", songItem.id.toString());
+      formData.append("is_deleted", "false"); // hoặc từ values
+      await dispatch(addSongInFavoriteUser(formData)).unwrap 
+    }
+   
+  }
+
+  const handleAddSongInFavorite = async () => {
+    if (!isAuthenticated || !user) return;
+  
+    const isFavorite = listSongFavorite.some(
+      (item) => item.song.id === songItem.id
+    );
+  
+    try {
+      if (isFavorite) {
+        // Xoá khỏi danh sách yêu thích
+        const favoriteItem = listSongFavorite.find(
+          (item) => item.song.id === songItem.id
+        );
+        if (favoriteItem) {
+        //  await dispatch(removeFavoriteSong(favoriteItem.id)).unwrap();
+        console.log("hàm xóa",favoriteItem)
+        await deleteSongFavoriteUser(favoriteItem.id)
+       
+        }
+      } else {
+        // Thêm vào danh sách yêu thích
+        await handleAddSong();
+      
+    
+      }
+      if(user)  await dispatch(fetchMusicFavoriteUserById(user.id))
+    
+    } catch (error) {
+     
+      console.error(error);
+    }
+  };
+  
+
   const items: MenuProps['items'] = [
     {
       label: (
-        <Heart size={18} />
+        <div onClick={handleAddSongInFavorite}>
+          {isSongFavorite
+            ? <Heart strokeWidth={3} size={18} className="text-red-500" /> 
+            : <Heart size={18} />}
+        </div>
       ),
-      key: '0',
+       key: '0',
     },
-    {
-      label: (
-        <Dropdown menu={{ items: items2, onClick: handleSelectAlbum }}>
-          <span style={{ display: 'flex', alignItems: 'center' }}>
-            <CirclePlus size={18} />
-          </span>
-        </Dropdown>
-      ),
-      key: '1',
-    },
-
+    ...(accountAlbums.length > 0
+      ? [
+          {
+            label: (
+              <Dropdown menu={{ items: items2, onClick: handleSelectAlbum }}>
+                <span style={{ display: 'flex', alignItems: 'center' }}>
+                  <CirclePlus size={18} />
+                </span>
+              </Dropdown>
+            ),
+            key: '1',
+          },
+        ]
+      : []),
   ];
-
+  
   return (
     <Card className="bg-zinc-950 group relative transition-all duration-300 ease-in-out p-4 border-0 hover:shadow-xl hover:scale-105 cursor-pointer gap-2 ">
       <CardContent className="p-0 rounded-sm overflow-hidden ">

@@ -10,7 +10,7 @@ const ChatHeader = () => {
 		<div className='p-4 border-b border-zinc-800'>
 			<div className='flex items-center gap-3'>
 				<Avatar>
-					<AvatarImage src={'../../../../public/avatars/avatar1.jpg'} />
+					<AvatarImage src={'/avatars/avatar1.jpg'} />
 					<AvatarFallback>TQT</AvatarFallback>
 				</Avatar>
 				<div>
