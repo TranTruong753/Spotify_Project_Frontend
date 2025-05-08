@@ -12,6 +12,7 @@ import { formatDate, formatTime } from "@/utils";
 import { playAlbum, togglePlay } from "@/features/audioplayer/playerSlice";
 import { addAlbum, deleteAlbumFavorite, deleteAlbumUser, getAlbumFavorite } from "@/services/AuthenticateServices";
 import { fetchAlbumUserById, getAlbumsFavorite, getAlbumsUser } from "@/features/accounts/authSlice";
+import TableMusicAlbum from "./components/TableMusicAlbum";
 
 
 const AlbumUserDetailPage = () => {
@@ -69,10 +70,13 @@ const AlbumUserDetailPage = () => {
 	  
 
 
-	  const handlePlaySong = (index: number) => {
+	  const handlePlaySong = (index: number, isCurrentAlbumPlaying: boolean) => {
 		if (!currentAlbumUser) return;
 	  
-		if (currentAlbumUser.album_user_song) {
+		if(isCurrentAlbumPlaying && isPlaying){
+			dispatch(togglePlay());
+		}
+		else if (currentAlbumUser.album_user_song) {
 		  const songs: Song[] = currentAlbumUser.album_user_song.map((item) => {
 			const song = item.song;
 	  
@@ -85,8 +89,8 @@ const AlbumUserDetailPage = () => {
 		  dispatch(playAlbum({ songs, startIndex: index }));
 		}
 	  };
-	  
-	  
+
+	
 
 	// const handleAddAlbumFavourite = async () => {
 	// 	const formData = new FormData();
@@ -169,6 +173,8 @@ const AlbumUserDetailPage = () => {
 
 						</div>
 
+					
+
 						{/* Table Section */}
 						<div className="bg-black/20 backdrop-blur-sm">
 							{/* table header */}
@@ -190,7 +196,7 @@ const AlbumUserDetailPage = () => {
 										return (
 											<div
 												key={item.song.id}
-												onClick={() => handlePlaySong(index)}
+												onClick={() => handlePlaySong(index, isCurrentSong)}
 												className={`grid grid-cols-[16px_4fr_2fr_1fr] gap-4 px-4 py-2 text-sm 
                       text-zinc-400 hover:bg-white/5 rounded-md group cursor-pointer
                       `}

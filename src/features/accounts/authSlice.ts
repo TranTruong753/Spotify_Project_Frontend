@@ -127,10 +127,10 @@ interface ArtistCustom {
 }
 
 const initialState: AuthState = {
-  user: null,
-  accessToken: null,
-  refreshToken: null,
-  isAuthenticated: false,
+  user: JSON.parse(localStorage.getItem('user') || 'null'),
+  accessToken: localStorage.getItem('accessToken'),
+  refreshToken: localStorage.getItem('refreshToken'),
+  isAuthenticated: !!localStorage.getItem('accessToken'),
   error: null,
   albums: [],
   accountAlbums: [],
@@ -153,6 +153,8 @@ const authSlice = createSlice({
       state.error = null
       localStorage.removeItem('accessToken')
       localStorage.removeItem('refreshToken')
+      localStorage.removeItem('user');
+
     }
   },
   extraReducers: (builder) => {
@@ -167,6 +169,8 @@ const authSlice = createSlice({
 
         localStorage.setItem('accessToken', access);
         localStorage.setItem('refreshToken', refresh);
+        localStorage.setItem('user', JSON.stringify(user));
+
       })
 
       .addCase(login.rejected, (state, action: any) => {

@@ -17,21 +17,22 @@ const PlayButton = ({ song, handleClickPlaySong }:
   const isCurrentSong = currentSong?.id === song.id;
 
   const handleClick = () => {
-   if(handleClickPlaySong){
-      handleClickPlaySong();
+   
+    // if(handleClickPlaySong) handleClickPlaySong()
       console.log("0 isPlaying",isPlaying)
       console.log("0 isCurrentSong",isCurrentSong)
-      if (isCurrentSong && isPlaying) {
-        console.log("1",isPlaying)
+      if (isCurrentSong ) {
+        console.log("hh3")
         dispatch(togglePlay());
-        console.log("2",isPlaying)
+      
       } else {
         dispatch(setCurrentSong(song));
+        console.log("hh")
         // dispatch(setCurrentSong(song[currentIndex]));
       }
       console.log("3 isPlaying",isPlaying)
       console.log("3 isCurrentSong",isCurrentSong)
-    }
+    
   };
 
   return (

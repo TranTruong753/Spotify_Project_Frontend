@@ -10,7 +10,7 @@ import {
 import PlayButton from "./PlayButton";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store";
-import { playAlbum } from "@/features/audioplayer/playerSlice";
+import { initializeQueue, playAlbum } from "@/features/audioplayer/playerSlice";
 import { CirclePlus, EllipsisVertical, Heart } from "lucide-react";
 import { Dropdown, MenuProps } from "antd";
 import { Link } from "react-router";
@@ -48,13 +48,13 @@ const CardSongs = ({ songItem, songs }: { songItem: Song, songs: Song[] }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { currentIndex } = useSelector((state: RootState) => state.player);
 
-  const { accountAlbums,user } = useSelector((state: RootState) => state.auth);
+  const { accountAlbums,user , isAuthenticated } = useSelector((state: RootState) => state.auth);
 
 
 
   const handleClickPlaySong = () => {
     if (songs) {
-      dispatch(playAlbum({ songs: songs, startIndex: currentIndex }));
+      // dispatch(initializeQueue( songs ));
     }
   };
 
@@ -113,9 +113,9 @@ const CardSongs = ({ songItem, songs }: { songItem: Song, songs: Song[] }) => {
         <div className="mt-3">
           <div className="flex justify-between mb-2">
             <h3 className="font-medium mb-2 truncate">{songItem?.name}</h3>
-            <Dropdown menu={{ items }} trigger={['click']}>
+           {isAuthenticated && <Dropdown menu={{ items }} trigger={['click']}>
               <EllipsisVertical />
-            </Dropdown>
+            </Dropdown>}
           </div>
           <div className="flex gap-3">
             {songItem?.song_singers.map((singer: any) => (

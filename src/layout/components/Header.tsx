@@ -1,4 +1,4 @@
-import { Link } from 'react-router'; // Sửa import
+import { Link, useNavigate } from 'react-router'; // Sửa import
 import { FaSpotify, FaHome } from "react-icons/fa";
 import { IoSearch } from "react-icons/io5";
 import { IoIosNotifications } from "react-icons/io";
@@ -10,10 +10,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getInitials } from '@/utils';
 import { User } from '@/types';
 import { Dropdown, MenuProps } from 'antd';
+import { fetchSearchSongs } from '@/features/songs/songSlice';
+import { useRef, useState } from 'react';
 
 const Header = () => {
     const dispatch = useDispatch<AppDispatch>()
     const { user, isAuthenticated } = useSelector((state: RootState) => state.auth)
+
+    const navigate = useNavigate();
+
+    const [value,setValue] = useState("")
 
     const items: MenuProps['items'] = [
         {
@@ -25,7 +31,7 @@ const Header = () => {
         },
         {
             label: (
-                user?.role.name === "Admin" && <Link to={"/admin"}>to Admin</Link>
+                user?.role?.name === "Admin" && <Link to={"/admin"}>to Admin</Link>
             ),
             key: '1',
         },
@@ -33,10 +39,22 @@ const Header = () => {
             type: 'divider',
         },
         {
-            label: <Link to="/login">Logout</Link>,
+            label: <Link to="/login">Đăng xuất</Link>,
             key: '3',
         },
     ];
+
+    const handleSearch =  async (e:any) => {
+        const inputValue = e.target.value;
+        setValue(inputValue)
+        setTimeout(() => {
+            navigate(`/search/?search=${encodeURIComponent(inputValue)}`);
+            if(inputValue === ""){
+                navigate(`/`);
+            }
+        }, 500);
+       
+    } 
 
     return (
         <div className='p-2 px-8 border border-zinc-900'>
@@ -48,14 +66,14 @@ const Header = () => {
                 </div>
 
                 <div className='flex items-center gap-2'>
-                    <Link to="/" className="bg-zinc-900 text-white rounded-full w-10 h-10 flex items-center justify-center hover:text-green-400">
+                    <Link to="/" onClick={()=>setValue("")} className="bg-zinc-900 text-white rounded-full w-10 h-10 flex items-center justify-center hover:text-green-400">
                         <FaHome className="text-2xl" />
                     </Link>
 
                     <div>
                         <div className='flex items-center h-12 w-sm border-2 rounded-3xl px-3 border-zinc-900 bg-zinc-900'>
                             <IoSearch className='text-2xl text-zinc-400' />
-                            <Input className='border-0 shadow-none font-medium bg-transparent text-white placeholder:text-zinc-400'
+                            <Input autoComplete='off' value={value} onChange={(e)=>handleSearch(e)} className='border-0 shadow-none font-medium bg-transparent text-white placeholder:text-zinc-400'
                                 placeholder="Tìm kiếm..." />
                         </div>
                     </div>
@@ -97,8 +115,8 @@ const RightHeader = ({ isLogIn, user, items }: RightHeaderProps) => {
                 </div>
             ) : (
                 <>
-                    <Link to="/register" className='text-xl font-medium'>Đăng ký</Link>
-                    <Button className='transition-all duration-300 ease-out rounded-3xl h-11 bg-black text-white text-xl hover:scale-110 hover:bg-black hover:cursor-pointer'>
+                    <Link to="/register" className='textlg font-medium hover:scale-110 transition-all'>Đăng ký</Link>
+                    <Button className='transition-all duration-300 ease-out rounded-3xl h-11 bg-zinc-900 text-white text-lg hover:scale-110 hover:bg-zinc-800 hover:cursor-pointer transition-all'>
                         <Link to="/login">Đăng nhập</Link>
                     </Button>
                 </>

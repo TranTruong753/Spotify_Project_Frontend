@@ -5,7 +5,7 @@ import { FaGoogle } from "react-icons/fa"
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '@/app/store'
 import { getAlbumsFavorite, getAlbumsUser, login } from '@/features/accounts/authSlice'
-import { useNavigate } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 
 const LoginPage = () => {
     const dispatch = useDispatch<AppDispatch>()
@@ -89,9 +89,9 @@ const LoginPage = () => {
 
                             <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                                 Don’t have an account yet?{' '}
-                                <a href="#" className="font-medium text-primary-600 hover:underline dark:text-primary-500">
+                                <Link to="/register" className="font-medium text-primary-600 hover:underline dark:text-primary-500">
                                     Sign up
-                                </a>
+                                </Link>
                             </p>
                         </form>
                     </div>

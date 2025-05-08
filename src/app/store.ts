@@ -3,7 +3,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import albumsReducer from "@/features/albums/albumsSlice";
 import artistsReducer from "@/features/artists/artistsSlice";
 import songReducer from "@/features/songs/songSlice"
-import audioPlayerReducer from "@/features/audioplayer/audioPlayerSlice";
+
 import playerReducer from "@/features/audioplayer/playerSlice";
 import authReducer from "@/features/accounts/authSlice";
 
@@ -12,7 +12,6 @@ export const store = configureStore({
     albums: albumsReducer,
     artists: artistsReducer,
     songs: songReducer,
-    audioPlayer: audioPlayerReducer,
     player: playerReducer, 
     auth: authReducer
   },

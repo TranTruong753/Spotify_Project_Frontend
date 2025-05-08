@@ -7,7 +7,6 @@ interface AudioPlayerState {
   volume: number;
   duration: number;
 }
-
 const initialState: AudioPlayerState = {
   currentSongId: null,
   isPlaying: false,

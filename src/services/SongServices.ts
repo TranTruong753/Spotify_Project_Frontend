@@ -152,3 +152,16 @@ export const deleteSong = async (id: number): Promise<Song> => {
   }
 };
 
+
+export const searchSong = async (key:string | null): Promise<SongApiResponse> => {
+  try {
+    const response = await axios.get<SongApiResponse>(
+      `${API_URL}/songs/?search=${key}`
+    );
+    console.log("searchSong", response.data);
+    return response.data;
+  } catch (error: any) {
+    console.error("searchSong error:", error);
+    throw new Error(error.response?.data?.detail || 'Failed to update album');
+  }
+} 

@@ -1,4 +1,4 @@
-import { Music } from 'lucide-react'
+import { Dot, Music } from 'lucide-react'
 import React, { useState } from 'react'
 import { HomeIcon, Library, MessageCircle } from "lucide-react";
 import { useEffect } from "react";
@@ -10,18 +10,16 @@ import { IoSearch } from "react-icons/io5";
 import { Input } from '@/components/ui/input';
 import { FaPlus } from "react-icons/fa";
 import ModalCreateAlbumUser from './ModalCreateAlbumUser';
-import { Album } from '@/types';
+import { Album, User } from '@/types';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/app/store';
 
 const LeftSidebar = () => {
     const [isLoading, setIsLoading] = useState(false)
 
-    const [data, setData] = useState<number | null>(0)
-
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const { albums, isAuthenticated, accountAlbums } = useSelector(
+    const { albums, isAuthenticated, accountAlbums, user } = useSelector(
 		(state: RootState) => state.auth
 	);
 
@@ -49,10 +47,10 @@ const LeftSidebar = () => {
                     </Button>}
                 </div>
 
-                <div className='my-2'> 
-                    {/* Search */}
+                {/* <div className='my-2'> 
+            
                     <div className='flex items-center border rounded px-2 border-zinc-400'>
-                        {/* icon */}
+               
                         <span>
                             <IoSearch className='text-2xl text-(--border)' />
                         </span>
@@ -60,7 +58,7 @@ const LeftSidebar = () => {
                         <Input placeholder="Tìm kiếm trong thư viện" className="border-0 shadow-none font-medium placeholder:text-(--border)" />
 
                     </div>
-                </div>
+                </div> */}
 
                 <ScrollArea className='h-[calc(100vh-300px)]'>
                     <div className='space-y-2'>
@@ -74,7 +72,7 @@ const LeftSidebar = () => {
                         )}
 
                         {accountAlbums && accountAlbums.map((accountAlbum)=>(
-                                <CardUser  key={accountAlbum.id} album={accountAlbum}/>
+                                <CardUser  key={accountAlbum.id} album={accountAlbum} user={user}/>
                         ))}
                     </div>
                 </ScrollArea>
@@ -88,7 +86,8 @@ const LeftSidebar = () => {
     )
 }
 type CardFavouriteProps = {
-    album: Album
+    album: Album,
+    user?: User | null,
 };
 
 const CardFavourite = ({album}:CardFavouriteProps) => {
@@ -111,12 +110,12 @@ const CardFavourite = ({album}:CardFavouriteProps) => {
     )
 }
 
-const CardUser = ({album}:CardFavouriteProps) => {
+const CardUser = ({album, user}:CardFavouriteProps) => {
     return (
         <Link
         to={`/album-user/${album.id}`}
       
-        className='transition-all duration-300 ease-in-out p-2 hover:bg-zinc-950 rounded-md flex items-center gap-3 group cursor-pointer'
+        className='bg-zinc-900 transition-all duration-300 ease-in-out p-2 hover:bg-zinc-950 rounded-md flex items-center gap-3 group cursor-pointer'
     >
         <img
             src={album.img_url}
@@ -126,6 +125,7 @@ const CardUser = ({album}:CardFavouriteProps) => {
 
         <div className='flex-1 min-w-0 hidden md:block'>
             <p className='text-md font-medium truncate text-zinc-300'>{album.name}</p>
+            <p className='flex text-sm font-light truncate text-zinc-300'>danh sách phát  <Dot /> {user && user.full_name} </p>
         </div>
     </Link>
     )

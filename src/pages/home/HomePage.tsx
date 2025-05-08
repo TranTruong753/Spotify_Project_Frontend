@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '@/app/store'
 import { fetchAlbums } from '@/features/albums/albumsSlice'
 import { fetchSongs } from '@/features/songs/songSlice'
-import { playAlbum } from '@/features/audioplayer/playerSlice'
+import { initializeQueue } from '@/features/audioplayer/playerSlice'
 import SectionGridAlbums from './components/SectionGridAlbums'
 
 
@@ -17,12 +17,14 @@ const HomePage = () => {
   const { list:listAlbum, loading: loadingAlbum } = useSelector((state: RootState) => state.albums)
 
   const { list: listSong, loading: loadingSong } = useSelector((state: RootState) => state.songs)
+
+
   
-  // useEffect(() => {
-  //   // Gọi chỉ 1 lần khi component mount
-  //   dispatch(playAlbum({ songs: listSong }));
+  useEffect(() => {
+    // Gọi chỉ 1 lần khi component mount
+    dispatch(initializeQueue(listSong));
   
-  // }, [dispatch,listSong]); // hoặc thêm `yourSongList` nếu nó là biến
+  }, [dispatch,listSong]); // hoặc thêm `yourSongList` nếu nó là biến
 
 
   useEffect(() => {

@@ -3,7 +3,7 @@ import { ChartAreaInteractive } from "@/components/chart-area-interactive"
 import { DataTable } from "@/components/data-table"
 import { SectionCards } from "@/components/section-cards"
 
-const HomePageAdmin = () => {
+const DashBoardPageAdmin = () => {
   return (
     <>
       <SectionCards />
@@ -14,4 +14,4 @@ const HomePageAdmin = () => {
   )
 }
 
-export default HomePageAdmin
+export default DashBoardPageAdmin

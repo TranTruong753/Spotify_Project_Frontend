@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction, ThunkDispatch } from '@reduxjs/toolkit'
-import { deleteSong, getAllSongs, postSong } from '@/services/SongServices'
+import { deleteSong, getAllSongs, postSong, searchSong } from '@/services/SongServices'
 import { SongApiResponse, Song } from '@/types'
 import { patchSong } from '@/services/SongServices';
 
@@ -50,11 +50,26 @@ export const deleteSongs = createAsyncThunk<number, { id: number }>(
 );
 
 
+// SEARCH 
+export const fetchSearchSongs = createAsyncThunk<SongApiResponse, {key: string | null}>(
+  'songs/fetchSearchSongs',
+  async ({key}) => {
+    const res = await searchSong(key);
+    return {
+      results: res.results,  // Mảng album
+      count: res.count,      // Tổng số album
+    };
+  }
+);
+
+
+
 interface SongsState {
   list: Song[]
   loading: boolean
   error: string | null
   count: number
+  listSearch: Song[]
 }
 
 const initialState: SongsState = {
@@ -62,6 +77,7 @@ const initialState: SongsState = {
   loading: false,
   error: null,
   count: 0,
+  listSearch: []
 }
 
 const songSlice = createSlice({
@@ -86,10 +102,24 @@ const songSlice = createSlice({
         state.error = action.error.message || 'Failed to fetch albums'
       })
 
-      // .addCase(createSong.fulfilled, (state, action) => {
-      //   state.list.push(action.payload)
-      //   state.count += 1;
-      // })
+      .addCase(fetchSearchSongs.pending, (state) => {
+        state.loading = true
+      })
+
+      .addCase(fetchSearchSongs.fulfilled, (state, action) => {
+        // Cập nhật đúng state.list và state.count
+        state.listSearch = action.payload.results;  // Chỉ lấy results để lưu vào list
+     
+        state.loading = false;
+      })
+
+      .addCase(fetchSearchSongs.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.error.message || 'Failed to fetch albums'
+      })
+
+
+     
       .addCase(deleteSongs.fulfilled, (state, action) => {
         state.list = state.list.filter(song => song.id !== action.payload);
         state.count -= 1;
@@ -98,3 +128,4 @@ const songSlice = createSlice({
 })
 
 export default songSlice.reducer
+
