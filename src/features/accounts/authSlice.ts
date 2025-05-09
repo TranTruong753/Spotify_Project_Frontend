@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { getAlbumFavorite, getAlbumUser, getAllAlbumByIdUser, getSongsFavoriteUser, loginAccount, postAlbumUser, postAlbumUserSong, postSongFavoriteUser } from '@/services/AuthenticateServices'
 import { Album, Artist, Song, User, Video } from '@/types';
+import { getFriends, getRequestsMakeFriends } from '@/services/FriendsServices';
+
 
 
 export const login = createAsyncThunk(
@@ -90,6 +92,28 @@ export const addSongInFavoriteUser = createAsyncThunk<listSongFavorite, FormData
   return res;
 });
 
+export const fetchListFriend = createAsyncThunk(
+  'auth/fetchListFriend',
+  async () => { // Chỉ truyền id thay vì đối tượng { id: number }
+
+    const response = await getFriends(); // Truyền id vào hàm
+    return response;
+
+
+  }
+);
+
+
+export const fetchListRequestMakeFriend = createAsyncThunk(
+  'auth/fetchListRequestMakeFriend',
+  async () => { // Chỉ truyền id thay vì đối tượng { id: number }
+
+    const response = await getRequestsMakeFriends(); // Truyền id vào hàm
+    return response;
+
+  }
+);
+
 
 interface AuthState {
   user: User | null
@@ -104,11 +128,20 @@ interface AuthState {
   loading: boolean
   listAccount: User[],
   listSongFavorite: listSongFavorite[],
+  listFriend: User[],
+  listRequestMakeFiend: listRequestMakeFiend[],
+}
+
+interface listRequestMakeFiend {
+  id: number
+  created_at: string;
+  sender: User;
+  status: string
 }
 
 interface listSongFavorite {
-  id: number ;
-  song:  Song 
+  id: number;
+  song: Song
 }
 
 interface AlbumCustom {
@@ -128,7 +161,7 @@ interface AlbumAccount {
 interface UserSong {
   id: number,
   song: SongCustom,
-	created_at: string;
+  created_at: string;
 
 }
 
@@ -139,10 +172,10 @@ interface SongCustom {
   video: Video,
   song_singers: ArtistCustom[]
   audio_url: string;
-	img_url: string;
-	duration: number;
-	lyrics: string;
-	genre: string;
+  img_url: string;
+  duration: number;
+  lyrics: string;
+  genre: string;
   created_at: string;
 }
 
@@ -163,6 +196,9 @@ const initialState: AuthState = {
   loading: false,
   listAccount: [],
   listSongFavorite: [],
+  listFriend: [],
+  listRequestMakeFiend: []
+
 }
 
 
@@ -234,17 +270,44 @@ const authSlice = createSlice({
       })
       .addCase(fetchMusicFavoriteUserById.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || "Failed to fetch album";
+        state.error = action.error.message || "Failed to fetch song";
+      })
+
+      .addCase(fetchListFriend.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchListFriend.fulfilled, (state, action) => {
+        state.loading = false;
+        state.listFriend = action.payload;
+      })
+      .addCase(fetchListFriend.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Failed to fetch fetchListFriend";
+      })
+
+      .addCase(fetchListRequestMakeFriend.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchListRequestMakeFriend.fulfilled, (state, action) => {
+        state.loading = false;
+        state.listRequestMakeFiend = action.payload;
+      })
+      .addCase(fetchListRequestMakeFriend.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Failed to fetch fetchListRequestMakeFriend";
       })
 
 
 
-        .addCase(createAlbumUser.fulfilled, (state, action) => {
+
+      .addCase(createAlbumUser.fulfilled, (state, action) => {
         state.accountAlbums.push(action.payload)
       })
 
-        
-}
+
+  }
 })
 
 export const { logout } = authSlice.actions

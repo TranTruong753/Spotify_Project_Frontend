@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button';
 
 const FriendsActivity = () => {
     const [user, setUser] = useState(true)
+    const { listFriend } = useSelector((state: RootState) => state.auth)
+
     return (
         <>
 
@@ -23,53 +25,51 @@ const FriendsActivity = () => {
                 {!user && <LoginPrompt />}
 
                 <ScrollArea className='flex-1'>
-                    <div className='p-4 space-y-4 '>
-                        {true && (
-                            <div
-                                className='cursor-pointer hover:bg-accent p-3 rounded-md transition-colors group bg-zinc-950'
-                            >
-                                <div className='flex items-start gap-3'>
-                                    <div className='relative'>
-                                        <Avatar className='size-10 border border-zinc-900 '>
-                                            <AvatarImage src="/avatars/avatar1.jpg" alt="" />
-                                            <AvatarFallback>{ }</AvatarFallback>
-                                        </Avatar>
-                                        <div
-                                            className={`absolute bottom-0 right-0 h-3 w-3 rounded-full border border-zinc-900  
-                                               ${true ? "bg-green-500" : "bg-zinc-500"}
-                                               `}
-                                            aria-hidden='true'
-                                        />
-                                    </div>
+                    <div className='p-4 space-y-2 '>
 
-                                    <div className='flex-1 min-w-0'>
-                                        <div className='flex justify-between'>
-                                            <div className='flex items-center gap-2'>
-                                                <span className='font-medium text-sm text-zinc-300'>SKY</span>
-                                                {true && <Music className='size-3.5 text-emerald-400 shrink-0' />}
-                                            </div>
-                                            <Button size={"icon"} className=' bg-zinc-900 text-white rounded-full cursor-pointer hover:bg-black hover:scale-105'>
-                                                <MessageCircleMore />
-                                            </Button>
+                        {
+                            listFriend && listFriend.map((friend) => (
+
+                                <div key={friend.id}
+                                    className='cursor-pointer hover:bg-accent p-3 rounded-md transition-colors group bg-zinc-950'
+                                >
+                                    <div className='flex items-start gap-3'>
+                                        <div className='relative'>
+                                            <Avatar className='size-10 border border-zinc-900 '>
+                                                <AvatarImage src="/public/avatars/avatar.png" alt="" />
+
+                                            </Avatar>
+
                                         </div>
 
-                                        {/* {true ? (
-                                            <div className='mt-1'>
-                                                <div className='mt-1 text-sm text-zinc-300 font-medium truncate'>
-                                                    em của ngày hôm qua
-
+                                        <div className='flex-1 min-w-0'>
+                                            <div className='flex justify-between'>
+                                                <div className='flex items-center gap-2'>
+                                                    <span className='font-medium text-sm text-zinc-300'>{friend.full_name}</span>
+                                                    {true && <Music className='size-3.5 text-emerald-400 shrink-0' />}
                                                 </div>
-                                                <div className='text-xs text-zinc-400 truncate'>
-                                                    Sơn Tung MTP
-
-                                                </div>
+                                                <Link to={`/chat/${friend.id}`}>
+                                                    <Button size={"icon"} className=' bg-zinc-900 text-white rounded-full cursor-pointer hover:bg-black hover:scale-105'>
+                                                        <MessageCircleMore />
+                                                    </Button>
+                                                </Link>
                                             </div>
-                                        ) : (
-                                            <div className='mt-1 text-xs text-zinc-400'>Idle</div>
-                                        )} */}
+
+
+                                        </div>
                                     </div>
                                 </div>
-                            </div>)}
+
+                            ))
+                        }
+
+
+
+
+
+
+
+
 
                     </div>
 
@@ -95,6 +95,9 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet"
+import { useSelector } from 'react-redux';
+import { RootState } from '@/app/store';
+import { Link } from 'react-router';
 
 export function SheetDemo() {
     return (

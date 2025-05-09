@@ -2,11 +2,12 @@ import axios from "axios";
 // API base URL
 
 
-const API_URL = "";
+
+const API_URL = import.meta.env.VITE_API_URL as string;
 
 // Lấy token từ localStorage hoặc cookie
-const getAccessToken = () => localStorage.getItem("access");
-const getRefreshToken = () => localStorage.getItem("refresh");
+const getAccessToken = () => localStorage.getItem("accessToken");
+const getRefreshToken = () => localStorage.getItem("refreshToken");
 
 // Tạo một instance của Axios
 const axiosInstance = axios.create({

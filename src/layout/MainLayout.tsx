@@ -10,17 +10,20 @@ import AudioPlayer from './components/AudioPlayer';
 import { ConfigProvider } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/app/store';
-import { getAlbumsFavorite, getAlbumsUser } from '@/features/accounts/authSlice';
+import { fetchListFriend, fetchListRequestMakeFriend, getAlbumsFavorite, getAlbumsUser } from '@/features/accounts/authSlice';
 const MainLayout = () => {
   const [isMobile, setIsMobile] = useState(false);
 
   const dispatch = useDispatch<AppDispatch>();
   const user = useSelector((state: RootState) => state.auth.user);
+  
 
   useEffect(() => {
     if (user && user.id) {
       dispatch(getAlbumsFavorite(user.id));
       dispatch(getAlbumsUser(user.id));
+      dispatch(fetchListFriend())
+      dispatch(fetchListRequestMakeFriend())
     }
   }, [user, dispatch]);
 
@@ -74,6 +77,7 @@ const MainLayout = () => {
 
         <PlaybackControls />
       </div>
+   
       </ConfigProvider>
     </>
   )

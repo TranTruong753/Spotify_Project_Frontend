@@ -16,6 +16,8 @@ const SearchPage = () => {
     const { listSearch, loading, listAccountSearch } = useSelector((state: RootState) => state.songs)
 
     const { isPlaying, currentSong } = useSelector((state: RootState) => state.player)
+
+    const { user, listFriend } = useSelector((state: RootState) => state.auth)
     // const [isLoading, setIsLoading] = useState(false)
 
     const [showMusic, setShowMusic] = useState(true)
@@ -58,34 +60,44 @@ const SearchPage = () => {
 
                     <div className='relative space-y-8 '>
                         <div className='flex gap-2 w-full sticky top-0 bg-zinc-900 pt-5 z-10'>
-                            <Button onClick={() => ShowAll()} shape="round" color={ showMusic && showUser ? 'default' : undefined} variant='solid'
-                              
-                               
-                                >
+                            <Button onClick={() => ShowAll()} shape="round" color={showMusic && showUser ? 'default' : undefined} variant='solid'
+
+
+                            >
                                 <span className='font-semibold'>Tất cả</span>
                             </Button>
 
-                            <Button onClick={() => ShowMucis()} shape="round" color={ showMusic && !showUser  ? 'default' : undefined}  variant='solid'>
+                            <Button onClick={() => ShowMucis()} shape="round" color={showMusic && !showUser ? 'default' : undefined} variant='solid'>
                                 <span className='font-semibold'>Bài hát</span>
                             </Button>
 
-                            <Button onClick={() => ShowUser()} shape="round"  color={ showUser && !showMusic  ? 'default' : undefined} variant='solid'>
+                            <Button onClick={() => ShowUser()} shape="round" color={showUser && !showMusic ? 'default' : undefined} variant='solid'>
                                 <span className='font-semibold'>Hồ sơ</span>
                             </Button>
 
                         </div>
                         <div className='' >
-                            {showMusic && <TableMusic songs={listSearch} isPlaying={isPlaying} currentSong={currentSong}></TableMusic>}
+                            {showMusic && (listSearch.length > 0 ?
+                                <TableMusic songs={listSearch} isPlaying={isPlaying} currentSong={currentSong}></TableMusic> : "Không tìm thấy bài nhạc nào"
+                            )
+                            }
 
-                            {showUser && <ForUser users={listAccountSearch}></ForUser>}
+                            {showUser &&
+                                (
+                                    listAccountSearch.length > 0 ? <ForUser myFriend={listFriend} myUser={user} users={listAccountSearch}></ForUser> : "Không tìm thấy hồ sơ người dung"
+                                )
+                            }
 
                         </div>
 
-                        {loading && <Flex gap="middle" className='justify-center absolute top-1/2 right-1/2 translate-x-1/2'>
-                            <Spin tip="Loading" size="large" className='text-green-500'>
+                        {loading && (
+                            <Flex gap="middle" className='justify-center absolute top-1/2 right-1/2 translate-x-1/2'>
+                                <Spin tip="Loading" size="large" className='text-green-500'>
+                                    <div style={{ padding: 20 }} /> {/* Thêm phần tử con để Spin hiển thị tip */}
+                                </Spin>
+                            </Flex>
+                        )}
 
-                            </Spin>
-                        </Flex>}
                     </div>
                 </div>
             </ScrollArea>

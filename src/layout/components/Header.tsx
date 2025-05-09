@@ -9,40 +9,32 @@ import { AppDispatch, RootState } from '@/app/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { getInitials } from '@/utils';
 import { User } from '@/types';
-import { Dropdown, MenuProps } from 'antd';
+import { Dropdown, Divider, Space, theme, Button as ButtonAtd } from 'antd';
 import { fetchSearchSongs } from '@/features/songs/songSlice';
 import { useRef, useState } from 'react';
+import { DownOutlined } from '@ant-design/icons';
+
+import type { MenuProps } from 'antd';
+import { responseRequestsMakeFriends } from '@/services/FriendsServices';
+import { fetchListFriend, fetchListRequestMakeFriend } from '@/features/accounts/authSlice';
 
 const Header = () => {
     const dispatch = useDispatch<AppDispatch>()
-    const { user, isAuthenticated } = useSelector((state: RootState) => state.auth)
+    const { user, isAuthenticated, listRequestMakeFiend } = useSelector((state: RootState) => state.auth)
 
     const navigate = useNavigate();
 
-    const [value,setValue] = useState("")
+    const [value, setValue] = useState("")
 
-    // const items: MenuProps['items'] = [
-    //     {
-    //         label: (
-    //             user?.full_name
-    //         ),
-    //         key: '0',
-    //         disabled: true,
-    //     },
-    //     {
-    //         label: (
-    //             user?.role?.name === "Admin" && <Link to={"/admin"}>to Admin</Link>
-    //         ),
-    //         key: '1',
-    //     },
-    //     {
-    //         type: 'divider',
-    //     },
-    //     {
-    //         label: <Link to="/login">Đăng xuất</Link>,
-    //         key: '3',
-    //     },
-    // ];
+    // const items2: MenuProps['items'] = listRequestMakeFiend.map((item) => ({
+    //     key: item.id.toString(), // hoặc `${item.id}`
+    //     label: (
+    //         <div className="flex justify-between items-center gap-2">
+    //             <span>{item.sender.full_name}</span>
+    //             <button onClick={() => handleAccept(item.id)} className="text-blue-500 text-sm">Chấp nhận</button>
+    //         </div>
+    //     ) // hoặc item.sender.username / item.sender.email
+    // }));
 
     const items: MenuProps['items'] = [
         {
@@ -53,35 +45,37 @@ const Header = () => {
             disabled: true,
         },
         ...(user?.role?.name === "Admin"
-          ? [
-              {
-                label: (
-                    <Link to={"/admin"}>to Admin</Link>
-                ),
-                key: '1',
-              },
+            ? [
+                {
+                    label: (
+                        <Link to={"/admin"}>to Admin</Link>
+                    ),
+                    key: '1',
+                },
             ]
-          : []),
-          {
+            : []),
+        {
             type: 'divider',
         },
         {
             label: <Link to="/login">Đăng xuất</Link>,
             key: '3',
         },
-      ];
+    ];
 
-    const handleSearch =  async (e:any) => {
+   
+
+    const handleSearch = async (e: any) => {
         const inputValue = e.target.value;
         setValue(inputValue)
         setTimeout(() => {
             navigate(`/search/?search=${encodeURIComponent(inputValue)}`);
-            if(inputValue === ""){
+            if (inputValue === "") {
                 navigate(`/`);
             }
         }, 500);
-       
-    } 
+
+    }
 
     return (
         <div className='p-2 px-8 border border-zinc-900'>
@@ -93,14 +87,14 @@ const Header = () => {
                 </div>
 
                 <div className='flex items-center gap-2'>
-                    <Link to="/" onClick={()=>setValue("")} className="bg-zinc-900 text-white rounded-full w-10 h-10 flex items-center justify-center hover:text-green-400">
+                    <Link to="/" onClick={() => setValue("")} className="bg-zinc-900 text-white rounded-full w-10 h-10 flex items-center justify-center hover:text-green-400">
                         <FaHome className="text-2xl" />
                     </Link>
 
                     <div>
                         <div className='flex items-center h-12 w-sm border-2 rounded-3xl px-3 border-zinc-900 bg-zinc-900'>
                             <IoSearch className='text-2xl text-zinc-400' />
-                            <Input autoComplete='off' value={value} onChange={(e)=>handleSearch(e)} className='border-0 shadow-none font-medium bg-transparent text-white placeholder:text-zinc-400'
+                            <Input autoComplete='off' value={value} onChange={(e) => handleSearch(e)} className='border-0 shadow-none font-medium bg-transparent text-white placeholder:text-zinc-400'
                                 placeholder="Tìm kiếm..." />
                         </div>
                     </div>
@@ -120,15 +114,77 @@ type RightHeaderProps = {
     items: MenuProps['items'];
 };
 
+
+
 const RightHeader = ({ isLogIn, user, items }: RightHeaderProps) => {
+
+    const { token } = theme.useToken();
+
+      const dispatch = useDispatch<AppDispatch>()
+
+    const {  listRequestMakeFiend } = useSelector((state: RootState) => state.auth)
+
+     const handleMakeFriend = async (id: number, action : string) => {
+        await responseRequestsMakeFriends(id,action)
+        await dispatch(fetchListFriend())
+        await dispatch(fetchListRequestMakeFriend())
+    }
+
+
+    const contentStyle: React.CSSProperties = {
+        backgroundColor: token.colorBgElevated,
+        borderRadius: token.borderRadiusLG,
+        boxShadow: token.boxShadowSecondary,
+        padding: 8,
+    };
+
     return (
         <>
             {isLogIn ? (
                 <div className='flex gap-4 items-center'>
                     <div className='flex gap-2 items-center'>
-                        <div className="cursor-pointer hover:animate-wiggle">
-                            <IoIosNotifications className="text-3xl" />
-                        </div>
+                        <Dropdown
+                            placement="bottomRight"
+                            trigger={['click']}
+                            dropdownRender={() => (
+                                <div style={contentStyle}>
+                                   { listRequestMakeFiend.length > 0 && (
+                                  <>
+                                        <div className="font-medium">Lời mời kết bạn</div>
+                                      <Divider style={{ margin: '4px 0' }} />
+                                  </>
+                                )}
+                                   
+                                    {listRequestMakeFiend.length > 0 ?  listRequestMakeFiend.map((item) => (
+                                        <div key={item.id} className="mb-2">
+                                            <div className="font-medium text-sm">{item.sender.full_name}</div>
+                                            <Space className="mt-1">
+                                                <ButtonAtd size="small" type="primary" onClick={()=>handleMakeFriend(item.sender.id,"accepted")}>Chấp nhận</ButtonAtd>
+                                                <ButtonAtd size="small" danger  onClick={()=>handleMakeFriend(item.sender.id,"declined")}>Từ chối</ButtonAtd>
+                                            </Space>
+                                            <Divider style={{ margin: '8px 0' }} />
+                                        </div>
+                                    )) : <div className="font-medium">
+                                        Không có thông báo nào
+                                         <Divider style={{ margin: '2px 0' }} />
+                                    </div>
+                                
+                                }
+                                </div>
+                            )}
+                        >
+                            {/* 👇 Dùng span hoặc div có display inline-block để tránh lệch */}
+                            <span className="inline-block cursor-pointer hover:animate-wiggle">
+                                <IoIosNotifications className="text-3xl" />
+                            </span>
+                        </Dropdown>
+
+
+                        {/* <Dropdown menu={{ items: items2 }} trigger={['click']}  >
+                            <div className="cursor-pointer hover:animate-wiggle">
+                                <IoIosNotifications className="text-3xl" />
+                            </div>
+                        </Dropdown> */}
 
                         <Dropdown menu={{ items }} trigger={['click']}>
                             <div className='w-15 h-15 flex items-center justify-center bg-zinc-800 rounded-full cursor-pointer'>
