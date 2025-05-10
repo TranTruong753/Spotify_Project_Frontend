@@ -6,6 +6,7 @@ import { Avatar, Card, message } from 'antd';
 import avatar from '/avatars/avatar.png'
 import { makeFriends } from '@/services/FriendsServices';
 import { Link } from 'react-router';
+import { getInitials } from '@/utils';
 
 
 interface Users {
@@ -38,7 +39,7 @@ const ForUser = ({ users, myUser, myFriend }: Users) => {
 }
 
 
-const CardUser = ({ user, messageApi, myUser }: { user: User, messageApi: any , myUser:User | null}) => {
+const CardUser = ({ user, messageApi, myUser }: { user: User, messageApi: any, myUser: User | null }) => {
 
 
 
@@ -50,7 +51,7 @@ const CardUser = ({ user, messageApi, myUser }: { user: User, messageApi: any , 
       messageApi.success("Gửi lời mời kết bạn thành công");
     } catch (error: any) {
       console.log("error", error);
-     messageApi.error(error.message || "Đã xảy ra lỗi");
+      messageApi.error(error.message || "Đã xảy ra lỗi");
 
 
     }
@@ -67,18 +68,28 @@ const CardUser = ({ user, messageApi, myUser }: { user: User, messageApi: any , 
         actions={[
 
           <>
-          { myUser ? <a onClick={() => handleMakeFriend(user)}>  <UserAddOutlined key="user" /> Kết bạn</a>
-          : <Link to={"/login"}>Đăng nhập để kết bạn</Link>  
-        }
-          
+            {myUser ? <a  onClick={() => handleMakeFriend(user)}>  <UserAddOutlined key="user" /> Kết bạn</a>
+              : <Link to={"/login"}>Đăng nhập để kết bạn</Link>
+            }
+
           </>
-         
+
           // <EllipsisOutlined key="ellipsis" />,
         ]}
       >
-        <img src={avatar} alt="" />
-        <div className='flex items-center flex-col pt-2'>
-          <p className='text-xl font-medium truncate text-zinc-300'>{user.full_name}</p>
+        {/* <img src={avatar} alt="" /> */}
+
+        <div className='flex items-center flex-col'>
+          <Avatar
+
+            // className="bg-blue-500!"
+            size={{ xxl: 150 }}
+            className={"bg-zinc-800! select-none"}
+          >
+
+            <p className='text-5xl'>{getInitials(user.full_name)}</p>
+          </Avatar>
+          <p className='pt-3 text-xl font-medium truncate text-zinc-300'>{user.full_name}</p>
           <p className='flex text-sm font-light truncate text-zinc-300'>{user.email} </p>
         </div>
 

@@ -66,7 +66,7 @@ export default function ButtonLoginGoogle() {
             locale="vi"
             // disabled={loading}
 
-            // width="300"
+            // width="100"
             type="standard"
             // flow="implicit"
             cancel_on_tap_outside={true}

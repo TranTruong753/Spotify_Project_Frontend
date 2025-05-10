@@ -76,7 +76,7 @@ export const fetchMusicFavoriteUserById = createAsyncThunk(
 
 
 // POST a new album user
-export const createAlbumUser = createAsyncThunk<Album, FormData>('auth/createAlbumUser', async (formData) => {
+export const createAlbumUser = createAsyncThunk<AlbumAccount, FormData>('auth/createAlbumUser', async (formData) => {
   const res = await postAlbumUser(formData);
   return res;
 });
@@ -122,7 +122,7 @@ interface AuthState {
   isAuthenticated: boolean,
   error: any | null,
   albums: AlbumCustom[],
-  accountAlbums: Album[],
+  accountAlbums: AlbumAccount[],
   accountSongs: Song[],
   currentAlbumUser: AlbumAccount | null
   loading: boolean

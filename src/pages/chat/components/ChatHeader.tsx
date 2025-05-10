@@ -1,8 +1,9 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
 import { User } from "@/types";
+import { Avatar } from "antd";
 
 
-const ChatHeader = ({friend}:{friend: User}) => {
+const ChatHeader = ({ friend }: { friend: User }) => {
 	// const { selectedUser, onlineUsers } = useChatStore();
 
 	// if (!selectedUser) return null;
@@ -10,8 +11,13 @@ const ChatHeader = ({friend}:{friend: User}) => {
 	return (
 		<div className='p-4 border-b border-zinc-800'>
 			<div className='flex items-center gap-3'>
-				<Avatar>
-					<AvatarImage src={'/avatars/avatar.png'} />
+				<Avatar
+
+					// className="bg-blue-500!"
+					className={"bg-zinc-800! select-none"}
+				>
+
+					{friend.full_name.split(" ").reverse().join(" ").charAt(0)}
 				</Avatar>
 				<div>
 					<h2 className='font-medium'>{friend.full_name}</h2>

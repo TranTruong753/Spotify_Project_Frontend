@@ -45,3 +45,6 @@ export const generateRoomName = (id1:number, id2:number) => {
   const sortedIds = [id1, id2].sort(); // sắp xếp tăng dần
   return `${sortedIds[0]}_${sortedIds[1]}`; // tạo room name
 }
+
+
+  

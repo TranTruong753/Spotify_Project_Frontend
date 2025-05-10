@@ -109,7 +109,7 @@ const ModalSong: React.FC<ModalSongProps> = ({
       if (data === null) {
         await dispatch(createSong(formData)).unwrap(); // unwrap để bắt lỗi dễ
       }else if(data){
-        await dispatch(updateSong({id:data.id, formData})).unwrap
+        await dispatch(updateSong({id:data.id, formData})).unwrap()
           console.log("formData",values)
       }
       //   else if (data) {

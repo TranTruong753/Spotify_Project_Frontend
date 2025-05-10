@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+// import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { HeadphonesIcon, Music, Users, MessageCircleMore } from "lucide-react";
 
@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/app/store';
 import { Link } from 'react-router';
 import { generateRoomName } from '@/utils';
+import { Avatar } from 'antd';
 
 const FriendsList = () => {
 
@@ -26,52 +27,62 @@ const FriendsList = () => {
                     </div>
                 </div>
 
-               {!isAuthenticated ? <LoginPrompt /> :
-                 <ScrollArea className='flex-1'>
-                    <div className='p-4 space-y-2 '>
+                {!isAuthenticated ? <LoginPrompt /> :
+                    <ScrollArea className='flex-1'>
+                        <div className='p-4 space-y-2 '>
 
-                        {
-                            listFriend && listFriend.map((friend) => (
+                            {
+                                listFriend && listFriend.map((friend) => (
 
-                                <div key={friend.id}
-                                    className='cursor-pointer hover:bg-accent p-3 rounded-md transition-colors group bg-zinc-950'
-                                >
-                                    <div className='flex items-start gap-3'>
-                                        <div className='relative'>
-                                            <Avatar className='size-10 border border-zinc-900 '>
-                                                <AvatarImage src="/public/avatars/avatar.png" alt="" />
+                                    <div key={friend.id}
+                                        className='cursor-pointer hover:bg-accent p-3 rounded-md transition-colors group bg-zinc-950'
+                                    >
+                                        <div className='flex items-start gap-3'>
+                                            <div className='relative'>
+                                                {/* <Avatar className='size-10 border border-zinc-900 '>
+                                                <AvatarImage src="/avatars/avatar.png" alt="" />
 
-                                            </Avatar>
+                                            </Avatar> */}
 
-                                        </div>
+                                                <Avatar
 
-                                        <div className='flex-1 min-w-0'>
-                                            <div className='flex justify-between'>
-                                                <div className='flex items-center gap-2'>
-                                                    <span className='font-medium text-sm text-zinc-300'>{friend.full_name}</span>
-                                                    {true && <Music className='size-3.5 text-emerald-400 shrink-0' />}
-                                                </div>
-                                                <Link to={`/chat`} 
-                                                state={{ roomName: user && generateRoomName(user?.id,friend.id) ,
-                                                    myFriend: friend
-
-                                                }}
-                                                
+                                                    // className="bg-blue-500!"
+                                                    className={"bg-zinc-800! select-none"}
                                                 >
-                                                    <Button size={"icon"} className=' bg-zinc-900 text-white rounded-full cursor-pointer hover:bg-black hover:scale-105'>
-                                                        <MessageCircleMore />
-                                                    </Button>
-                                                </Link>
+
+                                                  	{friend.full_name.split(" ").reverse().join(" ").charAt(0)}
+                                                </Avatar>
+
+
                                             </div>
 
+                                            <div className='flex-1 min-w-0'>
+                                                <div className='flex justify-between'>
+                                                    <div className='flex items-center gap-2'>
+                                                        <span className='font-medium text-sm text-zinc-300'>{friend.full_name}</span>
+                                                        {true && <Music className='size-3.5 text-emerald-400 shrink-0' />}
+                                                    </div>
+                                                    <Link to={`/chat`}
+                                                        state={{
+                                                            roomName: user && generateRoomName(user?.id, friend.id),
+                                                            myFriend: friend
 
+                                                        }}
+
+                                                    >
+                                                        <Button size={"icon"} className=' bg-zinc-900 text-white rounded-full cursor-pointer hover:bg-black hover:scale-105'>
+                                                            <MessageCircleMore />
+                                                        </Button>
+                                                    </Link>
+                                                </div>
+
+
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                            ))
-                        }
-
+                                ))
+                            }
 
 
 
@@ -80,13 +91,14 @@ const FriendsList = () => {
 
 
 
-                    </div>
 
-                </ScrollArea>  }
-        
+                        </div>
+
+                    </ScrollArea>}
 
 
-            </div> 
+
+            </div>
 
         </>
     )

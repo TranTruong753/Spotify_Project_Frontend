@@ -1,18 +1,20 @@
 
 import { useEffect, useState } from "react";
-import UsersList from "./components/UsersList";
+
 
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
+
 import MessageInput from "./components/MessageInput";
 import ChatHeader from "./components/ChatHeader";
 import { useLocation } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store";
-import useSocket from "@/hooks/use-socket";
+
 import React from "react";
 import { addMessage, fetchChatHistory, sendMessage, setMessages } from "@/features/chats/chatSlice";
-import { Socket } from "socket.io-client";
+
+import { Avatar } from "antd";
+import { cn } from "@/lib/utils";
 
 const formatTime = (date: string) => {
 	return new Date(date).toLocaleTimeString("en-US", {
@@ -98,7 +100,7 @@ const ChatPage = () => {
 
 				{/* chat message */}
 				<div className='flex flex-col h-full'>
-				
+
 
 					<>
 						<ChatHeader friend={myFriend} />
@@ -110,15 +112,24 @@ const ChatPage = () => {
 								{messages.map((message, index) => (
 									<div
 										key={index}
-										className={`flex items-start gap-3 ${message.sender === user?.email ? "flex-row-reverse" : ""
+										className={`flex items-start gap-3  ${message.sender === user?.email ? "flex-row-reverse" : ""
 											}`}
 									>
-										<Avatar className='size-8'>
+										{/* <Avatar className='size-8'>
 											<AvatarImage
 												src={
 													"/avatars/avatar.png"
 												}
 											/>
+											<AvatarFallback>{myFriend.full_name[0]}</AvatarFallback>
+										</Avatar> */}
+										<Avatar
+									
+											// className="bg-blue-500!"
+											className={cn(message.sender === user?.email ? "bg-green-500!" : "bg-zinc-800!","select-none")}
+										>
+
+											{message.sender === user?.email ? user.full_name.split(" ").reverse().join(" ").charAt(0)  :myFriend.full_name.split(" ").reverse().join(" ").charAt(0)}
 										</Avatar>
 
 										<div

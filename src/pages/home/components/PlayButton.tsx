@@ -18,7 +18,7 @@ const PlayButton = ({ song, handleClickPlaySong }:
 
   const handleClick = () => {
    
-    // if(handleClickPlaySong) handleClickPlaySong()
+    if(handleClickPlaySong) handleClickPlaySong()
       console.log("0 isPlaying",isPlaying)
       console.log("0 isCurrentSong",isCurrentSong)
       if (isCurrentSong ) {

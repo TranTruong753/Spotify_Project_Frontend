@@ -121,9 +121,9 @@ export const deleteSongFavoriteUser = async (id:number) => {
 }
 
 
-  export const postAlbumUser = async (album: FormData): Promise<Album> => {
+  export const postAlbumUser = async (album: FormData)=> {
     try {
-      const response = await axios.post<Album>(
+      const response = await axios.post(
         `${API_URL}/album-users/`,
         album,
         {

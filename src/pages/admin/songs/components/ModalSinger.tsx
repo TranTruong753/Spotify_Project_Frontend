@@ -78,7 +78,7 @@ const ModalSong: React.FC<ModalSongProps> = ({
                 await handleAddSingerForSong(item, values)
             })
 
-            await dispatch(fetchSongs()).unwrap
+            await dispatch(fetchSongs()).unwrap()
         
             // setIsModalOpen(false);
             // form.resetFields();

@@ -21,7 +21,7 @@ const MessageInput = ({handleSendMessage,newMessage,setNewMessage}: MessageInput
 					value={newMessage}
 					onChange={(e) => setNewMessage(e.target.value)}
 					className='bg-zinc-800 border-none'
-					// onKeyDown={(e) => e.key === "Enter" && handleSend()}
+					onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
 				/>
 
 				<Button size={"icon"} disabled={!newMessage.trim()} onClick={()=>handleSendMessage()}>
