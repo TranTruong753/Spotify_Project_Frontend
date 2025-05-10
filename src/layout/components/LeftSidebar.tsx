@@ -47,36 +47,31 @@ const LeftSidebar = () => {
                     </Button>}
                 </div>
 
-                {/* <div className='my-2'> 
-            
-                    <div className='flex items-center border rounded px-2 border-zinc-400'>
-               
-                        <span>
-                            <IoSearch className='text-2xl text-(--border)' />
-                        </span>
-
-                        <Input placeholder="Tìm kiếm trong thư viện" className="border-0 shadow-none font-medium placeholder:text-(--border)" />
-
-                    </div>
-                </div> */}
+           
 
                 <ScrollArea className='h-[calc(100vh-300px)]'>
-                    <div className='space-y-2'>
-                        <CardFavouriteSong></CardFavouriteSong>
+                    {isAuthenticated ? <div className='space-y-2'>
+                      
+                       <CardFavouriteSong></CardFavouriteSong>
 
-                        {isLoading ? (
-                            <p>Loading</p>
-                        ) : (
+                         {
+                         albums && 
+                         (
                             albums.map((album) => (
                                 <CardFavourite key={album.id} album={album.album} />
                             ))
 
                         )}
 
-                        {accountAlbums && accountAlbums.map((accountAlbum) => (
+                        {
+                        accountAlbums && accountAlbums.map((accountAlbum) => (
                             <CardUser key={accountAlbum.id} album={accountAlbum} user={user} />
-                        ))}
-                    </div>
+                        ))
+                        }
+                        
+                    </div> : 
+                          <Link to={"/"}><p className='text-sm text-zinc-400'>Đăng nhập để xem thư viện nhạc của bạn ngay bay giờ</p></Link>
+                    }
                 </ScrollArea>
             </div>
 

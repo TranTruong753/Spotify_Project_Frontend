@@ -25,6 +25,7 @@ type SectionGridProps = {
 };
 
 const SectionGrid = ({ songs, title, isLoading }: SectionGridProps) => {
+
   return (
     <div className="mb-8">
       <div className="flex items-center justify-between mb-4">
@@ -57,7 +58,7 @@ const CardSongs = ({ songItem, songs }: { songItem: Song, songs: Song[] }) => {
   useEffect(() => {
     if (listSongFavorite) {
       const isFav = listSongFavorite.some((item) => item.song.id === songItem.id);
-     // console.log("isFav:", isFav);
+     console.log("isFav:", isFav);
       setIsSongFavorite(isFav);
     }
   }, [listSongFavorite]);
@@ -128,15 +129,18 @@ const CardSongs = ({ songItem, songs }: { songItem: Song, songs: Song[] }) => {
         //  await dispatch(removeFavoriteSong(favoriteItem.id)).unwrap();
         console.log("hàm xóa",favoriteItem)
         await deleteSongFavoriteUser(favoriteItem.id)
+        setIsSongFavorite(false)
        
         }
       } else {
         // Thêm vào danh sách yêu thích
         await handleAddSong();
+        setIsSongFavorite(true)
       
     
       }
-      if(user)  await dispatch(fetchMusicFavoriteUserById(user.id))
+      if(user) { console.log("huihi")
+        await dispatch(fetchMusicFavoriteUserById(user.id))}
     
     } catch (error) {
      
@@ -188,11 +192,16 @@ const CardSongs = ({ songItem, songs }: { songItem: Song, songs: Song[] }) => {
             </Dropdown>}
           </div>
           <div className="flex gap-3">
-            {songItem?.song_singers.map((singer: any) => (
+            {songItem?.song_singers.length > 0 ? songItem?.song_singers.map((singer: any) => (
               <p key={singer.artist.id} className="text-sm text-zinc-400 truncate">
                 {singer.artist.name}
               </p>
-            ))}
+            )): 
+              <p className="text-sm text-zinc-400 truncate">
+               Chưa có
+              </p>
+            
+            }
           </div>
         </div>
       </CardContent>

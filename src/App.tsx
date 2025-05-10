@@ -30,17 +30,31 @@ function App() {
   return (
     <>
       <Routes>
-        <Route element={
-          <RequireAuth>
-            <MainLayout />
-          </RequireAuth>
-          }>
+        <Route element={<MainLayout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/album/:id" element={<AlbumDetailPage />} />
-          <Route path="/chat/:id" element={<ChatPage />} />
-          <Route path="/album-user/:id" element={<AlbumUserDetailPage />} />
+          <Route path="/chat" element={
+            <RequireAuth>
+              <ChatPage />
+            </RequireAuth>
+          }
+          />
+          <Route path="/album-user/:id" element={
+
+            <RequireAuth>
+              <AlbumUserDetailPage />
+            </RequireAuth>
+          }
+          />
           <Route path="/search" element={<SearchPage />} />
-          <Route path="/music-favorite" element={<SongFavorite />} />
+          <Route path="/music-favorite" element={
+            
+            <RequireAuth>
+             <SongFavorite />
+            </RequireAuth>
+          } 
+            
+          />
         </Route>
 
         <Route path="/login" element={<LoginPage />}></Route>
@@ -48,17 +62,17 @@ function App() {
 
         <Route element={
           <RequireAuth user={user}>
-             <AdminLayout />
-         </RequireAuth>
-        
-          }>
+            <AdminLayout />
+          </RequireAuth>
+
+        }>
           <Route path="/admin/" element={<DashBoardPageAdmin />} />
           {/* <Route path='/admin/dashboard'  element={<HomePageAdmin/>} /> */}
           <Route path="/admin/user" element={<UserPageAdmin />} />
           <Route path="/admin/music" element={<SongPageAdmin />} />
           <Route path="/admin/singer" element={<SingerPageAdmin />} />
           <Route path="/admin/album" element={<AlbumPageAdmin />} />
-         
+
         </Route>
       </Routes>
     </>

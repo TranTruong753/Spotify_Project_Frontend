@@ -71,11 +71,11 @@ const CardAlbums = ({ albumItem }: { albumItem: Album }) => {
         />
         <div className="mt-3">
           <h3 className="font-medium mb-2 truncate">{albumItem?.name}</h3>
-          <div className="flex gap-3">
+          {/* <div className="flex gap-3">
             <p className="text-sm text-zinc-400 truncate">
               {albumItem.description}
             </p>
-          </div>
+          </div> */}
         </div>
       </CardContent>
 

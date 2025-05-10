@@ -6,6 +6,7 @@ import songReducer from "@/features/songs/songSlice"
 
 import playerReducer from "@/features/audioplayer/playerSlice";
 import authReducer from "@/features/accounts/authSlice";
+import chatReducer from "@/features/chats/chatSlice"
 
 export const store = configureStore({
   reducer: {
@@ -13,7 +14,8 @@ export const store = configureStore({
     artists: artistsReducer,
     songs: songReducer,
     player: playerReducer, 
-    auth: authReducer
+    auth: authReducer,
+    chat : chatReducer
   },
 });
 

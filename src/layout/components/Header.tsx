@@ -16,7 +16,7 @@ import { DownOutlined } from '@ant-design/icons';
 
 import type { MenuProps } from 'antd';
 import { responseRequestsMakeFriends } from '@/services/FriendsServices';
-import { fetchListFriend, fetchListRequestMakeFriend } from '@/features/accounts/authSlice';
+import { fetchListFriend, fetchListRequestMakeFriend, logout } from '@/features/accounts/authSlice';
 
 const Header = () => {
     const dispatch = useDispatch<AppDispatch>()
@@ -35,6 +35,11 @@ const Header = () => {
     //         </div>
     //     ) // hoặc item.sender.username / item.sender.email
     // }));
+
+
+    const handleLogOut = async() => {
+        await dispatch(logout())
+    }
 
     const items: MenuProps['items'] = [
         {
@@ -58,7 +63,7 @@ const Header = () => {
             type: 'divider',
         },
         {
-            label: <Link to="/login">Đăng xuất</Link>,
+            label: <Link to="/login" onClick={()=>handleLogOut()}>Đăng xuất</Link>,
             key: '3',
         },
     ];
@@ -68,13 +73,24 @@ const Header = () => {
     const handleSearch = async (e: any) => {
         const inputValue = e.target.value;
         setValue(inputValue)
-        setTimeout(() => {
+        // setTimeout(() => {
+        //     navigate(`/search/?search=${encodeURIComponent(inputValue)}`);
+        //     if (inputValue === "") {
+        //         navigate(`/`);
+        //     }
+        // }, 500);
+
+    }
+
+    const keyDown = async(e: any) => {
+        const inputValue = e.target.value;
+        console.log("e",inputValue)
+         setTimeout(() => {
             navigate(`/search/?search=${encodeURIComponent(inputValue)}`);
             if (inputValue === "") {
                 navigate(`/`);
             }
         }, 500);
-
     }
 
     return (
@@ -94,7 +110,7 @@ const Header = () => {
                     <div>
                         <div className='flex items-center h-12 w-sm border-2 rounded-3xl px-3 border-zinc-900 bg-zinc-900'>
                             <IoSearch className='text-2xl text-zinc-400' />
-                            <Input autoComplete='off' value={value} onChange={(e) => handleSearch(e)} className='border-0 shadow-none font-medium bg-transparent text-white placeholder:text-zinc-400'
+                            <Input autoComplete='off' value={value} onChange={(e) => handleSearch(e)} onKeyUp={(e)=>keyDown(e)} className='border-0 shadow-none font-medium bg-transparent text-white placeholder:text-zinc-400'
                                 placeholder="Tìm kiếm..." />
                         </div>
                     </div>

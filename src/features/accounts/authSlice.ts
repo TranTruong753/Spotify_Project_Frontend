@@ -15,7 +15,7 @@ export const login = createAsyncThunk(
       if (err.response && err.response.data) {
         return rejectWithValue(err.response.data)
       }
-      return rejectWithValue({ detail: 'Something went wrong' })
+      return rejectWithValue({ detail: 'Đã có lỗi xảy ra!' })
     }
   }
 )
@@ -217,6 +217,13 @@ const authSlice = createSlice({
       localStorage.removeItem('refreshToken')
       localStorage.removeItem('user');
 
+    },
+    setUserFromGoogle: (state, action) => {
+      const { user, accessToken, refreshToken } = action.payload;
+      state.user = user;
+      state.accessToken = accessToken;
+      state.refreshToken = refreshToken;
+      state.isAuthenticated = true;
     }
   },
   extraReducers: (builder) => {
@@ -310,5 +317,5 @@ const authSlice = createSlice({
   }
 })
 
-export const { logout } = authSlice.actions
+export const { logout, setUserFromGoogle } = authSlice.actions
 export default authSlice.reducer

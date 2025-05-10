@@ -3,9 +3,14 @@ import { Input } from "@/components/ui/input";
 import { Send } from "lucide-react";
 import { useState } from "react";
 
-const MessageInput = () => {
-	const [newMessage, setNewMessage] = useState("");
+interface MessageInput {
+	handleSendMessage:  () => void 
+	newMessage: string;
+	setNewMessage: (data: string) => void;
+}
 
+const MessageInput = ({handleSendMessage,newMessage,setNewMessage}: MessageInput) => {
+	
 
 
 	return (
@@ -19,7 +24,7 @@ const MessageInput = () => {
 					// onKeyDown={(e) => e.key === "Enter" && handleSend()}
 				/>
 
-				<Button size={"icon"} disabled={!newMessage.trim()}>
+				<Button size={"icon"} disabled={!newMessage.trim()} onClick={()=>handleSendMessage()}>
 					<Send className='size-4' />
 				</Button>
 			</div>

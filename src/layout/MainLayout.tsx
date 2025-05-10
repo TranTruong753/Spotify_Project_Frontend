@@ -3,7 +3,7 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/componen
 import { theme as antdTheme } from 'antd';
 import { Outlet } from "react-router";
 import LeftSidebar from './components/LeftSidebar';
-import FriendsActivity from './components/FriendsActivity';
+import FriendsActivity from './components/FriendsList';
 import PlaybackControls from './components/PlaybackControls';
 import Header from './components/Header';
 import AudioPlayer from './components/AudioPlayer';

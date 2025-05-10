@@ -1,11 +1,18 @@
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import UsersList from "./components/UsersList";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import MessageInput from "./components/MessageInput";
 import ChatHeader from "./components/ChatHeader";
+import { useLocation } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/app/store";
+import useSocket from "@/hooks/use-socket";
+import React from "react";
+import { addMessage, fetchChatHistory, sendMessage, setMessages } from "@/features/chats/chatSlice";
+import { Socket } from "socket.io-client";
 
 const formatTime = (date: string) => {
 	return new Date(date).toLocaleTimeString("en-US", {
@@ -15,95 +22,125 @@ const formatTime = (date: string) => {
 	});
 };
 
+
 const ChatPage = () => {
-	// const { user } = useUser();
-	// const { messages, selectedUser, fetchUsers, fetchMessages } = useChatStore();
+	const location = useLocation();
+	const roomName = location.state?.roomName;
+	const myFriend = location.state?.myFriend;
 
-	// useEffect(() => {
-	// 	if (user) fetchUsers();
-	// }, [fetchUsers, user]);
+	const bottomRef = React.useRef<HTMLDivElement | null>(null);
 
-	// useEffect(() => {
-	// 	if (selectedUser) fetchMessages(selectedUser.clerkId);
-	// }, [selectedUser, fetchMessages]);
 
-	// console.log({ messages });
+
+	const dispatch = useDispatch<AppDispatch>();
+	const [socket, setSocket] = useState<WebSocket>();
+	const { messages } = useSelector((state: RootState) => state.chat);
+	const { user } = useSelector((state: RootState) => state.auth);
+	const [message, setMessage] = useState('');
+
+	// Lắng nghe WebSocket và hiển thị tin nhắn
+	// const socketRef = useSocket(roomName);
+	// console.log("messages", messages)
+
+	React.useEffect(() => {
+		bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+	}, [messages]);
+
+
+	useEffect(() => {
+		if (roomName) {
+			const socket = new WebSocket(`ws://127.0.0.1:8000/ws/chat/${roomName}/`);
+			setSocket(socket);
+
+			socket.onmessage = (event) => {
+				const data = JSON.parse(event.data);
+				console.log("onmessage", JSON.parse(event.data));
+				dispatch(addMessage({
+					sender: data.sender,
+					message: data.message,
+					timestamp: new Date().toISOString()
+				}));
+
+
+			};
+			return () => {
+				socket.close();
+			};
+		}
+
+	}, [roomName])
+
+
+	// Lấy lịch sử chat khi component mount
+	React.useEffect(() => {
+		dispatch(fetchChatHistory(roomName));
+	}, [dispatch, roomName]);
+
+	const handleSendMessage = () => {
+
+		if (socket?.readyState === WebSocket.OPEN && user) {
+			console.log("có socket")
+			dispatch(sendMessage(socket, roomName, user?.email, message));
+			setMessage('');
+		}
+
+		else {
+			console.warn('Socket is not ready');
+		}
+	};
+
 
 	return (
 		<main className='h-full rounded-lg bg-gradient-to-b from-zinc-900 to-zinc-900 overflow-hidden'>
-		
-			<div className='grid lg:grid-cols-[300px_1fr] grid-cols-[80px_1fr] h-[calc(100vh-180px)]'>
-				<UsersList />
+
+			<div className=' h-[calc(100vh-180px)]'>
+
 
 				{/* chat message */}
 				<div className='flex flex-col h-full'>
-					{true ? (
-						<>
-							<ChatHeader />
+				
 
-							{/* Messages */}
-							<ScrollArea className='h-[calc(100vh-340px)]'>
-								<div className='p-4 space-y-4'>
-                                <div
-											
-											className={`flex items-start gap-3`}
-										>
-											<Avatar className='size-8'>
-												<AvatarImage
-													src={
-														"../../../public/avatars/avatar1.jpg"
-													}
-												/>
-											</Avatar>
+					<>
+						<ChatHeader friend={myFriend} />
 
-											<div
-												className={`rounded-lg p-3 max-w-[70%]
-                                                    bg-zinc-950
-												`}
-											>
-												<p className='text-sm'>Hi Cửu phan</p>
-												<span className='text-xs text-zinc-300 mt-1 block'>
-													11:38
-												</span>
-											</div>
-										</div>
-									{/* {messages.map((message) => (
-										<div
-											key={message._id}
-											className={`flex items-start gap-3 ${
-												message.senderId === user?.id ? "flex-row-reverse" : ""
+						{/* Messages */}
+						<ScrollArea className='h-[calc(100vh-340px)]'>
+							<div className='p-4 space-y-4'>
+
+								{messages.map((message, index) => (
+									<div
+										key={index}
+										className={`flex items-start gap-3 ${message.sender === user?.email ? "flex-row-reverse" : ""
 											}`}
-										>
-											<Avatar className='size-8'>
-												<AvatarImage
-													src={
-														message.senderId === user?.id
-															? user.imageUrl
-															: selectedUser.imageUrl
-													}
-												/>
-											</Avatar>
+									>
+										<Avatar className='size-8'>
+											<AvatarImage
+												src={
+													"/avatars/avatar.png"
+												}
+											/>
+										</Avatar>
 
-											<div
-												className={`rounded-lg p-3 max-w-[70%]
-													${message.senderId === user?.id ? "bg-green-500" : "bg-zinc-800"}
+										<div
+											className={`rounded-lg p-3 max-w-[70%]
+													${message.sender === user?.email ? "bg-green-500" : "bg-zinc-800"}
 												`}
-											>
-												<p className='text-sm'>{message.content}</p>
-												<span className='text-xs text-zinc-300 mt-1 block'>
-													{formatTime(message.createdAt)}
-												</span>
-											</div>
+										>
+											<p className='text-sm'>{message.message}</p>
+											<span className='text-xs text-zinc-300 mt-1 block'>
+												{formatTime(message.timestamp)}
+											</span>
 										</div>
-									))} */}
-								</div>
-							</ScrollArea>
+									</div>
+								))}
+								{/* Phần tử trống để cuộn tới */}
+								<div ref={bottomRef}></div>
+							</div>
+						</ScrollArea>
 
-							<MessageInput />
-						</>
-					) : (
-						<NoConversationPlaceholder />
-					)}
+						<MessageInput handleSendMessage={handleSendMessage} newMessage={message} setNewMessage={setMessage} />
+					</>
+
 				</div>
 			</div>
 		</main>

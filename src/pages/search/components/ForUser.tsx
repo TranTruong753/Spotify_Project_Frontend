@@ -5,6 +5,7 @@ import { EditOutlined, EllipsisOutlined, SettingOutlined, UserAddOutlined } from
 import { Avatar, Card, message } from 'antd';
 import avatar from '/avatars/avatar.png'
 import { makeFriends } from '@/services/FriendsServices';
+import { Link } from 'react-router';
 
 
 interface Users {
@@ -29,7 +30,7 @@ const ForUser = ({ users, myUser, myFriend }: Users) => {
       {contextHolder}
       <div className='flex flex-wrap pt-5 gap-4'>
         {filteredUsers?.map((user) => (
-          <CardUser key={user.id} user={user} messageApi={messageApi} />
+          <CardUser key={user.id} user={user} myUser={myUser} messageApi={messageApi} />
         ))}
       </div>
     </>
@@ -37,7 +38,7 @@ const ForUser = ({ users, myUser, myFriend }: Users) => {
 }
 
 
-const CardUser = ({ user, messageApi }: { user: User, messageApi: any }) => {
+const CardUser = ({ user, messageApi, myUser }: { user: User, messageApi: any , myUser:User | null}) => {
 
 
 
@@ -65,7 +66,13 @@ const CardUser = ({ user, messageApi }: { user: User, messageApi: any }) => {
         hoverable={true}
         actions={[
 
-          <a onClick={() => handleMakeFriend(user)}>  <UserAddOutlined key="user" /> Kết bạn</a>
+          <>
+          { myUser ? <a onClick={() => handleMakeFriend(user)}>  <UserAddOutlined key="user" /> Kết bạn</a>
+          : <Link to={"/login"}>Đăng nhập để kết bạn</Link>  
+        }
+          
+          </>
+         
           // <EllipsisOutlined key="ellipsis" />,
         ]}
       >

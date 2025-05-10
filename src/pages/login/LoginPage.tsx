@@ -1,11 +1,12 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import logo from '@/assets/logo/spotify.png'
 import { Button } from '@/components/ui/button'
 import { FaGoogle } from "react-icons/fa"
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '@/app/store'
-import { getAlbumsFavorite, getAlbumsUser, login } from '@/features/accounts/authSlice'
+import { login } from '@/features/accounts/authSlice'
 import { Link, useNavigate } from 'react-router'
+import ButtonLoginGoogle from './ButtonLoginGoogle'
 
 const LoginPage = () => {
     const dispatch = useDispatch<AppDispatch>()
@@ -16,15 +17,21 @@ const LoginPage = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate('/')
+        }
+    }, [])
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         const result = await dispatch(login({ email, password }))
         if (login.fulfilled.match(result)) {
-            const userId = result.payload.user?.id; // Lấy id của user từ response
-            if (userId) {
-              dispatch(getAlbumsFavorite(userId)); // Gọi getAlbumsFavorite sau khi login thành công
-              dispatch(getAlbumsUser(userId));
-            }
+            // const userId = result.payload.user?.id; // Lấy id của user từ response
+            // if (userId) {
+            //     dispatch(getAlbumsFavorite(userId)); // Gọi getAlbumsFavorite sau khi login thành công
+            //     dispatch(getAlbumsUser(userId));
+            // }
             navigate('/') // hoặc điều hướng đến dashboard
         }
     }
@@ -39,11 +46,12 @@ const LoginPage = () => {
                 <div className="w-full bg-gray-50 rounded-lg shadow dark:border sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
                     <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
                         <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                            Sign in to your account
+                            Đăng nhập vào tài khoản của bạn
                         </h1>
-                        <Button variant="outline" className="w-full mb-7 h-12">
+                        {/* <Button variant="outline" className="w-full mb-7 h-12">
                             <FaGoogle /> Login with Google
-                        </Button>
+                        </Button> */}
+                        <ButtonLoginGoogle></ButtonLoginGoogle>
                         <span className="block w-full border border-gray-200"></span>
 
                         <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
@@ -65,6 +73,7 @@ const LoginPage = () => {
                                     Password
                                 </label>
                                 <input
+                                    autoComplete="current-password"
                                     type="password"
                                     id="password"
                                     placeholder="••••••••"
@@ -84,13 +93,13 @@ const LoginPage = () => {
                                 type="submit"
                                 className="w-full cursor-pointer bg-zinc-950 text-white hover:bg-primary-700 font-medium rounded-lg text-sm px-5 py-2.5"
                             >
-                                Sign in
+                                Đăng nhập
                             </Button>
 
                             <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                                Don’t have an account yet?{' '}
+                                Bạn chưa có tài khoản?{' '}
                                 <Link to="/register" className="font-medium text-primary-600 hover:underline dark:text-primary-500">
-                                    Sign up
+                                    Đăng kí
                                 </Link>
                             </p>
                         </form>
@@ -98,6 +107,9 @@ const LoginPage = () => {
                 </div>
             </div>
         </section>
+        // <>
+        //     <ButtonLoginGoogle></ButtonLoginGoogle>
+        // </>
     )
 }
 
