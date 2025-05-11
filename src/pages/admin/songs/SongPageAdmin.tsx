@@ -134,7 +134,7 @@ const SongPageAdmin: React.FC = () => {
       title: 'Name',
       dataIndex: 'audio_url',
       key: 'audio_url',
-      render: (record) => (
+      render: (_,record) => (
         <>
           <AudioPlayer
             nameSong={record.name}
