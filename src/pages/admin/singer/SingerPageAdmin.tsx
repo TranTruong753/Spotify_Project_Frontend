@@ -4,7 +4,7 @@ import { Link } from "react-router";
 
 import { Space, Table, Breadcrumb, Empty, Button, Popconfirm, Input } from "antd";
 
-import type { PopconfirmProps, TableProps } from "antd";
+import type { TableProps } from "antd";
 
 import { useDispatch, useSelector } from "react-redux";
 import { deleteArtist, fetchArtists } from "@/features/artists/artistsSlice";
