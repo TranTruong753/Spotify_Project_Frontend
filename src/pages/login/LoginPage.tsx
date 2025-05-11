@@ -11,10 +11,11 @@ const LoginPage = () => {
     const dispatch = useDispatch<AppDispatch>()
     const navigate = useNavigate()
 
-    const { error, isAuthenticated } = useSelector((state: RootState) => state.auth)
+    const { error, isAuthenticated, loading } = useSelector((state: RootState) => state.auth)
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+
 
     useEffect(() => {
         if (isAuthenticated) {
@@ -25,18 +26,21 @@ const LoginPage = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         const result = await dispatch(login({ email, password }))
+
         if (login.fulfilled.match(result)) {
             // const userId = result.payload.user?.id; // Lấy id của user từ response
             // if (userId) {
             //     dispatch(getAlbumsFavorite(userId)); // Gọi getAlbumsFavorite sau khi login thành công
             //     dispatch(getAlbumsUser(userId));
             // }
-            navigate('/') // hoặc điều hướng đến dashboard
+            navigate('/', { state: { loginSuccess: true } }); // gửi state
+        
         }
     }
 
     return (
         <section className="bg-zinc-950">
+        
             <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
                 <a href="#" className="flex items-center mb-6 text-2xl font-semibold text-zinc-300">
                     <img className="w-8 h-8 mr-2" src={logo} alt="logo" />
@@ -66,6 +70,9 @@ const LoginPage = () => {
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                 />
+                                <p className="text-sm text-red-500 h-2 mt-2">
+                                    {error && error.email}
+                                </p>
                             </div>
                             <div>
                                 <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
@@ -80,19 +87,33 @@ const LoginPage = () => {
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                 />
+                                <p className="text-sm text-red-500 h-2 mt-2">
+                                    {error && error.detail}
+                                </p>
                             </div>
 
-                            {error && (
-                                <p className="text-sm text-red-500">
-                                    {error.detail || error.message || 'An unknown error occurred.'}
-                                </p>
-                            )}
 
-                            <Button
+
+
+
+                            {/* <Button
                                 type="submit"
                                 className="w-full cursor-pointer bg-zinc-950 text-white hover:bg-primary-700 font-medium rounded-lg text-sm px-5 py-2.5"
                             >
                                 Đăng nhập
+                            </Button> */}
+                            <Button
+                                type="submit"
+                                disabled={loading}
+                                className="w-full flex justify-center items-center gap-2 cursor-pointer bg-zinc-950 text-white hover:bg-primary-700 font-medium rounded-lg text-sm px-5 py-2.5"
+                            >
+                                {loading && (
+                                    <svg className="w-4 h-4 text-white animate-spin" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                                    </svg>
+                                )}
+                                {loading ? "Đang đăng nhập..." : "Đăng nhập"}
                             </Button>
 
                             <p className="text-sm font-light text-gray-500 dark:text-gray-400">

@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router";
 import MainLayout from "@/layout/MainLayout";
 import AdminLayout from "@/layout/AdminLayout";
 import HomePage from "@/pages/home/HomePage";
-import DashBoardPageAdmin from "@/pages/admin/dashboard/DashBoardPageAdmin";
+import HomePageAdmin from "@/pages/admin/home/HomePageAdmin";
 import UserPageAdmin from "@/pages/admin/user/UserPageAdmin";
 import AlbumPageAdmin from "@/pages/admin/album/AlbumPageAdmin";
 import AlbumDetailPage from "@/pages/album/AlbumDetailPage";
@@ -64,7 +64,7 @@ function App() {
           </RequireAuth>
 
         }>
-          <Route path="/admin/" element={<DashBoardPageAdmin />} />
+          <Route path="/admin/" element={<HomePageAdmin />} />
           {/* <Route path='/admin/dashboard'  element={<HomePageAdmin/>} /> */}
           <Route path="/admin/user" element={<UserPageAdmin />} />
           <Route path="/admin/music" element={<SongPageAdmin />} />

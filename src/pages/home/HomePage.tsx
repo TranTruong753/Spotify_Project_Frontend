@@ -9,6 +9,8 @@ import { fetchSongs } from '@/features/songs/songSlice'
 import { initializeQueue } from '@/features/audioplayer/playerSlice'
 import SectionGridAlbums from '@/pages/home/components/SectionGridAlbums'
 import { fetchMusicFavoriteUserById } from '@/features/accounts/authSlice'
+import { useLocation, useNavigate } from 'react-router'
+import { message } from 'antd'
 
 
 const HomePage = () => {
@@ -20,6 +22,17 @@ const HomePage = () => {
   const { list: listSong, loading: loadingSong } = useSelector((state: RootState) => state.songs)
 
   const { user } = useSelector((state: RootState) => state.auth)
+
+  const location = useLocation();
+   const navigate = useNavigate();
+  const [messageApi, contextHolder] = message.useMessage();
+
+   useEffect(() => {
+    if (location.state?.loginSuccess) {
+      messageApi.success('Đăng nhập thành công!');
+      navigate(location.pathname, { replace: true }); // reset state
+    }
+  }, [location.state, location.pathname, messageApi, navigate]);
 
   useEffect(() => {
     const fetchSong = async () => {
@@ -51,6 +64,7 @@ const HomePage = () => {
 
   return (
     <main className='rounded-md overflow-hidden h-full bg-zinc-900 dark:bg-gradient-to-b from-zinc-800 to-zinc-900'>
+       {contextHolder}
       <ScrollArea className='h-[calc(100vh-180px)]'>
         <div className='p-4 sm:p-6'>
           {/* <h1 className='text-2xl sm:text-3xl font-bold mb-6'>Good afternoon</h1> */}

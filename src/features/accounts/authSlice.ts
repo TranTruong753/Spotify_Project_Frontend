@@ -18,6 +18,8 @@ export const login = createAsyncThunk(
   'auth/login',
   async (credentials: { email: string; password: string }, { rejectWithValue }) => {
     try {
+      if (credentials.email.trim() === "") return rejectWithValue({ email: 'Vui lòng nhập email!' })
+      if (credentials.password.trim() === "") return rejectWithValue({ detail: 'Vui lòng nhập mật khẩu!' })
       const response = await loginAccount(credentials)
       return response.data
     } catch (err: any) {
@@ -237,6 +239,11 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(login.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+
       .addCase(login.fulfilled, (state, action) => {
         const { user, access, refresh } = action.payload;
         state.user = user;
@@ -244,6 +251,7 @@ const authSlice = createSlice({
         state.refreshToken = refresh;
         state.isAuthenticated = true;
         state.error = null;
+        state.loading = false;
 
         localStorage.setItem('accessToken', access);
         localStorage.setItem('refreshToken', refresh);
@@ -266,6 +274,7 @@ const authSlice = createSlice({
 
 
       .addCase(login.rejected, (state, action: any) => {
+        state.loading = false
         state.error = action.payload
       })
 

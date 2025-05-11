@@ -1,5 +1,5 @@
 
-const DashBoardPageAdmin = () => {
+const HomePageAdmin = () => {
   return (
     <>
     <div className="min-h-screen bg-black text-white">
@@ -61,5 +61,5 @@ const DashBoardPageAdmin = () => {
   )
 }
 
-export default DashBoardPageAdmin
+export default HomePageAdmin
 
