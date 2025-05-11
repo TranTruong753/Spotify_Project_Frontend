@@ -83,11 +83,11 @@ const CardUser = ({ user, messageApi, myUser }: { user: User, messageApi: any, m
           <Avatar
 
             // className="bg-blue-500!"
-            size={{ xxl: 150 }}
+            size={{ sm:150, md:150,lg:150,xl: 150, xxl: 200 }}
             className={"bg-zinc-800! select-none"}
           >
 
-            <p className='text-5xl'>{getInitials(user.full_name)}</p>
+            <p className='text-5xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl'>{getInitials(user.full_name)}</p>
           </Avatar>
           <p className='pt-3 text-xl font-medium truncate text-zinc-300'>{user.full_name}</p>
           <p className='flex text-sm font-light truncate text-zinc-300'>{user.email} </p>

@@ -1,15 +1,6 @@
-
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import { Link } from "react-router";
 
-import { Space, Table, Tag } from 'antd';
+import { Breadcrumb, Space, Table, Tag } from 'antd';
 import type { TableProps } from 'antd';
 
 interface DataType {
@@ -19,6 +10,15 @@ interface DataType {
   address: string;
   tags: string[];
 }
+
+const items = [
+  {
+    title: <Link to={'/'}>Trang chủ</Link>,
+  },
+  {
+    title: 'Người dùng',
+  },
+]
 
 
 const columns: TableProps<DataType>['columns'] = [
@@ -96,23 +96,13 @@ const data: DataType[] = [
 
 const UserPageAdmin: React.FC = () => {
   return (
-    <div className="px-4">
+    <div className="p-4 sm:py-6">
       <h2 className="px-2 scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0">
-        Quản lý tài khoản
+        Quản lý người dùng 
       </h2>
 
-      <div className="px-5 pt-2">
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink><Link to={"/admin/"}>Dashboard</Link></BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>User</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
+      <div className="px-5 pt-2 flex justify-between">
+        <Breadcrumb items={items}></Breadcrumb>
       </div>
 
       <div className="p-7">

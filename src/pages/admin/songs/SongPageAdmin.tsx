@@ -7,8 +7,8 @@ import { RootState, AppDispatch } from "@/app/store";
 import { useEffect, useMemo, useState } from "react"; // Thêm useState
 import { Artist, Song, Video} from "@/types";
 import { formatDate, parseGenre } from "@/utils";
-import { FaEye } from "react-icons/fa";
-import { FileVideo, Pen, Plus, Trash2 } from "lucide-react";
+
+import { Disc3, FileVideo, Pen, Plus, Trash2 } from "lucide-react";
 import AudioPlayer from "./components/AudioPlayer"
 import ModalSong from "./components/ModalSong";
 
@@ -17,8 +17,7 @@ import {
 } from '@ant-design/icons';
 import ModalUploadVideo from "./components/ModalUploadVideo";
 import ModalSinger from "./components/ModalSinger";
-import { record } from "zod";
-import { deleteSong } from "@/services/SongServices";
+
 
 
 type DataType = Song & {
@@ -29,12 +28,13 @@ type DataType = Song & {
 
 const items = [
   {
-    title: <Link to={'/admin/'}>Dashboard</Link>,
+    title: <Link to={'/'}>Trang chủ</Link>,
   },
   {
-    title: 'Music',
+    title: 'Nhạc',
   },
 ]
+
 
 const confirm: PopconfirmProps['onConfirm'] = (e) => {
   console.log(e);
@@ -293,14 +293,14 @@ const SongPageAdmin: React.FC = () => {
   }
 
   return (
-    <div className="px-4">
+    <div className="p-4 sm:py-6">
       <h2 className="px-2 scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0">
         Quản lý nhạc
       </h2>
 
       <div className="px-5 pt-2 flex justify-between">
         <Breadcrumb items={items}></Breadcrumb>
-        <Button onClick={() => handleOpenModal()}>Thêm nhạc</Button>
+        <Button type="primary" onClick={() => handleOpenModal()}>Thêm nhạc</Button>
       </div>
 
       <div className="p-7">

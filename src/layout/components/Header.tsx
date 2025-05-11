@@ -11,7 +11,7 @@ import { getInitials } from '@/utils';
 import { User } from '@/types';
 import { Dropdown, Divider, Space, theme, Button as ButtonAtd } from 'antd';
 import { fetchSearchSongs } from '@/features/songs/songSlice';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { DownOutlined } from '@ant-design/icons';
 
 import type { MenuProps } from 'antd';
@@ -20,24 +20,14 @@ import { fetchListFriend, fetchListRequestMakeFriend, logout } from '@/features/
 
 const Header = () => {
     const dispatch = useDispatch<AppDispatch>()
-    const { user, isAuthenticated, listRequestMakeFiend } = useSelector((state: RootState) => state.auth)
+    const { user, isAuthenticated } = useSelector((state: RootState) => state.auth)
 
     const navigate = useNavigate();
 
     const [value, setValue] = useState("")
 
-    // const items2: MenuProps['items'] = listRequestMakeFiend.map((item) => ({
-    //     key: item.id.toString(), // hoặc `${item.id}`
-    //     label: (
-    //         <div className="flex justify-between items-center gap-2">
-    //             <span>{item.sender.full_name}</span>
-    //             <button onClick={() => handleAccept(item.id)} className="text-blue-500 text-sm">Chấp nhận</button>
-    //         </div>
-    //     ) // hoặc item.sender.username / item.sender.email
-    // }));
 
-
-    const handleLogOut = async() => {
+    const handleLogOut = async () => {
         await dispatch(logout())
     }
 
@@ -63,12 +53,12 @@ const Header = () => {
             type: 'divider',
         },
         {
-            label: <Link to="/login" onClick={()=>handleLogOut()}>Đăng xuất</Link>,
+            label: <Link to="/login" onClick={() => handleLogOut()}>Đăng xuất</Link>,
             key: '3',
         },
     ];
 
-   
+
 
     const handleSearch = async (e: any) => {
         const inputValue = e.target.value;
@@ -82,10 +72,10 @@ const Header = () => {
 
     }
 
-    const keyDown = async(e: any) => {
+    const keyDown = async (e: any) => {
         const inputValue = e.target.value;
-        console.log("e",inputValue)
-         setTimeout(() => {
+        console.log("e", inputValue)
+        setTimeout(() => {
             navigate(`/search/?search=${encodeURIComponent(inputValue)}`);
             if (inputValue === "") {
                 navigate(`/`);
@@ -110,7 +100,7 @@ const Header = () => {
                     <div>
                         <div className='flex items-center h-12 w-sm border-2 rounded-3xl px-3 border-zinc-900 bg-zinc-900'>
                             <IoSearch className='text-2xl text-zinc-400' />
-                            <Input autoComplete='off' value={value} onChange={(e) => handleSearch(e)} onKeyUp={(e)=>keyDown(e)} className='border-0 shadow-none font-medium bg-transparent text-white placeholder:text-zinc-400'
+                            <Input autoComplete='off' value={value} onChange={(e) => handleSearch(e)} onKeyUp={(e) => keyDown(e)} className='border-0 shadow-none font-medium bg-transparent text-white placeholder:text-zinc-400'
                                 placeholder="Tìm kiếm..." />
                         </div>
                     </div>
@@ -136,12 +126,12 @@ const RightHeader = ({ isLogIn, user, items }: RightHeaderProps) => {
 
     const { token } = theme.useToken();
 
-      const dispatch = useDispatch<AppDispatch>()
+    const dispatch = useDispatch<AppDispatch>()
 
-    const {  listRequestMakeFiend } = useSelector((state: RootState) => state.auth)
+    const { listRequestMakeFiend, accessToken } = useSelector((state: RootState) => state.auth)
 
-     const handleMakeFriend = async (id: number, action : string) => {
-        await responseRequestsMakeFriends(id,action)
+    const handleMakeFriend = async (id: number, action: string) => {
+        await responseRequestsMakeFriends(id, action)
         await dispatch(fetchListFriend())
         await dispatch(fetchListRequestMakeFriend())
     }
@@ -154,6 +144,39 @@ const RightHeader = ({ isLogIn, user, items }: RightHeaderProps) => {
         padding: 8,
     };
 
+    useEffect(() => {
+
+    // console.log("token", accessToken);
+   if(!accessToken) return
+
+    const socket = new WebSocket(
+      `ws://54.89.188.157/ws/friends/?token=${accessToken}`
+    );
+
+    socket.onopen = () => {
+      console.log("WebSocket connected");
+    };
+
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      console.log("socket", data);
+
+      // ví dụ bạn kiểm tra loại thông điệp
+        if(data.action === "new_request"){
+
+            dispatch(fetchListRequestMakeFriend()); // gọi lại API để lấy danh sách mới
+        }
+    };
+
+    socket.onclose = () => {
+      console.log("WebSocket disconnected");
+    };
+
+    return () => {
+      socket.close();
+    };
+  }, [dispatch,accessToken]);
+
     return (
         <>
             {isLogIn ? (
@@ -164,28 +187,28 @@ const RightHeader = ({ isLogIn, user, items }: RightHeaderProps) => {
                             trigger={['click']}
                             dropdownRender={() => (
                                 <div style={contentStyle}>
-                                   { listRequestMakeFiend.length > 0 && (
-                                  <>
-                                        <div className="font-medium">Lời mời kết bạn</div>
-                                      <Divider style={{ margin: '4px 0' }} />
-                                  </>
-                                )}
-                                   
-                                    {listRequestMakeFiend.length > 0 ?  listRequestMakeFiend.map((item) => (
+                                    {listRequestMakeFiend.length > 0 && (
+                                        <>
+                                            <div className="font-medium">Lời mời kết bạn</div>
+                                            <Divider style={{ margin: '4px 0' }} />
+                                        </>
+                                    )}
+
+                                    {listRequestMakeFiend.length > 0 ? listRequestMakeFiend.map((item) => (
                                         <div key={item.id} className="mb-2">
                                             <div className="font-medium text-sm">{item.sender.full_name}</div>
                                             <Space className="mt-1">
-                                                <ButtonAtd size="small" type="primary" onClick={()=>handleMakeFriend(item.sender.id,"accepted")}>Chấp nhận</ButtonAtd>
-                                                <ButtonAtd size="small" danger  onClick={()=>handleMakeFriend(item.sender.id,"declined")}>Từ chối</ButtonAtd>
+                                                <ButtonAtd size="small" type="primary" onClick={() => handleMakeFriend(item.sender.id, "accepted")}>Chấp nhận</ButtonAtd>
+                                                <ButtonAtd size="small" danger onClick={() => handleMakeFriend(item.sender.id, "declined")}>Từ chối</ButtonAtd>
                                             </Space>
                                             <Divider style={{ margin: '8px 0' }} />
                                         </div>
                                     )) : <div className="font-medium">
                                         Không có thông báo nào
-                                         <Divider style={{ margin: '2px 0' }} />
+                                        <Divider style={{ margin: '2px 0' }} />
                                     </div>
-                                
-                                }
+
+                                    }
                                 </div>
                             )}
                         >

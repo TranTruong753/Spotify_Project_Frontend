@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import { Link } from "react-router";
 
-import { Space, Table, Breadcrumb, Empty, Button, Popconfirm } from "antd";
+import { Space, Table, Breadcrumb, Empty, Button, Popconfirm, Input } from "antd";
 
 import type { PopconfirmProps, TableProps } from "antd";
 
@@ -20,15 +20,13 @@ type DataType = Artist & {
 
 const items = [
   {
-    title: <Link to={"/admin/"}>Dashboard</Link>,
+    title: <Link to={'/'}>Trang chủ</Link>,
   },
   {
-    title: "Artists",
+    title: 'Ca Sĩ',
   },
-];
-const confirm: PopconfirmProps["onConfirm"] = (e) => {
-  console.log(e);
-};
+]
+
 
 const cancel: PopconfirmProps["onCancel"] = (e) => {
   console.log(e);
@@ -90,7 +88,41 @@ const SingerPageAdmin: React.FC = () => {
       dataIndex: "name",
       key: "name",
       render: (text) => <a>{text}</a>,
-    },
+      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+        <div style={{ padding: 8 }}>
+          {/* Tùy chỉnh dropdown filter */}
+          <Input
+            autoFocus
+            placeholder="Tìm kiếm theo tên ca sĩ"
+            value={selectedKeys[0]}
+            onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+            onPressEnter={() => confirm()}
+            style={{ marginBottom: 8, display: "block" }}
+          />
+          <Space>
+            <Button
+              type="link"
+              size="small"
+              onClick={() => clearFilters && clearFilters()}
+            >
+              Reset
+            </Button>
+            <Button
+              type="primary"
+              size="small"
+              onClick={() => confirm()}
+            >
+              Tìm
+            </Button>
+          </Space>
+        </div>
+      ),
+
+      onFilter: (value, record) =>
+        (record.name as string).toLowerCase().includes((value as string).toLowerCase()),
+      filterSearch: true,
+    }
+    ,
     {
       title: "Action",
       key: "action",
@@ -109,7 +141,7 @@ const SingerPageAdmin: React.FC = () => {
             title="Delete the artist"
             description="Are you sure to delete this artist?"
             onConfirm={() => handleDeleteAlbum(record)}
-            onCancel={cancel}
+            // onCancel={cancel}
             okText="Yes"
             cancelText="No"
           >
@@ -137,13 +169,13 @@ const SingerPageAdmin: React.FC = () => {
     }
   };
   return (
-    <div className="px-4">
+    <div className="p-4 sm:py-6">
       <h2 className="px-2 scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0">
         Quản lý ca sĩ
       </h2>
       <div className="px-5 pt-2 flex justify-between">
         <Breadcrumb items={items}></Breadcrumb>
-        <Button onClick={handleOpenModal}>Thêm</Button>
+        <Button onClick={handleOpenModal} type="primary">Thêm nhạc</Button>
       </div>
 
       <div className="p-7">

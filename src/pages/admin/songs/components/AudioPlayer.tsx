@@ -93,7 +93,7 @@ export default function AudioPlayer({ audio_url, img_url, nameSong, isGlobalPlay
     };
 
     return (
-        <div className="relative w-full max-w-md bg-white rounded-lg shadow-lg p-4 flex items-stretch justify-center">
+        <div className="relative w-full max-w-md bg-zinc-800 rounded-lg shadow-lg p-4 flex items-stretch justify-center">
             {/* Hidden audio element */}
             <audio ref={audioRef} src={audio_url} preload="metadata" />
 
@@ -125,7 +125,7 @@ export default function AudioPlayer({ audio_url, img_url, nameSong, isGlobalPlay
                     max="100"
                     value={(currentTime / duration) * 100 || 0}
                     onChange={handleProgressChange}
-                    className="w-full h-1 bg-gray-300 rounded-lg appearance-none cursor-pointer"
+                    className="w-full h-1 bg-zinc-300 rounded-lg appearance-none cursor-pointer"
                     style={{
                         background: `linear-gradient(to right, #22c55e ${(currentTime / duration) * 100}%, #d1d5db ${(currentTime / duration) * 100}%)`,
                     }}
@@ -137,7 +137,7 @@ export default function AudioPlayer({ audio_url, img_url, nameSong, isGlobalPlay
             {/* Volume Control */}
             <div className="group mr-2 flex items-center">
                 {/* Icon loa */}
-                <Volume2 className="w-6 h-6 text-gray-700 cursor-pointer" />
+                <Volume2 className="w-6 h-6 text-zinc-300 cursor-pointer" />
 
                 {/* Thanh chỉnh âm lượng (hiện khi hover) */}
                 <div className="flex-grow mx-1 items-center flex">
@@ -147,7 +147,7 @@ export default function AudioPlayer({ audio_url, img_url, nameSong, isGlobalPlay
                         max="100"
                         value={volume * 100}
                         onChange={handleVolumeChange}
-                        className="w-16 h-1 bg-gray-300 rounded-lg appearance-none cursor-pointer"
+                        className="w-16 h-1 bg-zinc-300 rounded-lg appearance-none cursor-pointer"
                         style={{
                             background: `linear-gradient(to right, #22c55e ${volume * 100}%, #d1d5db ${volume * 100}%)`,
                         }}

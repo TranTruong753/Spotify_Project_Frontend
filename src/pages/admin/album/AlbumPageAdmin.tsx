@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import { Link } from "react-router";
 
-import { Space, Table, Breadcrumb, Empty, Button, Popconfirm } from 'antd';
+import { Space, Table, Breadcrumb, Empty, Button, Popconfirm, Input } from 'antd';
 
 import type { TableProps, PopconfirmProps } from 'antd';
 
@@ -26,7 +26,7 @@ type DataType = Album & {
 
 const items = [
   {
-    title: <Link to={'/admin/'}>Dashboard</Link>,
+    title: <Link to={'/'}>Trang chủ</Link>,
   },
   {
     title: 'Albums',
@@ -112,6 +112,39 @@ const AlbumPageAdmin: React.FC = () => {
       dataIndex: 'name',
       key: 'name',
       render: (text, record) => <a onClick={() => handleDetailAlbum(record)}>{text}</a>,
+        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+        <div style={{ padding: 8 }}>
+          {/* Tùy chỉnh dropdown filter */}
+          <Input
+            autoFocus
+            placeholder="Tìm kiếm theo tên album"
+            value={selectedKeys[0]}
+            onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+            onPressEnter={() => confirm()}
+            style={{ marginBottom: 8, display: "block" }}
+          />
+          <Space>
+            <Button
+              type="link"
+              size="small"
+              onClick={() => clearFilters && clearFilters()}
+            >
+              Reset
+            </Button>
+            <Button
+              type="primary"
+              size="small"
+              onClick={() => confirm()}
+            >
+              Tìm
+            </Button>
+          </Space>
+        </div>
+      ),
+
+      onFilter: (value, record) =>
+        (record.name as string).toLowerCase().includes((value as string).toLowerCase()),
+      filterSearch: true,
     },
     {
       title: 'Description',
@@ -165,14 +198,15 @@ const AlbumPageAdmin: React.FC = () => {
   ];
 
   return (
-    <div className="px-4">
+    
+    <div className="p-4 sm:py-6 bg-zinc-800">
       <h2 className="px-2 scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0">
         Quản lý album
       </h2>
 
       <div className="px-5 pt-2 flex justify-between">
         <Breadcrumb items={items}></Breadcrumb>
-        <Button onClick={handleOpenModal}>Thêm</Button>
+        <Button onClick={handleOpenModal} type="primary">Thêm Album</Button>
       </div>
 
       <div className="p-7">

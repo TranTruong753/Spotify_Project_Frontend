@@ -16,7 +16,7 @@ export const getAllArists = async (): Promise<ArtistApiResponse> => {
   }
 };
 export const postArtists = async (artist: FormData): Promise<Artist> => {
-  const response = await fetch("http://127.0.0.1:8000/api/artists/", {
+  const response = await fetch(`${API_URL}/artists/`, {
     method: "POST",
     body: artist,
   });

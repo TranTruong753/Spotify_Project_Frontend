@@ -30,19 +30,7 @@ export const getAllAlbumById = async (id:number): Promise<Album> => {
   }
 };
 
-// export const postAlbums = async (album: FormData): Promise<Album> => {
-//     const response = await fetch('http://127.0.0.1:8000/api/albums/', {
-//       method: 'POST',
-//       body: album,
-//     });
-  
-//     if (!response.ok) {
-//       const error = await response.text();
-//       throw new Error(error);
-//     }
-  
-//     return await response.json();
-//   };
+
 
 
   export const postAlbums = async (album: FormData): Promise<Album> => {

@@ -6,7 +6,7 @@ import { io } from 'socket.io-client';
 
 export const fetchChatHistory = (roomName: string) => async (dispatch: Dispatch) => {
   try {
-    const response = await axios.get(`http://127.0.0.1:8000/chat-history/${roomName}/`);
+    const response = await axios.get(`https://54.89.188.157/chat-history/${roomName}/`);
     dispatch(setMessages(response.data)); // Lưu tin nhắn từ lịch sử vào state
   } catch (error: any) {
     dispatch(setError(error.response?.data?.message || 'Failed to fetch chat history.'));

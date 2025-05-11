@@ -1,18 +1,57 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 // import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { HeadphonesIcon, Music, Users, MessageCircleMore } from "lucide-react";
 
 import { Button } from '@/components/ui/button';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/app/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/app/store';
 import { Link } from 'react-router';
 import { generateRoomName } from '@/utils';
 import { Avatar } from 'antd';
+import { fetchListFriend } from '@/features/accounts/authSlice';
 
 const FriendsList = () => {
 
-    const { listFriend, isAuthenticated, user } = useSelector((state: RootState) => state.auth)
+    const dispatch = useDispatch<AppDispatch>()
+
+    const { listFriend, isAuthenticated, user, accessToken } = useSelector((state: RootState) => state.auth)
+
+    useEffect(() => {
+
+        // console.log("token", accessToken);
+
+        if(!accessToken) return
+
+        const socket = new WebSocket(
+            `ws://54.89.188.157/ws/friends/?token=${accessToken}`
+        );
+
+        console.log("socket",socket)
+
+        socket.onopen = () => {
+            console.log("WebSocket connected");
+        };
+
+        socket.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            console.log("socket", data);
+
+            // ví dụ bạn kiểm tra loại thông điệp
+            if (data.action === "request_accepted") {
+                dispatch(fetchListFriend()); // gọi lại API để lấy danh sách mới
+            }
+
+        };
+
+        socket.onclose = () => {
+            console.log("WebSocket disconnected");
+        };
+
+        return () => {
+            socket.close();
+        };
+    }, [dispatch,accessToken]);
 
     return (
         <>
@@ -50,7 +89,7 @@ const FriendsList = () => {
                                                     className={"bg-zinc-800! select-none"}
                                                 >
 
-                                                  	{friend.full_name.split(" ").reverse().join(" ").charAt(0)}
+                                                    {friend.full_name.split(" ").reverse().join(" ").charAt(0)}
                                                 </Avatar>
 
 
