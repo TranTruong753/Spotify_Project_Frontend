@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
-import { Image, Upload } from 'antd';
+import { Image, Upload, message } from 'antd';
 import type { GetProp, UploadFile, UploadProps } from 'antd';
 
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
@@ -26,7 +26,6 @@ const UploadImg: React.FC<AvatarAlbumProps> = ({ fileList, setFileList }) => {
     if (!file.url && !file.preview && file.originFileObj) {
       file.preview = await getBase64(file.originFileObj as FileType);
     }
-
     setPreviewImage(file.url || (file.preview as string));
     setPreviewOpen(true);
   };
@@ -36,6 +35,12 @@ const UploadImg: React.FC<AvatarAlbumProps> = ({ fileList, setFileList }) => {
   };
 
   const beforeUpload = async (file: FileType) => {
+    const isImage = file.type.startsWith('image/');
+    if (!isImage) {
+      message.error('Chỉ được upload hình ảnh!');
+      return Upload.LIST_IGNORE;
+    }
+
     const base64 = await getBase64(file);
     const newFile: UploadFile = {
       uid: file.uid,
@@ -44,6 +49,8 @@ const UploadImg: React.FC<AvatarAlbumProps> = ({ fileList, setFileList }) => {
       url: base64,
     };
     setFileList([newFile]);
+
+    // Ngăn không gửi lên server (vì ta dùng base64)
     return false;
   };
 
@@ -57,6 +64,7 @@ const UploadImg: React.FC<AvatarAlbumProps> = ({ fileList, setFileList }) => {
   return (
     <>
       <Upload
+        accept="image/*"
         listType="picture-card"
         fileList={fileList}
         beforeUpload={beforeUpload}

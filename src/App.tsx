@@ -1,26 +1,23 @@
-import "./App.css";
+import "@/App.css";
 import { Route, Routes } from "react-router";
-import MainLayout from "./layout/MainLayout";
-import AdminLayout from "./layout/AdminLayout";
-import HomePage from "./pages/home/HomePage";
-import DashBoardPageAdmin from "./pages/admin/dashboard/DashBoardPageAdmin";
-import UserPageAdmin from "./pages/admin/user/UserPageAdmin";
-import AlbumPageAdmin from "./pages/admin/album/AlbumPageAdmin";
-import AlbumDetailPage from "./pages/album/AlbumDetailPage";
-import AlbumUserDetailPage from "./pages/album/AlbumUserDetailPage";
-import ChatPage from "./pages/chat/ChatPage";
-import SongPageAdmin from "./pages/admin/songs/SongPageAdmin";
-import SingerPageAdmin from "./pages/admin/singer/SingerPageAdmin";
-
-import SearchPage from "./pages/search/SearchPage"
-
-import LoginPage from "./pages/login/LoginPage";
-import SongFavorite from "./pages/songs/SongFavorite";
-import RegisterPage from "./pages/register/RegisterPage";
+import MainLayout from "@/layout/MainLayout";
+import AdminLayout from "@/layout/AdminLayout";
+import HomePage from "@/pages/home/HomePage";
+import DashBoardPageAdmin from "@/pages/admin/dashboard/DashBoardPageAdmin";
+import UserPageAdmin from "@/pages/admin/user/UserPageAdmin";
+import AlbumPageAdmin from "@/pages/admin/album/AlbumPageAdmin";
+import AlbumDetailPage from "@/pages/album/AlbumDetailPage";
+import AlbumUserDetailPage from "@/pages/album/AlbumUserDetailPage";
+import ChatPage from "@/pages/chat/ChatPage";
+import SongPageAdmin from "@/pages/admin/songs/SongPageAdmin";
+import SingerPageAdmin from "@/pages/admin/singer/SingerPageAdmin";
+import SearchPage from "@/pages/search/SearchPage"
+import LoginPage from "@/pages/login/LoginPage";
+import SongFavorite from "@/pages/songs/SongFavorite";
+import RegisterPage from "@/pages/register/RegisterPage";
 import { useSelector } from "react-redux";
-import { RootState } from "./app/store";
-
-import RequireAuth from "./pages/authenticator/RequireAuth";
+import { RootState } from "@/app/store";
+import RequireAuth from "@/pages/authenticator/RequireAuth";
 
 
 

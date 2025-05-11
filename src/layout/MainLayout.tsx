@@ -2,11 +2,11 @@ import  { useState, useEffect } from 'react'
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 import { theme as antdTheme } from 'antd';
 import { Outlet } from "react-router";
-import LeftSidebar from './components/LeftSidebar';
-import FriendsActivity from './components/FriendsList';
-import PlaybackControls from './components/PlaybackControls';
-import Header from './components/Header';
-import AudioPlayer from './components/AudioPlayer';
+import LeftSidebar from '@/layout/components/LeftSidebar';
+import FriendsActivity from '@/layout/components/FriendsList';
+import PlaybackControls from '@/layout/components/PlaybackControls';
+import Header from '@/layout/components/Header';
+import AudioPlayer from '@/layout/components/AudioPlayer';
 import { ConfigProvider } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/app/store';

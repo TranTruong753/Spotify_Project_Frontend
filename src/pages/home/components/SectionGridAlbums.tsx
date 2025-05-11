@@ -7,13 +7,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import PlayButton from "./PlayButton";
+
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store";
-import { useEffect } from "react";
 import { playAlbum, setCurrentSong } from "@/features/audioplayer/playerSlice";
-import PlayButtonAlbum from "./PlayButtonAlbum";
-import { Link, useNavigate } from "react-router";
+import PlayButtonAlbum from "@/pages/home/components/PlayButtonAlbum";
+import { useNavigate } from "react-router";
 
 type SectionGridProps = {
   title?: string;

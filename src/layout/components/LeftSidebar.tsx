@@ -2,11 +2,10 @@ import { Dot, Heart } from 'lucide-react'
 import  { useState } from 'react'
 import { Library } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Link } from "react-router";
-import { FaPlus } from "react-icons/fa";
-import ModalCreateAlbumUser from './ModalCreateAlbumUser';
+import { FaPlus } from "react-icons/fa";;
+import ModalCreateAlbumUser from '@/layout/components/ModalCreateAlbumUser';
 import { Album, User } from '@/types';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/app/store';

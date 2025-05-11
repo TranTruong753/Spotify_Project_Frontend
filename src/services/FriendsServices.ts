@@ -1,5 +1,5 @@
 
-import axiosInstance from "./AxiosInstance";
+import axiosInstance from "@/services/AxiosInstance";
 
 // API gửi lời mời kết bạn
 

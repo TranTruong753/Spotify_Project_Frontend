@@ -4,13 +4,13 @@ import {
   Card,
   CardContent,
 } from "@/components/ui/card";
-import PlayButton from "./PlayButton";
+import PlayButton from "@/pages/home/components/PlayButton";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store";
-import { initializeQueue, playAlbum } from "@/features/audioplayer/playerSlice";
+import { initializeQueue } from "@/features/audioplayer/playerSlice";
 import { CirclePlus, EllipsisVertical, Heart } from "lucide-react";
 import { Dropdown, MenuProps } from "antd";
-import { addAlbumUserSong, addSongInFavoriteUser, fetchAlbumUserById, fetchMusicFavoriteUserById, getAlbumsUser } from "@/features/accounts/authSlice";
+import { addAlbumUserSong, addSongInFavoriteUser, fetchMusicFavoriteUserById, getAlbumsUser } from "@/features/accounts/authSlice";
 import { useEffect, useMemo, useState } from "react";
 import { deleteSongFavoriteUser } from "@/services/AuthenticateServices";
 

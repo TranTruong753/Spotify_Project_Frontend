@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteArtist, fetchArtists } from "@/features/artists/artistsSlice";
 import { RootState, AppDispatch } from "@/app/store";
 import { Artist } from "@/types";
-import ModalCreateArtist from "./components/ModalCreateArtist";
+import ModalCreateArtist from "@/pages/admin/singer/components/ModalCreateArtist";
 import { Pen, Trash2 } from "lucide-react";
 
 type DataType = Artist & {

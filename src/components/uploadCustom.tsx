@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { PlusOutlined } from '@ant-design/icons';
-import { Upload, Button, Modal } from 'antd';
+import { Upload, Modal } from 'antd';
 import type { GetProp, UploadFile, UploadProps } from 'antd';
 import { Music } from 'lucide-react';
 

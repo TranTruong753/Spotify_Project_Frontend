@@ -1,13 +1,13 @@
 import { ScrollArea } from '@/components/ui/scroll-area'
 
 import { useEffect } from 'react'
-import SectionGrid from './components/SectionGrid'
+import SectionGrid from '@/pages/home/components/SectionGrid'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '@/app/store'
 import { fetchAlbums } from '@/features/albums/albumsSlice'
 import { fetchSongs } from '@/features/songs/songSlice'
 import { initializeQueue } from '@/features/audioplayer/playerSlice'
-import SectionGridAlbums from './components/SectionGridAlbums'
+import SectionGridAlbums from '@/pages/home/components/SectionGridAlbums'
 import { fetchMusicFavoriteUserById } from '@/features/accounts/authSlice'
 
 

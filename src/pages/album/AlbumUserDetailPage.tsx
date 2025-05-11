@@ -1,18 +1,17 @@
-import React, { useEffect } from "react";
+import  { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Button as ButtonAtd } from "antd";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { CircleCheckBig, CirclePlus, Clock, Pause, Play } from "lucide-react";
+import { CircleCheckBig, Clock, Pause, Play } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAlbumById } from "@/features/albums/albumsSlice";
 import { AppDispatch, RootState } from "@/app/store";
-import { Album, Song } from "@/types";
+import { Song } from "@/types";
 import { useNavigate, useParams } from "react-router";  // Import useParams
 import { formatDate, formatTime } from "@/utils";
 import { playAlbum, togglePlay } from "@/features/audioplayer/playerSlice";
-import { addAlbum, deleteAlbumFavorite, deleteAlbumUser, getAlbumFavorite } from "@/services/AuthenticateServices";
-import { fetchAlbumUserById, getAlbumsFavorite, getAlbumsUser } from "@/features/accounts/authSlice";
-import TableMusicAlbum from "./components/TableMusicAlbum";
+import { deleteAlbumUser } from "@/services/AuthenticateServices";
+import { fetchAlbumUserById, getAlbumsUser } from "@/features/accounts/authSlice";
+
 
 
 const AlbumUserDetailPage = () => {

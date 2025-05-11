@@ -132,8 +132,9 @@ const RightHeader = ({ isLogIn, user, items }: RightHeaderProps) => {
 
     const handleMakeFriend = async (id: number, action: string) => {
         await responseRequestsMakeFriends(id, action)
-        await dispatch(fetchListFriend())
-        await dispatch(fetchListRequestMakeFriend())
+        await dispatch(fetchListFriend()).unwrap()
+        await dispatch(fetchListRequestMakeFriend()).unwrap()
+        console.log("handleMakeFriend")
     }
 
    
@@ -183,10 +184,9 @@ const RightHeader = ({ isLogIn, user, items }: RightHeaderProps) => {
    const handleOpenChange = (open: boolean, info: { source: 'trigger' | 'menu' }) => {
     console.log('Open changed:', open, 'Source:', info.source);
     // Chỉ xử lý khi mở bằng trigger (không phải khi chọn item)
-    if (open) {
-        console.log("hihi")
+    
         setAnimate(false)
-    }
+    
   };
 
     return (

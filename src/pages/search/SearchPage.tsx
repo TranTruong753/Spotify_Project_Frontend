@@ -1,14 +1,13 @@
 import { ScrollArea } from '@/components/ui/scroll-area'
 
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '@/app/store'
 import { Button, Flex, Spin } from 'antd'
-import TableMusic from './components/TableMusic'
+import TableMusic from '@/pages/search/components/TableMusic'
 import { useSearchParams } from 'react-router'
 import { fetchSearchAccount, fetchSearchSongs } from '@/features/songs/songSlice'
-import ForUser from './components/ForUser'
-import { cn } from '@/lib/utils'
+import ForUser from '@/pages/search/components/ForUser'
 
 
 const SearchPage = () => {

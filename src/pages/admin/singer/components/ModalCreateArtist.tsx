@@ -4,7 +4,7 @@ import { Modal, Form, UploadFile } from "antd";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/app/store";
 import { createArtist, updateArtist } from "@/features/artists/artistsSlice";
-import FormArtist from "./FormArtist";
+import FormArtist from "@/pages/admin/singer/components/FormArtist";
 
 interface ModalArtistProps {
   isModalOpen: boolean;

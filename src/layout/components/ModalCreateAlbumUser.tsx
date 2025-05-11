@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Form, UploadFile } from "antd";
-import FormAlbumUser from "./FormAlbumUser";
+import FormAlbumUser from "@/layout/components/FormAlbumUser";
 import { useDispatch, useSelector } from "react-redux";
-import { createAlbum, updateAlbum } from "@/features/albums/albumsSlice";
 import { AppDispatch, RootState } from "@/app/store";
 import { createAlbumUser } from "@/features/accounts/authSlice";
 

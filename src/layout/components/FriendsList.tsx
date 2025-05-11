@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-// import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { HeadphonesIcon, Music, Users, MessageCircleMore } from "lucide-react";
 import { Button } from '@/components/ui/button';

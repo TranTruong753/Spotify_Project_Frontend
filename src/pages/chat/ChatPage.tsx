@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-import MessageInput from "./components/MessageInput";
-import ChatHeader from "./components/ChatHeader";
+import MessageInput from "@/pages/chat/components/MessageInput";
+import ChatHeader from "@/pages/chat/components/ChatHeader";
 import { useLocation } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store";

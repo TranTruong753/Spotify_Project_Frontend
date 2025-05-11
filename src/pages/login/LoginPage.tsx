@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '@/app/store'
 import { login } from '@/features/accounts/authSlice'
 import { Link, useNavigate } from 'react-router'
-import ButtonLoginGoogle from './ButtonLoginGoogle'
+import ButtonLoginGoogle from '@/pages/login/ButtonLoginGoogle'
 
 const LoginPage = () => {
     const dispatch = useDispatch<AppDispatch>()

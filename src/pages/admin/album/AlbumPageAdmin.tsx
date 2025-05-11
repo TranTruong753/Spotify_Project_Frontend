@@ -15,8 +15,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchAlbums, deleteAlbum } from '@/features/albums/albumsSlice'
 import { RootState, AppDispatch } from '@/app/store'
 import { Album } from '@/types';
-import DetailAlbum from "./components/DetailAlbum";
-import ModalCreateAlbum from "./components/ModalCreateAlbum";
+import DetailAlbum from "@/pages/admin/album/components/DetailAlbum";
+import ModalCreateAlbum from "@/pages/admin/album/components/ModalCreateAlbum";
 
 type DataType = Album & {
   key: string;

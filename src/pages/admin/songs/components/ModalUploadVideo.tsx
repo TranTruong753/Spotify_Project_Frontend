@@ -2,11 +2,11 @@ import { Song, Video } from "@/types";
 import React, { useEffect, useState } from "react";
 import { Modal, Form, UploadFile } from "antd";
 import { useDispatch } from "react-redux";
-import { createSong, fetchSongs, updateSong } from "@/features/songs/songSlice";
+import {  fetchSongs, updateSong } from "@/features/songs/songSlice";
 import { postVideo, patchVideo } from "@/services/SongServices";
 import { AppDispatch } from "@/app/store";
 
-import FormUploadFIle from "./FormUploadFIle";
+import FormUploadFIle from "@/pages/admin/songs/components/FormUploadFIle";
 
 interface ModalUploadVideoProps {
   isModalOpen: boolean;

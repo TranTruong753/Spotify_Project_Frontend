@@ -9,14 +9,14 @@ import {  Song, Video} from "@/types";
 import {  parseGenre } from "@/utils";
 
 import { FileVideo, Pen, Plus, Trash2 } from "lucide-react";
-import AudioPlayer from "./components/AudioPlayer"
-import ModalSong from "./components/ModalSong";
+import AudioPlayer from "@/pages/admin/songs/components/AudioPlayer"
+import ModalSong from "@/pages/admin/songs/components/ModalSong";
 
 import {
   EditOutlined
 } from '@ant-design/icons';
-import ModalUploadVideo from "./components/ModalUploadVideo";
-import ModalSinger from "./components/ModalSinger";
+import ModalUploadVideo from "@/pages/admin/songs/components/ModalUploadVideo";
+import ModalSinger from "@/pages/admin/songs/components/ModalSinger";
 
 
 

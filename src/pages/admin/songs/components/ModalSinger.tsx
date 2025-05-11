@@ -6,7 +6,7 @@ import { fetchSongs } from "@/features/songs/songSlice";
 import { AppDispatch, RootState } from "@/app/store";
 import { useSelector } from "react-redux";
 import { fetchArtists } from "@/features/artists/artistsSlice";
-import FormSinger from "./FormSinger";
+import FormSinger from "@/pages/admin/songs/components/FormSinger";
 import { postSinger } from "@/services/SongServices";
 
 interface ModalSongProps {
@@ -18,7 +18,7 @@ interface ModalSongProps {
     setDataSinger: (data: any | null) => void;
 }
 
-const ModalSong: React.FC<ModalSongProps> = ({
+const ModalSinger: React.FC<ModalSongProps> = ({
     isModalOpen,
     setIsModalOpen,
     data,
@@ -109,4 +109,4 @@ const ModalSong: React.FC<ModalSongProps> = ({
     );
 };
 
-export default ModalSong;
+export default ModalSinger;

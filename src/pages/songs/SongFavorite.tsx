@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store";
 import { playAlbum, togglePlay } from "@/features/audioplayer/playerSlice";
 import { fetchMusicFavoriteUserById } from "@/features/accounts/authSlice";
-import TableMusicFavorite from "./compnents/TableMusicFavorite";
+import TableMusicFavorite from "@/pages/songs/compnents/TableMusicFavorite";
 import picture from "/liked-songs.jpg"
 import { Song } from "@/types";
 

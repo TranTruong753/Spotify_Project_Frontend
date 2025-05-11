@@ -1,7 +1,7 @@
 import { Album } from "@/types";
 import React, { useEffect, useState } from "react";
 import { Modal, Form, UploadFile } from "antd";
-import FormAlbum from "./FormAlbum";
+import FormAlbum from "@/pages/admin/album/components/FormAlbum";
 import { useDispatch } from "react-redux";
 import { createAlbum, updateAlbum } from "@/features/albums/albumsSlice";
 import { AppDispatch } from "@/app/store";
