@@ -32,7 +32,7 @@ const HomePage = () => {
       messageApi.success('Đăng nhập thành công!');
       navigate(location.pathname, { replace: true }); // reset state
     }
-  }, [location.state, location.pathname, messageApi, navigate]);
+  }, [location.state, location.pathname]);
 
   useEffect(() => {
     const fetchSong = async () => {

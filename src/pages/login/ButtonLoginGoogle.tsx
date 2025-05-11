@@ -1,4 +1,4 @@
-import {  GoogleLogin, CredentialResponse } from "@react-oauth/google";
+import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
 import { loginWithGoogle } from "@/services/LoginGoogleServiec";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
@@ -10,7 +10,7 @@ import { setUserFromGoogle } from "@/features/accounts/authSlice";
 export default function ButtonLoginGoogle() {
 
     const navigate = useNavigate()
-     const dispatch = useDispatch<AppDispatch>()
+    const dispatch = useDispatch<AppDispatch>()
 
     const handleGoogleLoginSuccess = async (credentialResponse: CredentialResponse) => {
         const token = credentialResponse.credential;
@@ -34,7 +34,7 @@ export default function ButtonLoginGoogle() {
                 refreshToken: data.refresh,
             }));
 
-            navigate("/")
+            navigate('/', { state: { loginSuccess: true } }); // gửi state
 
         } catch (error: any) {
             console.error("Lỗi khi gọi API:", error);
