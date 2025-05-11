@@ -12,12 +12,6 @@ interface Songs {
     isPlaying: boolean;
 }
 
-interface listSongFavorite {
-    id: number ;
-    song:  Song 
-  }
-  
-
 const TableMusicFavorite = ({ songs,currentSong,isPlaying }: Songs) => {
     const dispatch = useDispatch<AppDispatch>()
 

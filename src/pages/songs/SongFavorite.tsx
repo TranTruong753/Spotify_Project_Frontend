@@ -17,7 +17,7 @@ const SongFavorite = () => {
 
 
 
-    const { listSongFavorite, user, isAuthenticated } = useSelector(
+    const { listSongFavorite, user } = useSelector(
         (state: RootState) => state.auth
     );
 
@@ -76,16 +76,16 @@ const SongFavorite = () => {
     };
 
 
-    const handlePlaySong = (index: number) => {
+   // const handlePlaySong = (index: number) => {
         // if (!currentAlbum) return;
 
         // if (currentAlbum?.album_songs) {
         //     // start playing the album from the beginning
         //     dispatch(playAlbum({ songs: currentAlbum?.album_songs, startIndex: index }));
         // }
-    };
+   // };
 
-    const handleAddAlbumFavourite = async () => {
+  //  const handleAddAlbumFavourite = async () => {
         // const formData = new FormData();
         // if (user) formData.append("account", user.id.toString());
 
@@ -96,16 +96,16 @@ const SongFavorite = () => {
         // if (user) await dispatch(getAlbumsFavorite(user.id))
 
 
-    }
+   // }
 
-    const handleDeleteAlbumFavourite = async () => {
+ //   const handleDeleteAlbumFavourite = async () => {
         // const favoriteAlbumId = albums?.find(album => album.album.id === currentAlbum?.id)?.id || null;
         // console.log("run", favoriteAlbumId)
         // if (favoriteAlbumId) {
         //     await deleteAlbumFavorite(favoriteAlbumId)
         // }
         // if (user) await dispatch(getAlbumsFavorite(user.id))
-    }
+   // }
 
 
     return (

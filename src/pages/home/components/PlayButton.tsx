@@ -8,31 +8,29 @@ import {
   togglePlay,
 } from "@/features/audioplayer/playerSlice";
 
-const PlayButton = ({ song, handleClickPlaySong }: 
-  { song: Song, handleClickPlaySong?: () => void;}) => 
-    {
+const PlayButton = ({ song, handleClickPlaySong }:
+  { song: Song, handleClickPlaySong?: () => void; }) => {
   const dispatch = useDispatch<AppDispatch>()
-  const { currentSong, isPlaying, currentIndex } = useSelector((state: RootState) => state.player);
+  const { currentSong, isPlaying } = useSelector((state: RootState) => state.player);
 
   const isCurrentSong = currentSong?.id === song.id;
 
   const handleClick = () => {
-   
-    if(handleClickPlaySong) handleClickPlaySong()
-      console.log("0 isPlaying",isPlaying)
-      console.log("0 isCurrentSong",isCurrentSong)
-      if (isCurrentSong ) {
-        console.log("hh3")
-        dispatch(togglePlay());
-      
-      } else {
-        dispatch(setCurrentSong(song));
-        console.log("hh")
-        // dispatch(setCurrentSong(song[currentIndex]));
-      }
-      console.log("3 isPlaying",isPlaying)
-      console.log("3 isCurrentSong",isCurrentSong)
-    
+
+    if (handleClickPlaySong) handleClickPlaySong()
+    console.log("0 isPlaying", isPlaying)
+    console.log("0 isCurrentSong", isCurrentSong)
+    if (isCurrentSong) {
+
+      dispatch(togglePlay());
+
+    } else {
+      dispatch(setCurrentSong(song));
+      console.log("hh")
+      // dispatch(setCurrentSong(song[currentIndex]));
+    }
+
+
   };
 
   return (

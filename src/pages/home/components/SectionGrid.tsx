@@ -20,7 +20,7 @@ type SectionGridProps = {
   isLoading: boolean;
 };
 
-const SectionGrid = ({ songs, title, isLoading }: SectionGridProps) => {
+const SectionGrid = ({ songs, title }: SectionGridProps) => {
 
   return (
     <div className="mb-8">
@@ -45,7 +45,7 @@ const SectionGrid = ({ songs, title, isLoading }: SectionGridProps) => {
 // ✅ Sửa: destructuring prop songItem
 const CardSongs = ({ songItem, songs }: { songItem: Song, songs: Song[] }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { currentIndex } = useSelector((state: RootState) => state.player);
+  // const { currentIndex } = useSelector((state: RootState) => state.player);
 
   const { accountAlbums, user, isAuthenticated, listSongFavorite } = useSelector((state: RootState) => state.auth);
 

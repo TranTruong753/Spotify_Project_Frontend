@@ -28,9 +28,6 @@ const items = [
 ]
 
 
-const cancel: PopconfirmProps["onCancel"] = (e) => {
-  console.log(e);
-};
 const SingerPageAdmin: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { list, count, loading, error } = useSelector(

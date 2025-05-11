@@ -50,6 +50,7 @@ const ModalSinger: React.FC<ModalSongProps> = ({
                 name: data?.name
                 // thêm các field khác nếu có
             });
+        
 
         }
     }, [data])
@@ -89,6 +90,7 @@ const ModalSinger: React.FC<ModalSongProps> = ({
     const handleCancel = () => {
         form.resetFields();
         setData(null);
+        setDataSinger(null)
         setIsModalOpen(false);
     };
     return (

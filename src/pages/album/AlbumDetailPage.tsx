@@ -16,7 +16,7 @@ const AlbumDetailPage = () => {
 	const { id } = useParams<{ id: string }>();  // Get albumId from URL
 	const dispatch = useDispatch<AppDispatch>()
 
-	const { currentAlbum, loading, error } = useSelector(
+	const { currentAlbum} = useSelector(
 		(state: RootState) => state.albums
 	);
 

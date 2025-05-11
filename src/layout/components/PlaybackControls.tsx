@@ -7,7 +7,7 @@ import { AppDispatch, RootState } from '@/app/store';
 import { togglePlay, playNext, playPrevious } from "@/features/audioplayer/playerSlice";
 import { formatTime } from '@/utils';
 import { Modal } from 'antd';
-import { Video } from '@/types';
+
 
 const PlaybackControls = () => {
 	const dispatch = useDispatch<AppDispatch>()

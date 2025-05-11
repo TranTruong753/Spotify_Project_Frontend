@@ -33,10 +33,7 @@ const items = [
   },
 ]
 
-const confirm: PopconfirmProps['onConfirm'] = (e) => {
-  console.log(e);
 
-};
 
 const cancel: PopconfirmProps['onCancel'] = (e) => {
   console.log(e);
@@ -65,7 +62,7 @@ const AlbumPageAdmin: React.FC = () => {
   }, [dispatch, list.length]);
 
   // if (loading) return <p>Loading...</p>
-  // if (error) return <p>Error: {error}</p>
+  if (error) return <p>Error: {error}</p>
 
   console.log("list", list)
 

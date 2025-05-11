@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/app/store';
 
 const LeftSidebar = () => {
-    const [isLoading, setIsLoading] = useState(false)
+  
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -21,7 +21,7 @@ const LeftSidebar = () => {
 
 
 
-    const handleCreatAlbumUser = (id: number) => {
+    const handleCreatAlbumUser = () => {
         setIsModalOpen(true);
     }
     return (
@@ -35,7 +35,7 @@ const LeftSidebar = () => {
                         <span className='hidden md:inline font-medium'>Thư viện</span>
                     </div>
                     {isAuthenticated && <Button className='transition-all duration-300 ease-out rounded-3xl bg-zinc-950 text-white hover:scale-110 hover:bg-zinc-950 hover:cursor-pointer '
-                        onClick={() => handleCreatAlbumUser(1)}
+                        onClick={() => handleCreatAlbumUser()}
                     >
 
                         <FaPlus />Tạo

@@ -19,7 +19,7 @@ const AlbumUserDetailPage = () => {
 	const dispatch = useDispatch<AppDispatch>()
 
 	const navigate = useNavigate()
-	const { user, isAuthenticated, currentAlbumUser, accountAlbums } = useSelector(
+	const { user, isAuthenticated, currentAlbumUser } = useSelector(
 		(state: RootState) => state.auth
 	);
 

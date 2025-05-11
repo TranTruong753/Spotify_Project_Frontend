@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { getAllAlbums, patchAlbums, postAlbums, deleteAlbums, getAllAlbumById } from '@/services/AlbumServices'
 import { Album, AlbumApiResponse } from '@/types'
 

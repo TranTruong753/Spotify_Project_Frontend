@@ -15,7 +15,7 @@ export const sendMessage = (
     roomName: string,
     sender: string,
     message: string
-) => (dispatch: Dispatch) => {
+) => () => {
     const payload = {
         type: 'send_message',
         room: roomName,

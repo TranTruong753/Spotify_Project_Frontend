@@ -1,6 +1,5 @@
 import React from 'react';
-import type { FormProps } from 'antd';
-import { Button, Checkbox, Form, Input, Select, UploadFile } from 'antd';
+import { Form, Input, Select, UploadFile } from 'antd';
 import { Album, Song } from '@/types';
 import type { FormInstance } from 'antd/es/form';
 import UploadImg from "@/components/uploadImg"
@@ -14,20 +13,6 @@ interface MyComponentProps {
   list: Album[];
 }
 
-type FieldType = {
-  username?: string;
-  password?: string;
-  remember?: string;
-};
-
-
-const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
-  console.log('Success:', values);
-};
-
-const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
-  console.log('Failed:', errorInfo);
-};
 
 const FormSong: React.FC<MyComponentProps> = ({ form, fileList, setFileList, fileListImg, setFileListImg, list }) => (
 

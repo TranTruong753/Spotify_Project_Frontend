@@ -17,7 +17,7 @@ type SectionGridProps = {
   isLoading: boolean;
 };
 
-const SectionGrid = ({ albums, title, isLoading }: SectionGridProps) => {
+const SectionGrid = ({ albums, title }: SectionGridProps) => {
 
 
 

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {  Form, Input, UploadFile } from 'antd';
-import { Album, Song, Video } from '@/types';
+import {  Video } from '@/types';
 import type { FormInstance } from 'antd/es/form';
 
 import UploadCustom from "@/components/uploadCustom"

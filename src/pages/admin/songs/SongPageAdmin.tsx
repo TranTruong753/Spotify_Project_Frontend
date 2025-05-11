@@ -36,9 +36,6 @@ const items = [
 ]
 
 
-const confirm: PopconfirmProps['onConfirm'] = (e) => {
-  console.log(e);
-};
 
 const cancel: PopconfirmProps['onCancel'] = (e) => {
   console.log(e);
@@ -66,7 +63,7 @@ const SongPageAdmin: React.FC = () => {
   // Thêm state để theo dõi ID bài hát đang phát
   const [currentlyPlayingSongId, setCurrentlyPlayingSongId] = useState<string | null>(null);
 
-  const { list, count, loading, error } = useSelector((state: RootState) => state.songs)
+  const { list, count, loading } = useSelector((state: RootState) => state.songs)
 
   useEffect(() => {
     if (!list.length) {
@@ -137,7 +134,7 @@ const SongPageAdmin: React.FC = () => {
       title: 'Name',
       dataIndex: 'audio_url',
       key: 'audio_url',
-      render: (value, record) => (
+      render: (record) => (
         <>
           <AudioPlayer
             nameSong={record.name}

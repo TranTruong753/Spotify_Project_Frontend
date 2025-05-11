@@ -1,7 +1,6 @@
 import { User } from '@/types'
 import { UserAddOutlined } from '@ant-design/icons';
 import { Avatar, Card, message } from 'antd';
-import avatar from '/avatars/avatar.png'
 import { makeFriends } from '@/services/FriendsServices';
 import { Link } from 'react-router';
 import { getInitials } from '@/utils';
@@ -44,7 +43,7 @@ const CardUser = ({ user, messageApi, myUser }: { user: User, messageApi: any, m
   const handleMakeFriend = async (user: User) => {
     console.log("user", user)
     try {
-      const res = await makeFriends(user.id)
+      await makeFriends(user.id)
 
       messageApi.success("Gửi lời mời kết bạn thành công");
     } catch (error: any) {
