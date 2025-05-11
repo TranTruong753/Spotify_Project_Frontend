@@ -27,7 +27,7 @@ const AlbumDetailPage = () => {
 
 	const isAlbumFovorite = albums ? albums.some((album) => album.album.id === currentAlbum?.id) : false;
 
-	const { currentSong, isPlaying } = useSelector((state: RootState) => state.player);
+	const { currentSong, isPlaying, currentIndex } = useSelector((state: RootState) => state.player);
 
 	// Fetch album when component mounts
 	useEffect(() => {
@@ -59,24 +59,18 @@ const AlbumDetailPage = () => {
 			console.log("3", isCurrentAlbumPlaying);
 
 			// Kiểm tra nếu album đang phát, toggle để dừng phát
-			if (isCurrentAlbumPlaying) {
+			if (isCurrentAlbumPlaying && isPlaying) {
 				dispatch(togglePlay());
 			}
 
-			// Bắt đầu phát album từ bài hát đầu tiên nếu chưa phát
-			dispatch(playAlbum({ songs: currentAlbum?.album_songs, startIndex: 0 }));
+			else{
+
+				dispatch(playAlbum({ songs: currentAlbum?.album_songs, startIndex: currentIndex}));
+			}
 		}
 	};
 
 
-	const handlePlaySong = (index: number) => {
-		if (!currentAlbum) return;
-
-		if (currentAlbum?.album_songs) {
-			// start playing the album from the beginning
-			dispatch(playAlbum({ songs: currentAlbum?.album_songs, startIndex: index }));
-		}
-	};
 
 	const handleAddAlbumFavourite = async () => {
 		const formData = new FormData();
