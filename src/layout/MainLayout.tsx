@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import  { useState, useEffect } from 'react'
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 import { theme as antdTheme } from 'antd';
 import { Outlet } from "react-router";
@@ -16,7 +16,7 @@ const MainLayout = () => {
 
   const dispatch = useDispatch<AppDispatch>();
   const user = useSelector((state: RootState) => state.auth.user);
-  
+
 
   useEffect(() => {
     if (user && user.id) {
@@ -41,13 +41,16 @@ const MainLayout = () => {
 
   return (
     <>
+    
      <ConfigProvider
         theme={{
           algorithm: antdTheme.darkAlgorithm ,
         
         }}
         >
+       
       <div className='h-screen bg-black text-white flex flex-col'>
+        
         <Header></Header>
         <ResizablePanelGroup direction='horizontal' className='flex-1 flex h-full overflow-hidden px-2 pt-2 '>
           <AudioPlayer />
@@ -60,6 +63,7 @@ const MainLayout = () => {
 
           {/* Main content */}
           <ResizablePanel id="mainContent" order={2}  defaultSize={isMobile ? 80 : 60}>
+      
             <Outlet />
           </ResizablePanel>
 

@@ -1,9 +1,9 @@
 import React from 'react';
-import type { FormProps } from 'antd';
-import { Button, Checkbox, Form, Input, Select, UploadFile } from 'antd';
+
+import {  Form, Input, UploadFile } from 'antd';
 import { Album, Song, Video } from '@/types';
 import type { FormInstance } from 'antd/es/form';
-import UploadImg from "@/components/uploadImg"
+
 import UploadCustom from "@/components/uploadCustom"
 
 interface MyComponentProps {

@@ -1,5 +1,4 @@
-import { Album } from "@/types";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Modal, Form, UploadFile } from "antd";
 import FormAlbumUser from "./FormAlbumUser";
 import { useDispatch, useSelector } from "react-redux";

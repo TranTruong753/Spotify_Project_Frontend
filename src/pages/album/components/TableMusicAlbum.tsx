@@ -2,8 +2,7 @@ import { AppDispatch } from '@/app/store'
 import { playAlbum, togglePlay } from '@/features/audioplayer/playerSlice'
 import { Album, Song } from '@/types'
 import { formatDate, formatTime } from '@/utils'
-import { Clock, Pause, Play } from 'lucide-react'
-import React from 'react'
+import { Clock, Play } from 'lucide-react'
 import { useDispatch } from 'react-redux'
 
 

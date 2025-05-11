@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import logo from '@/assets/logo/spotify.png'
 import { Button } from '@/components/ui/button'
-import { FaGoogle } from "react-icons/fa"
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '@/app/store'
 import { login } from '@/features/accounts/authSlice'

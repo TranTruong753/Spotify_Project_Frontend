@@ -10,13 +10,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getInitials } from '@/utils';
 import { User } from '@/types';
 import { Dropdown, Divider, Space, theme, Button as ButtonAtd } from 'antd';
-import { fetchSearchSongs } from '@/features/songs/songSlice';
-import { useEffect, useRef, useState } from 'react';
-import { DownOutlined } from '@ant-design/icons';
-
+import { useEffect, useState } from 'react';
 import type { MenuProps } from 'antd';
 import { responseRequestsMakeFriends } from '@/services/FriendsServices';
 import { fetchListFriend, fetchListRequestMakeFriend, logout } from '@/features/accounts/authSlice';
+import { cn } from '@/lib/utils';
 
 const Header = () => {
     const dispatch = useDispatch<AppDispatch>()
@@ -128,6 +126,8 @@ const RightHeader = ({ isLogIn, user, items }: RightHeaderProps) => {
 
     const dispatch = useDispatch<AppDispatch>()
 
+    const [animate, setAnimate] = useState(false)
+
     const { listRequestMakeFiend, accessToken } = useSelector((state: RootState) => state.auth)
 
     const handleMakeFriend = async (id: number, action: string) => {
@@ -136,6 +136,7 @@ const RightHeader = ({ isLogIn, user, items }: RightHeaderProps) => {
         await dispatch(fetchListRequestMakeFriend())
     }
 
+   
 
     const contentStyle: React.CSSProperties = {
         backgroundColor: token.colorBgElevated,
@@ -163,8 +164,10 @@ const RightHeader = ({ isLogIn, user, items }: RightHeaderProps) => {
 
       // ví dụ bạn kiểm tra loại thông điệp
         if(data.action === "new_request"){
-
+            setAnimate(true);
             dispatch(fetchListRequestMakeFriend()); // gọi lại API để lấy danh sách mới
+        }else{
+            setAnimate(false)
         }
     };
 
@@ -177,6 +180,15 @@ const RightHeader = ({ isLogIn, user, items }: RightHeaderProps) => {
     };
   }, [dispatch,accessToken]);
 
+   const handleOpenChange = (open: boolean, info: { source: 'trigger' | 'menu' }) => {
+    console.log('Open changed:', open, 'Source:', info.source);
+    // Chỉ xử lý khi mở bằng trigger (không phải khi chọn item)
+    if (open) {
+        console.log("hihi")
+        setAnimate(false)
+    }
+  };
+
     return (
         <>
             {isLogIn ? (
@@ -185,6 +197,7 @@ const RightHeader = ({ isLogIn, user, items }: RightHeaderProps) => {
                         <Dropdown
                             placement="bottomRight"
                             trigger={['click']}
+                            onOpenChange={handleOpenChange}
                             dropdownRender={() => (
                                 <div style={contentStyle}>
                                     {listRequestMakeFiend.length > 0 && (
@@ -213,7 +226,10 @@ const RightHeader = ({ isLogIn, user, items }: RightHeaderProps) => {
                             )}
                         >
                             {/* 👇 Dùng span hoặc div có display inline-block để tránh lệch */}
-                            <span className="inline-block cursor-pointer hover:animate-wiggle">
+                            <span 
+                            // className="inline-block cursor-pointer hover:animate-wiggle"
+                                className={cn("inline-block cursor-pointer hover:animate-wiggle", animate ? "animate-wiggle text-red-500" : "")}
+                            >
                                 <IoIosNotifications className="text-3xl" />
                             </span>
                         </Dropdown>

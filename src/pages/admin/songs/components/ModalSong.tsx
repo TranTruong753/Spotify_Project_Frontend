@@ -1,4 +1,4 @@
-import { Album, Song } from "@/types";
+import { Song } from "@/types";
 import React, { useEffect, useState } from "react";
 import { Modal, Form, UploadFile } from "antd";
 import FormSong from "./FormSong";

@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import  { useEffect, useRef, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
-import { Laptop2, ListMusic, Mic2, Pause, Play, Repeat, Shuffle, SkipBack, SkipForward, TvMinimalPlay, Volume1 } from "lucide-react";
+import { Pause, Play, Repeat, Shuffle, SkipBack, SkipForward, TvMinimalPlay, Volume1 } from "lucide-react";
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/app/store';
 import { togglePlay, playNext, playPrevious } from "@/features/audioplayer/playerSlice";

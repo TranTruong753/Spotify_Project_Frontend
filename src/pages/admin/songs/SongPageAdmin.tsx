@@ -5,10 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteSongs, fetchSongs } from "@/features/songs/songSlice";
 import { RootState, AppDispatch } from "@/app/store";
 import { useEffect, useMemo, useState } from "react"; // Thêm useState
-import { Artist, Song, Video} from "@/types";
-import { formatDate, parseGenre } from "@/utils";
+import {  Song, Video} from "@/types";
+import {  parseGenre } from "@/utils";
 
-import { Disc3, FileVideo, Pen, Plus, Trash2 } from "lucide-react";
+import { FileVideo, Pen, Plus, Trash2 } from "lucide-react";
 import AudioPlayer from "./components/AudioPlayer"
 import ModalSong from "./components/ModalSong";
 

@@ -3,9 +3,6 @@ import { Song } from "@/types";
 import {
   Card,
   CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import PlayButton from "./PlayButton";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,7 +10,6 @@ import { AppDispatch, RootState } from "@/app/store";
 import { initializeQueue, playAlbum } from "@/features/audioplayer/playerSlice";
 import { CirclePlus, EllipsisVertical, Heart } from "lucide-react";
 import { Dropdown, MenuProps } from "antd";
-import { Link } from "react-router";
 import { addAlbumUserSong, addSongInFavoriteUser, fetchAlbumUserById, fetchMusicFavoriteUserById, getAlbumsUser } from "@/features/accounts/authSlice";
 import { useEffect, useMemo, useState } from "react";
 import { deleteSongFavoriteUser } from "@/services/AuthenticateServices";
@@ -55,13 +51,7 @@ const CardSongs = ({ songItem, songs }: { songItem: Song, songs: Song[] }) => {
 
   const [isSongFavorite, setIsSongFavorite] = useState(false)
 
-  // useEffect(() => {
-  //   if (listSongFavorite) {
-  //     const isFav = listSongFavorite.some((item) => item.song.id === songItem.id);
-  //     console.log("isFav:", isFav, songItem.name);
-  //     setIsSongFavorite(isFav);
-  //   }
-  // }, [listSongFavorite]);
+
 
   useEffect(() => {
   const isFav = listSongFavorite.some((item) => item.song.id === songItem.id);
@@ -76,15 +66,7 @@ const CardSongs = ({ songItem, songs }: { songItem: Song, songs: Song[] }) => {
     }
   };
 
-  // Tạo danh sách item cho dropdown con từ accountAlbums
-  // const items2: MenuProps['items'] = accountAlbums.map((album) => (
-
-  //   {
-  //     label: album.name, // hoặc album.title tuỳ theo cấu trúc
-  //     key: album.id.toString(), // key phải là string
-  //   }
-
-  // ));
+  
 
 
 

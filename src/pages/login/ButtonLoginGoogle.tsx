@@ -1,6 +1,4 @@
-import React, { useState } from "react";
-import { GoogleOAuthProvider, GoogleLogin, CredentialResponse } from "@react-oauth/google";
-import { User } from "@/types";
+import {  GoogleLogin, CredentialResponse } from "@react-oauth/google";
 import { loginWithGoogle } from "@/services/LoginGoogleServiec";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";

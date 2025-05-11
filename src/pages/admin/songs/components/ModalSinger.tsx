@@ -1,12 +1,10 @@
-import { Album, Artist, Song } from "@/types";
-import React, { useEffect, useState } from "react";
-import { Modal, Form, UploadFile } from "antd";
-import FormSong from "./FormSong";
+import {  Artist, Song } from "@/types";
+import React, { useEffect } from "react";
+import { Modal, Form } from "antd";
 import { useDispatch } from "react-redux";
-import { createSong, fetchSongs } from "@/features/songs/songSlice";
+import { fetchSongs } from "@/features/songs/songSlice";
 import { AppDispatch, RootState } from "@/app/store";
 import { useSelector } from "react-redux";
-import { fetchAlbums } from "@/features/albums/albumsSlice";
 import { fetchArtists } from "@/features/artists/artistsSlice";
 import FormSinger from "./FormSinger";
 import { postSinger } from "@/services/SongServices";

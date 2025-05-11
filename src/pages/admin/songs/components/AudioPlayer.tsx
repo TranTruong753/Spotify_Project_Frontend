@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, ChangeEvent } from 'react';
-import { Pause, Play, Volume2, MoreVertical } from 'lucide-react';
+import { Pause, Play, Volume2 } from 'lucide-react';
 import { formatTime } from '@/utils'
 type AudioPlayerProps = {
     audio_url: string;

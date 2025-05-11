@@ -1,13 +1,10 @@
-import { Dot, Heart, Music } from 'lucide-react'
-import React, { useState } from 'react'
-import { HomeIcon, Library, MessageCircle } from "lucide-react";
-import { useEffect } from "react";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Dot, Heart } from 'lucide-react'
+import  { useState } from 'react'
+import { Library } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Link } from "react-router";
-import { IoSearch } from "react-icons/io5";
-import { Input } from '@/components/ui/input';
 import { FaPlus } from "react-icons/fa";
 import ModalCreateAlbumUser from './ModalCreateAlbumUser';
 import { Album, User } from '@/types';

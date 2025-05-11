@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Send } from "lucide-react";
-import { useState } from "react";
 
 interface MessageInput {
 	handleSendMessage:  () => void 
@@ -11,8 +10,6 @@ interface MessageInput {
 
 const MessageInput = ({handleSendMessage,newMessage,setNewMessage}: MessageInput) => {
 	
-
-
 	return (
 		<div className='p-4 mt-auto border-t border-zinc-800'>
 			<div className='flex gap-2'>

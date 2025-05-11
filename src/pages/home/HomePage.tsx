@@ -1,6 +1,6 @@
 import { ScrollArea } from '@/components/ui/scroll-area'
 
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import SectionGrid from './components/SectionGrid'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '@/app/store'

@@ -1,12 +1,11 @@
-import { Album, Song, Video } from "@/types";
+import { Song, Video } from "@/types";
 import React, { useEffect, useState } from "react";
 import { Modal, Form, UploadFile } from "antd";
 import { useDispatch } from "react-redux";
 import { createSong, fetchSongs, updateSong } from "@/features/songs/songSlice";
 import { postVideo, patchVideo } from "@/services/SongServices";
-import { AppDispatch, RootState } from "@/app/store";
-import { useSelector } from "react-redux";
-import { fetchAlbums } from "@/features/albums/albumsSlice";
+import { AppDispatch } from "@/app/store";
+
 import FormUploadFIle from "./FormUploadFIle";
 
 interface ModalUploadVideoProps {

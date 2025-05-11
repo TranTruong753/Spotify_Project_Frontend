@@ -1,17 +1,11 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Button as ButtonAtd } from "antd";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { CircleCheckBig, CirclePlus, Clock, Pause, Play } from "lucide-react";
+import {  Pause, Play } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-
 import { AppDispatch, RootState } from "@/app/store";
-
-import { useParams } from "react-router";  // Import useParams
-import { formatDate, formatTime } from "@/utils";
 import { playAlbum, togglePlay } from "@/features/audioplayer/playerSlice";
-import { addAlbum, deleteAlbumFavorite, getAlbumFavorite, getSongsFavoriteUser } from "@/services/AuthenticateServices";
-import { fetchMusicFavoriteUserById, getAlbumsFavorite } from "@/features/accounts/authSlice";
+import { fetchMusicFavoriteUserById } from "@/features/accounts/authSlice";
 import TableMusicFavorite from "./compnents/TableMusicFavorite";
 import picture from "/liked-songs.jpg"
 import { Song } from "@/types";
@@ -27,8 +21,6 @@ const SongFavorite = () => {
         (state: RootState) => state.auth
     );
 
-
-    //const isAlbumFovorite = albums ? albums.some((album) => album.album.id === currentAlbum?.id) : false;
 
     const { currentSong, isPlaying } = useSelector((state: RootState) => state.player);
 

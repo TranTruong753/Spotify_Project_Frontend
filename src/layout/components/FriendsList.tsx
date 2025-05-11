@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 // import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { HeadphonesIcon, Music, Users, MessageCircleMore } from "lucide-react";
-
 import { Button } from '@/components/ui/button';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/app/store';
 import { Link } from 'react-router';
 import { generateRoomName } from '@/utils';
-import { Avatar } from 'antd';
+import { Avatar, message } from 'antd';
 import { fetchListFriend } from '@/features/accounts/authSlice';
 
 const FriendsList = () => {
 
     const dispatch = useDispatch<AppDispatch>()
+
+    const [messageApi, contextHolder] = message.useMessage();
 
     const { listFriend, isAuthenticated, user, accessToken } = useSelector((state: RootState) => state.auth)
 
@@ -21,13 +22,13 @@ const FriendsList = () => {
 
         // console.log("token", accessToken);
 
-        if(!accessToken) return
+        if (!accessToken) return
 
         const socket = new WebSocket(
             `wss://54.89.188.157/ws/friends/?token=${accessToken}`
         );
 
-        console.log("socket",socket)
+        console.log("socket", socket)
 
         socket.onopen = () => {
             console.log("WebSocket connected");
@@ -39,7 +40,11 @@ const FriendsList = () => {
 
             // ví dụ bạn kiểm tra loại thông điệp
             if (data.action === "request_accepted") {
-                dispatch(fetchListFriend()); // gọi lại API để lấy danh sách mới
+                dispatch(fetchListFriend());
+                messageApi.success(data.message); // gọi lại API để lấy danh sách mới
+            }
+            if (data.action === "request_declined") {
+                messageApi.error(data.message); 
             }
 
         };
@@ -51,11 +56,11 @@ const FriendsList = () => {
         return () => {
             socket.close();
         };
-    }, [dispatch,accessToken]);
+    }, [dispatch, accessToken]);
 
     return (
         <>
-
+            {contextHolder}
             <div className="bg-zinc-900 h-full border rounded-lg flex flex-col border-zinc-900 text-zinc-300">
 
 

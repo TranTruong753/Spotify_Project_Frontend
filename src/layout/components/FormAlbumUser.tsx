@@ -1,6 +1,6 @@
 import React from 'react';
 import type { FormProps } from 'antd';
-import { Button, Checkbox, Form, Input, UploadFile } from 'antd';
+import { Form, Input, UploadFile } from 'antd';
 import { Album } from '@/types';
 import type { FormInstance } from 'antd/es/form';
 import UploadImg from "@/components/uploadImg"

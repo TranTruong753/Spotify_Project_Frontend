@@ -1,7 +1,5 @@
 import { User } from '@/types'
-import { CircleUserRound } from 'lucide-react'
-import React from 'react'
-import { EditOutlined, EllipsisOutlined, SettingOutlined, UserAddOutlined } from '@ant-design/icons';
+import { UserAddOutlined } from '@ant-design/icons';
 import { Avatar, Card, message } from 'antd';
 import avatar from '/avatars/avatar.png'
 import { makeFriends } from '@/services/FriendsServices';
