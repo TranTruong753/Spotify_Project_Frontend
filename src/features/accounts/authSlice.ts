@@ -1,8 +1,17 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { getAlbumFavorite, getAlbumUser, getAllAlbumByIdUser, getSongsFavoriteUser, loginAccount, postAlbumUser, postAlbumUserSong, postSongFavoriteUser } from '@/services/AuthenticateServices'
+import { getAlbumFavorite, getAlbumUser, getAllAccount, getAllAlbumByIdUser, getSongsFavoriteUser, loginAccount, postAlbumUser, postAlbumUserSong, postSongFavoriteUser } from '@/services/AuthenticateServices'
 import { Album, Artist, Song, User, Video } from '@/types';
 import { getFriends, getRequestsMakeFriends } from '@/services/FriendsServices';
 
+
+// GET all albums
+export const fetchAccount = createAsyncThunk<User[], void>(
+  'albums/fetchAccount',
+  async () => {
+    const res = await getAllAccount();
+    return res;
+  }
+);
 
 
 export const login = createAsyncThunk(
@@ -242,6 +251,20 @@ const authSlice = createSlice({
 
       })
 
+      .addCase(fetchAccount.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchAccount.fulfilled, (state, action) => {
+        state.loading = false;
+        state.listAccount = action.payload;
+      })
+      .addCase(fetchAccount.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Failed to fetch Account";
+      })
+
+
       .addCase(login.rejected, (state, action: any) => {
         state.error = action.payload
       })
@@ -264,7 +287,7 @@ const authSlice = createSlice({
       })
       .addCase(fetchAlbumUserById.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || "Failed to fetch album";
+        state.error = action.error.message || "Failed to fetchAlbumUserById";
       })
 
       .addCase(fetchMusicFavoriteUserById.pending, (state) => {

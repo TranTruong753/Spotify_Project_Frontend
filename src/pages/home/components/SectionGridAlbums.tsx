@@ -3,14 +3,11 @@ import { Album } from "@/types";
 import {
   Card,
   CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store";
-import { playAlbum, setCurrentSong } from "@/features/audioplayer/playerSlice";
+import { playAlbum } from "@/features/audioplayer/playerSlice";
 import PlayButtonAlbum from "@/pages/home/components/PlayButtonAlbum";
 import { useNavigate } from "react-router";
 

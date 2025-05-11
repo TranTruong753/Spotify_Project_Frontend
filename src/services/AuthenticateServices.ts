@@ -18,6 +18,19 @@ type loginAccountType = {
     password: string,
 }
 
+
+export const getAllAccount = async (): Promise<User[]> => {
+    try {
+        const response = await axios.get<User[]>(`${API_URL}/account/`);
+        console.log("getAllAccount", response.data);  // Kiểm tra dữ liệu trả về
+        return response.data;  // Trả về dữ liệu có cấu trúc đúng
+    } catch (error) {
+        console.log("getAllAccount", error);
+        throw error;
+    }
+};
+
+
 export const regAccount = async (data:regAccountType)=> {
     try {
         const response = await axios.post(`${API_URL}/account/register/`,data);

@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store";
 
 import React from "react";
-import { addMessage, fetchChatHistory, sendMessage, setMessages } from "@/features/chats/chatSlice";
+import { addMessage, fetchChatHistory, sendMessage } from "@/features/chats/chatSlice";
 
 import { Avatar } from "antd";
 import { cn } from "@/lib/utils";
