@@ -51,7 +51,7 @@ const ChatPage = () => {
 
 	useEffect(() => {
 		if (roomName) {
-			const socket = new WebSocket(`ws://54.89.188.157/ws/chat/${roomName}/`);
+			const socket = new WebSocket(`wss://54.89.188.157/ws/chat/${roomName}/`);
 			setSocket(socket);
 
 			socket.onmessage = (event) => {

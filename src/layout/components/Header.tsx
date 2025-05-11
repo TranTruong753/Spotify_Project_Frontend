@@ -150,7 +150,7 @@ const RightHeader = ({ isLogIn, user, items }: RightHeaderProps) => {
    if(!accessToken) return
 
     const socket = new WebSocket(
-      `ws://54.89.188.157/ws/friends/?token=${accessToken}`
+      `wss://54.89.188.157/ws/friends/?token=${accessToken}`
     );
 
     socket.onopen = () => {
