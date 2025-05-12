@@ -11,6 +11,7 @@ interface ModalArtistProps {
   setIsModalOpen: (open: boolean) => void;
   data?: Artist | null;
   setData: (data: Artist | null) => void;
+  messageApi: any
 }
 
 const ModalCreateArtist: React.FC<ModalArtistProps> = ({
@@ -18,6 +19,7 @@ const ModalCreateArtist: React.FC<ModalArtistProps> = ({
   setIsModalOpen,
   data,
   setData,
+  messageApi
 }) => {
   const [form] = Form.useForm();
 
@@ -64,8 +66,10 @@ const ModalCreateArtist: React.FC<ModalArtistProps> = ({
 
       if (data === null) {
         await dispatch(createArtist(formData)).unwrap(); // unwrap để bắt lỗi dễ
+        messageApi.success("Thêm ca sĩ thành công!")
       } else if (data) {
         await dispatch(updateArtist({ id: data.id, formData })).unwrap();
+        messageApi.success("Cập nhật ca sĩ thành công!")
       }
 
       setIsModalOpen(false);
@@ -74,6 +78,7 @@ const ModalCreateArtist: React.FC<ModalArtistProps> = ({
       setData(null);
     } catch (error) {
       console.error("Lỗi tạo artist:", error);
+      messageApi.error("Lỗi!")
     }
   };
 

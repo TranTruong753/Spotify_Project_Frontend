@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import { Link } from "react-router";
 
-import { Space, Table, Breadcrumb, Empty, Button, Popconfirm, Input } from "antd";
+import { Space, Table, Breadcrumb, Empty, Button, Popconfirm, Input, message } from "antd";
 
 import type { TableProps } from "antd";
 
@@ -35,6 +35,8 @@ const SingerPageAdmin: React.FC = () => {
   );
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [data, setData] = useState<Artist | null>(null);
+  const [messageApi, contextHolder] = message.useMessage();
+  
   useEffect(() => {
     if (!list.length) {
       dispatch(fetchArtists());
@@ -167,6 +169,7 @@ const SingerPageAdmin: React.FC = () => {
   };
   return (
     <div className="p-4 sm:py-6">
+      {contextHolder}
       <h2 className="px-2 scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0">
         Quản lý ca sĩ
       </h2>
@@ -193,6 +196,7 @@ const SingerPageAdmin: React.FC = () => {
         setIsModalOpen={setIsModalOpen}
         data={data}
         setData={setData}
+        messageApi={messageApi}
       ></ModalCreateArtist>
     </div>
   );

@@ -16,6 +16,7 @@ interface ModalSongProps {
     setData: (data: Song | null) => void;
     dataSinger?: any | null;
     setDataSinger: (data: any | null) => void;
+    messageApi: any;
 }
 
 const ModalSinger: React.FC<ModalSongProps> = ({
@@ -24,7 +25,8 @@ const ModalSinger: React.FC<ModalSongProps> = ({
     data,
     setData,
     dataSinger,
-    setDataSinger
+    setDataSinger,
+    messageApi
 }) => {
 
 
@@ -78,12 +80,14 @@ const ModalSinger: React.FC<ModalSongProps> = ({
             })
 
             await dispatch(fetchSongs()).unwrap()
+            messageApi.success("Thêm ca sĩ thành công!")
         
             // setIsModalOpen(false);
             // form.resetFields();
             setData(null);
         } catch (error) {
             console.error("Lỗi tạo album:", error);
+            messageApi.error("Lỗi!")
         }
     };
 

@@ -14,6 +14,7 @@ interface ModalSongProps {
   setIsModalOpen: (open: boolean) => void;
   data?: Song | null;
   setData: (data: Song | null) => void;
+  messageApi: any
 }
 
 const ModalSong: React.FC<ModalSongProps> = ({
@@ -21,6 +22,7 @@ const ModalSong: React.FC<ModalSongProps> = ({
   setIsModalOpen,
   data,
   setData,
+  messageApi
 }) => {
 
 
@@ -108,9 +110,11 @@ const ModalSong: React.FC<ModalSongProps> = ({
 
       if (data === null) {
         await dispatch(createSong(formData)).unwrap(); // unwrap để bắt lỗi dễ
+        messageApi.success("Thêm nhạc thành công !")
       }else if(data){
         await dispatch(updateSong({id:data.id, formData})).unwrap()
           console.log("formData",values)
+             messageApi.success("Cập nhật nhạc thành công !")
       }
       //   else if (data) {
       //     await dispatch(updateAlbum({ id: data.id, formData })).unwrap();
@@ -125,6 +129,7 @@ const ModalSong: React.FC<ModalSongProps> = ({
       setData(null);
     } catch (error) {
       console.error("Lỗi tạo album:", error);
+      messageApi.error("Lỗi!")
     }
   };
 

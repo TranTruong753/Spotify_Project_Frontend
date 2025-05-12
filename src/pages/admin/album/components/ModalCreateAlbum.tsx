@@ -11,6 +11,7 @@ interface ModalAlbumProps {
   setIsModalOpen: (open: boolean) => void;
   data?: Album | null;
   setData: (data: Album | null) => void;
+  messageApi: any
 }
 
 const ModalCreateAlbum: React.FC<ModalAlbumProps> = ({
@@ -18,6 +19,7 @@ const ModalCreateAlbum: React.FC<ModalAlbumProps> = ({
   setIsModalOpen,
   data,
   setData,
+  messageApi,
 }) => {
   const [form] = Form.useForm();
 
@@ -67,8 +69,10 @@ const ModalCreateAlbum: React.FC<ModalAlbumProps> = ({
 
       if (data === null) {
         await dispatch(createAlbum(formData)).unwrap(); // unwrap để bắt lỗi dễ
+        messageApi.success("Thêm album thành công!")
       } else if (data) {
         await dispatch(updateAlbum({ id: data.id, formData })).unwrap();
+         messageApi.success("Cập nhật album thành công!")
       }
 
       setIsModalOpen(false);
@@ -77,6 +81,7 @@ const ModalCreateAlbum: React.FC<ModalAlbumProps> = ({
       setData(null);
     } catch (error) {
       console.error("Lỗi tạo album:", error);
+       messageApi.error("Lỗi!")
     }
   };
 

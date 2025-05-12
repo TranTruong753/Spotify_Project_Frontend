@@ -40,7 +40,7 @@ const FormAlbum: React.FC<MyComponentProps> = ({ form, fileList, setFileList }) 
     autoComplete="off"
   >
     <Form.Item<Album>
-      label="Username"
+      label="Album name"
       name="name"
       rules={[{ required: true, message: 'Please input Album name!' }]}
     >

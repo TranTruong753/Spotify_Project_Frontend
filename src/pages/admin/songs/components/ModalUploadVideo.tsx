@@ -15,6 +15,7 @@ interface ModalUploadVideoProps {
   setData: (data: Song | null) => void;
   dataVideo?: Video | null;
   setDataVideo: (data: Video | null) => void;
+   messageApi: any
 }
 
 const ModalUploadVideo: React.FC<ModalUploadVideoProps> = ({
@@ -23,7 +24,8 @@ const ModalUploadVideo: React.FC<ModalUploadVideoProps> = ({
   data,
   setData,
   dataVideo,
-  setDataVideo
+  setDataVideo,
+  messageApi
 }) => {
 
   const [form] = Form.useForm();
@@ -88,11 +90,13 @@ const ModalUploadVideo: React.FC<ModalUploadVideoProps> = ({
           const res = await postVideo(formData)
           if(res && data){
             handleUpdateVideoForSong(res,data)
+             messageApi.success("Cập nhật video thành công!")
           }
      }else if(data && dataVideo){
             // khi không thay đổi
             await patchVideo(dataVideo.id,formData)
             await dispatch(fetchSongs())
+            messageApi.success("Thêm video thành công!")
 
             
       }
@@ -110,6 +114,7 @@ const ModalUploadVideo: React.FC<ModalUploadVideoProps> = ({
       setFileListVideo([]);
     } catch (error) {
       console.error("Lỗi tạo album:", error);
+       messageApi.error("Lỗi!")
     }
   };
 

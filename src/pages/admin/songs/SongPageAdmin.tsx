@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { Space, Table, Breadcrumb, Empty, Button, Popconfirm, Modal, Tag, Avatar, Tooltip } from 'antd';
+import { Space, Table, Breadcrumb, Empty, Button, Popconfirm, Modal, Tag, Avatar, Tooltip, message } from 'antd';
 import type { TableProps, PopconfirmProps } from 'antd';
 import { useDispatch, useSelector } from "react-redux";
 import { deleteSongs, fetchSongs } from "@/features/songs/songSlice";
@@ -64,6 +64,8 @@ const SongPageAdmin: React.FC = () => {
   const [currentlyPlayingSongId, setCurrentlyPlayingSongId] = useState<string | null>(null);
 
   const { list, count, loading } = useSelector((state: RootState) => state.songs)
+
+  const [messageApi, contextHolder] = message.useMessage();
 
   useEffect(() => {
     if (!list.length) {
@@ -291,6 +293,7 @@ const SongPageAdmin: React.FC = () => {
 
   return (
     <div className="p-4 sm:py-6">
+      {contextHolder}
       <h2 className="px-2 scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0">
         Quản lý nhạc
       </h2>
@@ -333,6 +336,7 @@ const SongPageAdmin: React.FC = () => {
         setIsModalOpen={setIsModalFormOpen}
         data={data}
         setData={setData}
+        messageApi={messageApi}
       ></ModalSong>
 
       <ModalUploadVideo
@@ -342,6 +346,7 @@ const SongPageAdmin: React.FC = () => {
         setData={setData}
         dataVideo={videoEdit}
         setDataVideo={setVideoEdit}
+         messageApi={messageApi}
       ></ModalUploadVideo>
 
       <ModalSinger
@@ -351,6 +356,7 @@ const SongPageAdmin: React.FC = () => {
           setData={setData}
           dataSinger={singer}
           setDataSinger={setSinger}
+          messageApi={messageApi}
       ></ModalSinger>
 
     </div>

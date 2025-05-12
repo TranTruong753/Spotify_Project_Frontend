@@ -93,10 +93,22 @@ const albumsSlice = createSlice({
         state.error = action.error.message || 'Failed to fetch albums'
       })
 
+      // .addCase(createAlbum.pending, (state) => {
+      //   state.loading = true;
+      //   state.error = null;
+      // })
+
       .addCase(createAlbum.fulfilled, (state, action) => {
         state.list.push(action.payload)
+        state.loading = false
         state.count += 1;
       })
+
+      // .addCase(createAlbum.rejected, (state, action) => {
+      //   state.loading = false;
+      //   state.error = action.error.message || "Failed to createAlbum album";
+      // })
+
 
       .addCase(updateAlbum.fulfilled, (state, action) => {
         const index = state.list.findIndex(album => album.id === action.payload.id);
@@ -118,6 +130,7 @@ const albumsSlice = createSlice({
         state.loading = false;
         state.currentAlbum = action.payload;
       })
+
       .addCase(fetchAlbumById.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Failed to fetch album";

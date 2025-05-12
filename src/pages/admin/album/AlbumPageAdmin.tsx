@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import { Link } from "react-router";
 
-import { Space, Table, Breadcrumb, Empty, Button, Popconfirm, Input } from 'antd';
+import { Space, Table, Breadcrumb, Empty, Button, Popconfirm, Input, message } from 'antd';
 
 import type { TableProps, PopconfirmProps } from 'antd';
 
@@ -49,6 +49,7 @@ const AlbumPageAdmin: React.FC = () => {
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
+  const [messageApi, contextHolder] = message.useMessage();
 
   const [data, setData] = useState<Album | null>(null);
 
@@ -197,6 +198,7 @@ const AlbumPageAdmin: React.FC = () => {
   return (
     
     <div className="p-4 sm:py-6 bg-zinc-800">
+      {contextHolder}
       <h2 className="px-2 scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0">
         Quản lý album
       </h2>
@@ -236,6 +238,7 @@ const AlbumPageAdmin: React.FC = () => {
         setIsModalOpen={setIsModalOpen}
         data={data}
         setData={setData}
+        messageApi={messageApi}
       ></ModalCreateAlbum>
     </div>
   );
